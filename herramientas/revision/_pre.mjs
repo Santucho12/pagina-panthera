@@ -1,0 +1,4 @@
+export default async (p, h) => { await h.espera(5000);
+  return p.evaluate(() => { const vh = innerHeight; const pend = [...document.querySelectorAll('img.lazyload')]; const enRango = pend.filter((i) => { const r = i.getBoundingClientRect(); return r.top < vh * 2.5; });
+    const ej = pend.slice(0, 3).map((i) => ({ clases: i.className.slice(0, 80), pre: !!i.__pntPre, enCarr: !!(i.closest && i.closest('.swiper-container, .swiper, .js-swiper-container, .pnt-mv-swiper')), top: Math.round(i.getBoundingClientRect().top), dsrc: (i.getAttribute('data-srcset') || i.getAttribute('data-src') || '').slice(0, 60), padre: (i.parentElement.className + '').slice(0, 60) }));
+    return { pendientes: pend.length, cargadas: document.querySelectorAll('img.lazyloaded').length, pendientes_en_2_5_pantallas: enRango.length, ejemplo: ej, lazy: !!window.lazySizes }; }); };

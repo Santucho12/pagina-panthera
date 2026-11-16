@@ -1,0 +1,2 @@
+export default async (p, h) => { await h.espera(8000); const r = await p.evaluate(() => { const c = document.querySelector('.pnt-hero-cartel').getBoundingClientRect(), v = document.querySelector('.pnt-hero-v').getBoundingClientRect(); return { pantalla: innerHeight, hero: Math.round(v.height), cartelAbajo: Math.round(c.bottom), espacioDebajo: Math.round(innerHeight - c.bottom) }; });
+  await p.screenshot({ path: 'revision-responsive/hero-alto.png' }); return r; };

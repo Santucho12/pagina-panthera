@@ -1,0 +1,325 @@
+/* Panthera — "Armá tu oreja" (prototipo, 2026-11-11): estilos del componente. Son los de "Armá tu pulsera" (armar3d.css): mismas
+   tarjetas, precios, lupa, total y barra del celular, y la misma disposición (compu: aros | oreja | agujeros y combinación, a una
+   altura; tablet: oreja y panel arriba, aros abajo; celular: uno abajo del otro). Lo nuevo va al final: las filas por agujero. */
+:host{
+  --bg:#FFFFFF; --fg:var(--pnt-texto,#000000); --gris:var(--pnt-gris,#4D4D4D); --gris-2:rgba(77,77,77,.62); --linea:rgba(0,0,0,.09); --linea-2:rgba(0,0,0,.16);
+  --rosa:var(--pnt-rosa,#F4ACC4); --rosa-h:var(--pnt-rosa-hover,#F29AB7); --oro:var(--pnt-dorado,#EEC049); --rosa-precio:var(--pnt-rosa-precio,#EE779F);
+  --titulo:var(--pnt-titulo-general,'Archivo',system-ui,sans-serif); --texto:var(--pnt-letra,'Outfit',system-ui,sans-serif);
+  --curva:cubic-bezier(.2,.8,.2,1); --resorte:cubic-bezier(.34,1.56,.64,1);
+  --alto:clamp(560px,76vh,690px);
+  display:block;color:var(--fg);font:400 15px/1.5 var(--texto);letter-spacing:normal;text-align:left;-webkit-font-smoothing:antialiased;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+@keyframes aparece{from{opacity:0;transform:translateY(8px)}}
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes late{40%{transform:scale(1.25)}}
+@keyframes late2{40%{transform:scale(1.035)}}
+@keyframes elige{35%{transform:scale(.9)}}
+@keyframes entra{from{opacity:0;transform:translateX(12px)}}
+.dock-cab h2,.base-n,.cuenta b,.vitrina b{font-synthesis:none}
+
+/* ───── Disposición (compu) ───── */
+.app{display:grid;grid-template-columns:clamp(300px,23vw,390px) minmax(0,1fr) clamp(324px,24vw,390px);grid-template-areas:"dock stage panel";height:var(--alto);overflow:hidden;
+  border:1px solid var(--linea);border-radius:28px;background:var(--bg)}
+
+/* ───── Escenario ───── */
+.stage{grid-area:stage;position:relative;min-width:0;min-height:0;overflow:hidden;isolation:isolate;
+  background:
+    radial-gradient(ellipse 52% 40% at 50% 42%,rgba(244,172,196,.32),rgba(244,172,196,0) 72%),
+    radial-gradient(ellipse 70% 30% at 50% 102%,rgba(238,192,73,.10),rgba(238,192,73,0) 70%),
+    linear-gradient(180deg,#FFFFFF 0%,#FFFFFF 62%,#FBF8F9 100%)}
+.stage::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;transition:box-shadow .4s var(--curva)}
+/* grano muy fino sobre el halo rosa: los degradados grandes no hacen bandas (va debajo del 3D) */
+.stage::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+.stage.soltar::before{box-shadow:inset 0 0 0 3px var(--rosa),inset 0 0 80px rgba(244,172,196,.35)}
+#c{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab}
+#c.agarra{cursor:grabbing}#c.sobre{cursor:pointer}
+/* arriba a la izquierda: cuántos charms hay; abajo a la izquierda: la ayuda (y los carteles); abajo a la derecha: el total */
+.cuenta{position:absolute;z-index:3;top:14px;left:20px;display:flex;align-items:baseline;gap:7px;color:var(--gris);font-size:13px;font-weight:600;pointer-events:none}
+.cuenta b{display:inline-block;font:700 34px/1 var(--titulo);letter-spacing:-.05em;color:var(--fg);font-variant-numeric:tabular-nums}
+.cuenta b.late{animation:late .5s var(--resorte)}
+.st-pie{position:absolute;z-index:3;left:20px;bottom:18px;max-width:calc(100% - 40px);pointer-events:none}
+.hint{margin:0;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--gris)}
+.hint kbd{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--linea-2);font:600 11px/1 var(--texto);color:var(--fg);background:#fff}
+.vacio{position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,-50%);margin:0;padding:12px 18px;border-radius:999px;background:rgba(255,255,255,.85);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 0 0 1px var(--linea);font-size:13px;font-weight:500;white-space:nowrap;pointer-events:none;animation:aparece .6s var(--curva) backwards}
+.etiqueta{position:absolute;z-index:4;left:0;top:0;padding:9px 14px 10px;border-radius:14px;background:var(--fg);color:#fff;font-size:13px;line-height:1.25;white-space:nowrap;pointer-events:none;
+  transform:translate(-50%,calc(-100% - 16px));box-shadow:0 18px 30px -18px rgba(0,0,0,.6)}
+.etiqueta b{display:block;font-weight:600}
+.etiqueta small{color:rgba(255,255,255,.62);font-size:11.5px}
+.etiqueta::after{content:"";position:absolute;left:50%;bottom:-5px;width:10px;height:10px;background:var(--fg);transform:translateX(-50%) rotate(45deg);border-radius:2px}
+/* medida: aparece al cambiar el talle · vitrina: la pulsera elegida, mientras la pulsera muestra su cierre de frente (los dos, abajo a la izquierda) */
+.medida{position:absolute;z-index:3;left:20px;bottom:54px;transform:translate(0,8px);margin:0;padding:9px 16px;border-radius:999px;background:var(--fg);color:#fff;font-size:13px;font-weight:600;
+  white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .35s,transform .5s var(--resorte)}
+.medida.ve{opacity:1;transform:none}
+.vitrina{position:absolute;z-index:3;left:20px;bottom:54px;display:flex;align-items:center;gap:12px;max-width:calc(100% - 40px);padding:7px 20px 7px 7px;border-radius:999px;
+  background:rgba(255,255,255,.9);-webkit-backdrop-filter:blur(14px) saturate(150%);backdrop-filter:blur(14px) saturate(150%);
+  box-shadow:inset 0 0 0 1px var(--linea),0 24px 44px -26px rgba(0,0,0,.55);white-space:nowrap;pointer-events:none;
+  opacity:0;transform:translate(0,16px) scale(.96);transform-origin:left bottom;transition:opacity .45s var(--curva),transform .7s var(--resorte)}
+.vitrina.ve{opacity:1;transform:none}
+.vitrina img{flex:none;width:42px;height:42px;border-radius:50%;object-fit:contain;background:#fff;box-shadow:inset 0 0 0 1px var(--linea)}
+.vitrina div{min-width:0}
+.vitrina b{display:block;font:700 16px/1.1 var(--titulo);letter-spacing:-.035em}
+.vitrina span{display:block;margin-top:3px;font-size:12px;color:var(--gris);overflow:hidden;text-overflow:ellipsis}
+/* la lupa: tarjeta de la pieza que se ve de cerca (como la del total: vidrio blanco, mismos precios) */
+.lupa{position:absolute;z-index:4;top:70px;right:16px;display:grid;gap:6px;width:min(300px,calc(100% - 32px));padding:14px 16px 16px;border-radius:22px;
+  background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(14px) saturate(150%);backdrop-filter:blur(14px) saturate(150%);
+  box-shadow:inset 0 0 0 1px var(--linea),0 24px 44px -26px rgba(0,0,0,.5);opacity:0;transform:translateY(-8px) scale(.98);transform-origin:top right;
+  transition:opacity .35s var(--curva),transform .55s var(--curva)}
+.lupa.ve{opacity:1;transform:none}
+.lupa-t{margin:0;padding-right:34px;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
+.lupa-n{margin:0;padding-right:28px;font:700 19px/1.1 var(--titulo);letter-spacing:-.04em;font-synthesis:none}
+.lupa-d{margin:0;font-size:12.5px;color:var(--gris)}
+.lupa-p{display:grid;gap:4px;margin-top:4px}
+.lupa-p .p-transf b{font-size:24px}
+.lupa-x{position:absolute;top:9px;right:9px;display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:50%;background:transparent;color:var(--gris);transition:background-color .2s,color .2s}
+.lupa-x:hover{background:rgba(0,0,0,.06);color:var(--fg)}
+.lupa-x svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round}
+.lupa-sacar{justify-self:start;margin-top:8px;border:0;padding:9px 15px;border-radius:999px;background:transparent;box-shadow:inset 0 0 0 1px var(--linea-2);font-size:12px;font-weight:600;transition:box-shadow .25s,background-color .25s,color .25s}
+.lupa-sacar:hover{box-shadow:inset 0 0 0 1px var(--fg)}
+.cargando{position:absolute;z-index:2;inset:0;display:grid;place-items:center;align-content:center;gap:14px;background:#fff;transition:opacity .7s var(--curva),visibility .7s}
+.cargando.listo{opacity:0;visibility:hidden}
+.cargando .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s var(--curva)}
+.cargando.con-poster .poster{opacity:1}
+.cargando.con-poster i,.cargando.con-poster p{display:none}
+.cargando.fallo{opacity:1;visibility:visible}
+.cargando i{width:46px;height:46px;border-radius:50%;border:2px solid rgba(0,0,0,.08);border-top-color:var(--rosa);animation:gira 1s linear infinite}
+.cargando p{margin:0;font-size:13px;color:var(--gris)}
+.nogl{position:absolute;z-index:6;left:16px;bottom:16px;max-width:min(360px,calc(100% - 32px));margin:0;padding:10px 16px;border-radius:14px;color:var(--gris);font-size:12.5px;
+  background:rgba(255,255,255,.92);box-shadow:inset 0 0 0 1px var(--linea)}
+.nogl p{margin:0}
+
+/* ───── Charms (a la izquierda; se desplazan por dentro) ───── */
+.dock{grid-area:dock;display:flex;flex-direction:column;min-width:0;min-height:0;border-right:1px solid var(--linea)}
+.dock-cab{padding:22px 18px 0}
+.dock-cab h2{margin:0;font:700 22px/1.05 var(--titulo);letter-spacing:-.045em}
+.dock-cab p{margin:6px 0 0;font-size:12.5px;line-height:1.4;color:var(--gris)}
+.chips{display:flex;gap:6px;margin:14px -18px 0;padding:0 18px 2px;overflow-x:auto;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:0;padding:8px 12px;border-radius:999px;background:transparent;box-shadow:inset 0 0 0 1px var(--linea-2);font-size:12px;font-weight:600;white-space:nowrap;transition:background-color .3s,color .3s,box-shadow .3s}
+.chip:hover{box-shadow:inset 0 0 0 1px var(--fg)}
+.chip[aria-pressed="true"]{background:var(--fg);color:#fff;box-shadow:none}
+.chip small{margin-left:4px;font-size:10.5px;opacity:.55;font-weight:600}
+.tira-caja{position:relative;flex:1;min-height:0;margin-top:14px}
+.tira{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;gap:18px 12px;height:100%;overflow-x:hidden;overflow-y:auto;padding:4px 18px 30px;
+  scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.18) transparent;
+  -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 34px),transparent);mask-image:linear-gradient(180deg,#000 calc(100% - 34px),transparent)}
+.flecha{display:none;position:absolute;z-index:2;top:58px;width:42px;height:42px;border:0;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px var(--linea-2),0 12px 26px -14px rgba(0,0,0,.4);place-items:center;transition:opacity .3s,transform .3s var(--curva)}
+.flecha svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.flecha:hover{transform:scale(1.06)}
+.flecha[disabled]{opacity:0;pointer-events:none}
+.flecha.izq{left:10px}.flecha.der{right:12px}
+
+/* Tarjeta: como las de "Los más elegidos" (foto sin marco, sello blanco, descuento rosa, botón negro, nombre en mayúsculas, precios) */
+.card{position:relative;display:flex;flex-direction:column;justify-content:flex-start;min-width:0;border:0;background:none;padding:0;text-align:left;touch-action:pan-x pan-y;user-select:none;-webkit-user-select:none}
+.card-f{position:relative;display:block;aspect-ratio:1;border-radius:14px;overflow:hidden;transition:background-color .35s}
+.card-f img{position:absolute;inset:10px;width:calc(100% - 20px);height:calc(100% - 20px);object-fit:contain;transition:transform .55s var(--curva),opacity .3s;-webkit-user-drag:none}
+.card-f img.cg{opacity:0}
+.card:hover .card-f img{transform:scale(1.05)}
+.card[aria-pressed="true"] .card-f{background:rgba(244,172,196,.16)}
+.card[aria-pressed="true"] .card-f img{opacity:.3;transform:scale(.9)}
+.card.arrastra .card-f{opacity:.35}
+.ult{position:absolute;left:6px;top:7px;padding:4px 8px;border-radius:999px;background:#fff;color:var(--fg);font-size:8.5px;font-weight:700;letter-spacing:.08em;line-height:1.2;text-transform:uppercase;box-shadow:0 2px 10px rgba(0,0,0,.18);pointer-events:none}
+.off{position:absolute;right:6px;top:7px;padding:4px 8px;border-radius:999px;background:var(--rosa);color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.02em;line-height:1.2;pointer-events:none}
+.mas{position:absolute;right:8px;bottom:8px;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--fg);color:#fff;transition:transform .25s,background-color .25s,color .25s}
+.mas svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;transition:transform .4s var(--resorte)}
+.card:hover .mas{transform:scale(1.06)}
+.card .mas:hover{background:var(--rosa-h);color:var(--fg)}
+.card[aria-pressed="true"] .mas svg{transform:rotate(45deg)}
+.en{position:absolute;left:0;right:0;bottom:44%;text-align:center;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .45s var(--curva)}
+.card[aria-pressed="true"] .en{opacity:1;transform:none}
+.card-i{display:flex;flex-direction:column;align-items:flex-start;gap:7px;padding:10px 0 0 6px}
+.card-n{margin:0;min-height:2.1em;color:var(--fg);font-size:11px;font-weight:500;line-height:1.05;letter-spacing:.03em;text-transform:uppercase}
+.card .p-lista{font-size:12px}
+.card .p-lista .ah{display:none}            /* en la columna angosta va sin "Ahora" */
+.card .p-lista s{margin-right:6px}
+.card .p-transf{column-gap:5px}
+.card .p-transf b{font-size:17.5px}
+.card .p-transf span{font-size:7.6px;letter-spacing:.05em}
+.card .p-cuotas{display:none}
+
+/* Precios (los mismos de las tarjetas de la tienda) */
+.p-linea{display:block;width:100%;height:1px;background:rgba(77,77,77,.22)}
+.p-lista{margin:0;color:var(--fg);font-size:14.5px;font-weight:500;font-variant-numeric:tabular-nums}
+.p-lista s{position:relative;z-index:0;display:inline-block;margin-right:8px;color:var(--gris);text-decoration:none}
+.p-lista s::after{content:"";position:absolute;z-index:-1;top:55%;left:-2px;right:-2px;height:3px;border-radius:2px;background:var(--rosa-precio);transform:translateY(-50%)}
+.p-transf{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:7px;row-gap:2px;margin:0;color:var(--rosa-precio)}
+.p-transf b{display:inline-block;font-size:22.5px;font-weight:700;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.p-transf span{font-size:9.4px;font-weight:700;letter-spacing:.06em;line-height:1.15;text-transform:uppercase;white-space:nowrap}
+.p-cuotas{display:flex;align-items:center;gap:6px;margin:0;color:var(--fg);font-size:11px;font-weight:700;line-height:1.25;font-variant-numeric:tabular-nums}
+.p-cuotas svg{flex:none;width:16px;height:11.5px}
+
+/* ───── Panel (a la derecha; se desplaza por dentro) ───── */
+.panel{grid-area:panel;display:flex;flex-direction:column;gap:20px;min-width:0;min-height:0;overflow-y:auto;padding:22px 20px 20px;border-left:1px solid var(--linea);
+  scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.18) transparent}
+.paso{min-width:0}
+.paso h3{margin:0;display:flex;align-items:center;gap:10px;font:600 10.5px/1 var(--texto);letter-spacing:.24em;text-transform:uppercase;color:var(--gris)}
+.paso h3 i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;box-shadow:inset 0 0 0 1px var(--linea-2);font:600 11px/1 var(--texto);letter-spacing:0;font-style:normal;color:var(--fg)}
+.paso.hecho h3 i{background:var(--oro);box-shadow:none}
+.bases{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px}
+.base{position:relative;min-width:0;aspect-ratio:1;border:0;padding:5px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1px var(--linea);transition:box-shadow .3s,transform .45s var(--curva)}
+.base img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.base:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1px var(--linea-2)}
+.base[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--fg);animation:elige .55s var(--resorte)}
+.entra{animation:aparece .55s var(--curva) backwards}
+.base-n{margin:12px 0 0;font:700 19px/1.1 var(--titulo);letter-spacing:-.04em}
+.base-d{margin:5px 0 0;font-size:13px;color:var(--fg)}
+.base-s{display:grid;gap:5px;margin:9px 0 0}
+.base-s .p-lista{font-size:14px}
+.base-s .p-transf b{font-size:23px}
+.base-s .p-transf span{font-size:9.6px}
+.talles{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.talle{border:0;min-width:58px;padding:8px 11px;border-radius:999px;background:transparent;box-shadow:inset 0 0 0 1px var(--linea-2);font-size:12.5px;font-weight:600;line-height:1.2;transition:background-color .3s,color .3s,box-shadow .3s}
+.talle:hover:not(:disabled){box-shadow:inset 0 0 0 1px var(--fg)}
+.talle[aria-pressed="true"]{background:var(--fg);color:#fff;box-shadow:none}
+.talle:disabled{color:var(--gris-2);text-decoration:line-through;cursor:not-allowed;box-shadow:inset 0 0 0 1px var(--linea)}
+.talle small{display:block;margin-top:2px;font-size:9.5px;font-weight:600;opacity:.6;text-decoration:none}
+.guia{margin:9px 0 0;font-size:12px;line-height:1.45;color:var(--gris)}
+.lista{list-style:none;margin:12px 0 0;padding:0}
+.lista li{display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--linea);animation:entra .55s var(--curva) both}
+.lista li:last-child{border-bottom:1px solid var(--linea)}
+.lista img{width:40px;height:40px;object-fit:contain}
+.lista .n{min-width:0;font-size:11.6px;font-weight:500;line-height:1.25;letter-spacing:.03em;text-transform:uppercase}
+.lista .n small{display:block;margin-top:3px;font-size:12px;font-weight:600;letter-spacing:0;text-transform:none;font-variant-numeric:tabular-nums}
+.lista .n small i{font-style:normal;font-weight:700;color:var(--rosa-precio);white-space:nowrap}
+.acc{display:flex}
+.acc button{display:grid;place-items:center;width:28px;height:28px;border:0;border-radius:50%;background:none;color:var(--gris);transition:background-color .2s,color .2s}
+.acc button:hover:not(:disabled){background:rgba(0,0,0,.06);color:var(--fg)}
+.acc button:disabled{opacity:.25;cursor:default}
+.acc svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.orden{margin:8px 0 0;font-size:11.5px;color:var(--gris-2)}
+.ejemplo{margin:10px 0 0;padding:10px 14px;border-radius:14px;background:rgba(244,172,196,.16);font-size:12px;color:var(--gris)}
+.vacia{margin:12px 0 0;padding:14px;border-radius:14px;background:rgba(244,172,196,.16);font-size:12.5px;color:var(--gris)}
+.nota{margin:0;font-size:11px;line-height:1.45;color:var(--gris-2)}
+.total-ranura{display:contents}
+
+/* ───── El total: precios de la tienda y su botón negro (hover rosa) con la bolsita ─────
+   compu: tarjeta que flota abajo a la derecha del escenario · tablet: fijo abajo del panel · celular: tarjeta al final del panel */
+.total{display:flex;flex-direction:column;gap:7px;color:var(--fg)}
+.t-cab{margin:0;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
+.total .p-lista{font-size:15px}
+.total .p-transf b{font-size:28px}
+.total .p-transf b.late{animation:late2 .45s var(--curva)}
+.total .p-transf span{font-size:10.5px;letter-spacing:.07em}
+.total .p-cuotas{font-size:12px;gap:7px}
+.total .p-cuotas svg{width:18px;height:13px}
+/* compu: tarjeta compacta (como la del armador de pulseras, 2026-11-11): rótulo, precio con transferencia, precio, cuotas y botón */
+.stage>.total{gap:3px}
+.stage>.total>.p-linea{display:none}
+.stage>.total>.p-transf{order:1;margin-top:3px}
+.stage>.total>.p-lista{order:2;font-size:11.5px}
+.stage>.total>.p-lista s{margin-right:5px}
+.stage>.total>.p-cuotas{order:3;font-size:10.5px;gap:5px}
+.stage>.total>.p-cuotas svg{width:14px;height:10px}
+.stage>.total>.cta{order:4}
+.stage>.total .t-cab{font-size:9.5px;letter-spacing:.16em}
+.stage>.total .p-transf b{font-size:23px}
+.stage>.total .p-transf span{font-size:9px}
+.stage>.total .cta{min-height:40px;margin-top:6px;padding:0 18px;font-size:11.5px;letter-spacing:.1em}
+.stage>.total{position:absolute;z-index:3;right:14px;bottom:14px;width:min(252px,calc(100% - 32px));padding:11px 13px 12px;border-radius:18px;
+  background:rgba(255,255,255,.93);-webkit-backdrop-filter:blur(14px) saturate(150%);backdrop-filter:blur(14px) saturate(150%);
+  box-shadow:inset 0 0 0 1px var(--linea),0 24px 44px -26px rgba(0,0,0,.5)}
+.panel .total{position:sticky;bottom:0;z-index:2;margin:auto -20px -20px;padding:16px 20px;gap:8px;background:#fff;border-top:1px solid var(--linea);box-shadow:0 -20px 30px -26px rgba(0,0,0,.3)}
+/* con la tarjeta del total abajo a la derecha, la ayuda y el cartel de la base no llegan hasta ella */
+@media (min-width:1280px){
+  .st-pie,.vitrina{max-width:calc(100% - 300px)}
+  .vitrina b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+}
+.cta{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;min-height:48px;margin-top:5px;border:0;padding:0 22px;border-radius:999px;background:var(--fg);color:#fff;
+  font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;overflow:hidden;transition:background-color .3s,color .3s}
+.cta:hover{background:var(--rosa-h);color:var(--fg)}
+.cta:disabled{cursor:default;opacity:.85}
+.cta .bolsa{width:16px;height:16px;fill:currentColor;transition:transform .35s var(--resorte)}
+.cta:hover .bolsa{transform:scale(1.12)}
+.cta .spin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;animation:gira .8s linear infinite}
+.cta:hover .spin{border-color:rgba(0,0,0,.15);border-top-color:#000}
+
+/* sin nada elegido no hay total que mostrar */
+:host(.sin-total) .total,:host(.sin-total) .barra{display:none!important}
+.toast{position:fixed;z-index:40;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:16px;max-width:calc(100% - 32px);
+  padding:12px 12px 12px 20px;border-radius:999px;background:var(--fg);color:#fff;font-size:13.5px;box-shadow:0 20px 44px -18px rgba(0,0,0,.6);
+  transform:translate(-50%,30px);opacity:0;visibility:hidden;transition:opacity .35s,transform .55s var(--resorte),visibility .35s}
+.toast.ve{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.toast button{flex:none;border:0;padding:9px 14px;border-radius:999px;background:#fff;color:#000;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.fantasma{position:fixed;z-index:35;left:0;top:0;width:110px;height:110px;margin:-55px 0 0 -55px;border-radius:24px;background:#fff;box-shadow:0 30px 50px -20px rgba(0,0,0,.45),inset 0 0 0 1px var(--linea);pointer-events:none}
+.fantasma img{position:absolute;inset:12px;width:calc(100% - 24px);height:calc(100% - 24px);object-fit:contain}
+/* celular: barra fija con el total mientras se ve el armador y no se ve el total de abajo (armar3d.js); blanca y flotante como la navbar */
+.barra{display:none;position:fixed;z-index:25;left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));
+  bottom:calc(10px + env(safe-area-inset-bottom,0px));align-items:center;justify-content:space-between;gap:12px;padding:8px 8px 8px 22px;border-radius:999px;
+  background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:var(--fg);
+  box-shadow:inset 0 0 0 1px var(--linea),0 18px 40px -14px rgba(0,0,0,.45);animation:aparece .4s var(--curva) backwards}
+.barra-p{display:flex;flex-direction:column;gap:2px;min-width:0}
+.barra-p .p-lista{font-size:12px}
+.barra-p .p-lista b{font-weight:600}
+.barra-p .p-transf b{font-size:21px}
+.barra-p .p-transf span{font-size:8.6px}
+.barra .cta{gap:9px;min-height:48px;margin:0;padding:0 20px;font-size:12px;letter-spacing:.1em;white-space:nowrap}
+
+/* ───── Tablet: pulsera y panel arriba, los charms en una tira abajo ───── */
+@media (max-width:1279px){
+  .app{grid-template-columns:minmax(0,1fr) 330px;grid-template-rows:var(--alto) auto;grid-template-areas:"stage panel" "dock dock";height:auto}
+  .dock{border-right:0;border-top:1px solid var(--linea);padding-bottom:20px}
+  /* el total pegado al borde de abajo del panel: con el relleno de abajo quedaba una franja de 20 px por donde asomaba la lista */
+  .panel{padding-bottom:0}
+  .panel .total{margin-bottom:0}
+  .dock-cab{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px 20px;padding:22px 22px 0}
+  .chips{flex-wrap:wrap;margin:0;padding:0;overflow:visible;-webkit-mask-image:none;mask-image:none}
+  .tira-caja{flex:none;margin-top:16px}
+  .tira{display:flex;gap:16px;height:auto;overflow-x:auto;overflow-y:hidden;padding:4px 22px 10px;scroll-snap-type:x proximity;scroll-padding-left:22px;scrollbar-width:none;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 40px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 40px),transparent 100%)}
+  .tira::-webkit-scrollbar{display:none}
+  .card{flex:none;width:172px;scroll-snap-align:start}
+  .card .p-lista .ah{display:inline}
+  .card .p-cuotas{display:flex;font-size:9.8px;gap:5px}
+  .card .p-cuotas svg{width:15px;height:11px}
+  .card .p-transf b{font-size:20px}
+  .card .p-transf span{font-size:8.4px}
+  .flecha{display:grid}
+}
+@media (hover:none){.flecha{display:none!important}}
+@media (min-width:700px) and (max-width:1279px){.lupa{top:auto;bottom:16px;transform-origin:bottom right}}
+/* ───── Celular: uno abajo del otro ───── */
+@media (max-width:699px){
+  .app{grid-template-columns:minmax(0,1fr);grid-template-rows:auto;grid-template-areas:"stage" "dock" "panel"}
+  .stage{height:58vh;min-height:380px}
+  .panel{overflow:visible;border-left:0;border-top:1px solid var(--linea);padding:22px 16px 16px}
+  .panel .total{position:static;margin:4px 0 0;padding:16px;border:1px solid var(--linea-2);border-radius:20px;box-shadow:none}
+  :host(.barra-on) .barra{display:flex}
+  .toast{bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+  .medida,.vitrina{left:16px;bottom:16px}
+  .lupa{left:12px;right:12px;width:auto;top:auto;bottom:12px;transform-origin:bottom center}
+  .cuenta{left:16px}
+  .hint{display:none}
+  .dock-cab{padding:22px 16px 0}
+  .tira{padding-left:16px;padding-right:16px;scroll-padding-left:16px}
+  .card{width:164px}
+}
+/* (sin regla de movimiento reducido: el armador anima siempre, como el resto de la tienda — pedido 2026-11-11) */
+
+/* ───── Lo propio de la oreja: "Tu combinación" por agujero ───── */
+.lista .n em{display:block;margin-bottom:3px;font-style:normal;font-size:9.5px;font-weight:700;letter-spacing:.16em;color:var(--gris)}
+.lista li[data-pos]{cursor:pointer}
+.lista li.vacia{grid-template-columns:40px minmax(0,1fr);cursor:pointer;transition:background-color .3s}
+.lista li.vacia .n{color:var(--gris);text-transform:none;letter-spacing:0;font-size:12.5px}
+.lista li.vacia .n em{text-transform:uppercase}
+.hueco-i{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--linea-2)}
+.hueco-i::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--gris-2)}
+.lista li.vacia:hover .hueco-i{box-shadow:inset 0 0 0 1.5px var(--fg)}
+.lista li.activa{background:rgba(244,172,196,.16);margin:0 -10px;padding-left:10px;padding-right:10px;border-radius:14px;border-color:transparent}
+.lista li.activa + li{border-top-color:transparent}
+.lista li.activa .hueco-i{box-shadow:inset 0 0 0 2px var(--rosa);animation:late2 1.6s var(--curva) infinite}
+.lista li.activa .hueco-i::after{background:var(--rosa)}
+.lista li.activa .n{color:var(--fg);font-weight:600}
+.huecos-n{margin:9px 0 0;font-size:12px;line-height:1.45;color:var(--gris)}
+/* el póster (la oreja de ejemplo como foto, con transparencia): se ve sobre el mismo fondo del escenario, sin salto al pasar al 3D */
+.cargando.con-poster{background:transparent}
+/* sobre la foto (pelo oscuro): el contador y la ayuda van en una pastilla blanca, como las demás tarjetas del escenario */
+.cuenta{top:12px;left:14px;padding:5px 14px 6px 12px;border-radius:999px;background:rgba(255,255,255,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 0 0 1px var(--linea)}
+.cuenta b{font-size:26px}
+.st-pie{left:14px;bottom:14px}
+.hint{padding:7px 14px 7px 8px;border-radius:999px;background:rgba(255,255,255,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 0 0 1px var(--linea);color:var(--fg)}

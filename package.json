@@ -1,0 +1,23 @@
+{
+  "name": "pagina-panthera",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch-path=tienda-local.mjs --watch-preserve-output tienda-local.mjs",
+    "diferencias": "node diferencias.mjs",
+    "bajar": "node bajar.mjs",
+    "subir": "node subir.mjs",
+    "demo": "vite --open",
+    "demo:build": "vite build"
+  },
+  "dependencies": {
+    "gsap": "3.12.5",
+    "lenis": "1.3.11"
+  },
+  "devDependencies": {
+    "@tiendanube/cli": "^2.5.1",
+    "twig": "^3.0.0",
+    "vite": "6.3.5"
+  }
+}

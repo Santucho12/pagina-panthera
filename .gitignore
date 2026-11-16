@@ -1,0 +1,32 @@
+# Credenciales del FTP de Tiendanube: NUNCA al repo (ver ftp-lib.mjs y CLAUDE.md)
+.ftp-panthera.nuvem
+*.nuvem
+.nuvem
+
+# Dependencias (npm install)
+node_modules/
+
+# Capturas y salidas de las pruebas (se vuelven a generar con las herramientas)
+/revision-*/
+herramientas/**/capturas/
+herramientas/**/tmp/
+herramientas/oreja/pruebas/**/*.png
+herramientas/oreja/pruebas/**/*.jpg
+herramientas/oreja/pruebas/**/*.webp
+__pycache__/
+*.pyc
+
+# Programas y modelos de terceros (Real-ESRGAN): se bajan aparte (ver herramientas/armador/LEEME.md)
+herramientas/armador/esrgan/
+herramientas/armador/realesrgan/
+
+# Respaldos locales y temas bajados por FTP (de ahora en más, el historial de git hace de respaldo)
+respaldos/
+respaldos-fotos/
+tienda-backup-ftp-*/
+
+# Varios
+dist/
+.DS_Store
+Thumbs.db
+desktop.ini

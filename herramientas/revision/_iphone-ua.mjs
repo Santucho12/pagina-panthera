@@ -1,0 +1,15 @@
+import { createRequire } from 'module'; const require = createRequire(import.meta.url); const puppeteer = require('../../node_modules/puppeteer-core');
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+const b = await puppeteer.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: 'new', args: ['--no-sandbox'] });
+const p = await b.newPage(); const errores = [];
+p.on('pageerror', (e) => errores.push(String(e.message).slice(0, 160)));
+p.on('console', (m) => { if (m.type() === 'error') errores.push('console: ' + m.text().slice(0, 160)); });
+await p.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1');
+await p.setViewport({ width: 390, height: 745, deviceScaleFactor: 3, isMobile: true, hasTouch: true });
+await p.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: process.env.REDUCE ? 'reduce' : 'no-preference' }]);
+await p.goto('http://localhost:5700/', { waitUntil: 'load', timeout: 120000 }); await espera(9000);
+const r = await p.evaluate(() => [...document.querySelectorAll('[data-store="home-products-featured"], [data-store="home-products-sale"]')].map((s) => { const sw = s.querySelector('.pnt-mv-swiper'); const w = sw && sw.swiper; const sl = [...s.querySelectorAll('.swiper-slide')].filter((x) => x.getBoundingClientRect().width > 0).slice(0, 3);
+  return { sec: s.getAttribute('data-store'), pntMv: s.classList.contains('pnt-mv'), carruselPropio: !!s.querySelector('[data-pnt-carrusel]'), porVista: w ? w.params.slidesPerView : null, tarjetas: sl.map((x) => Math.round(x.getBoundingClientRect().width)), opacidad: getComputedStyle(sl[0] || s).opacity }; }));
+console.log(JSON.stringify(r)); console.log('errores:', errores.slice(0, 8));
+await p.screenshot({ path: 'revision-responsive/iphone-ua.png', fullPage: false });
+await b.close(); process.exit(0);

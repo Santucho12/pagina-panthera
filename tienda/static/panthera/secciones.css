@@ -1,0 +1,500 @@
+/* Panthera: cuatro secciones nuevas del inicio (2026-11-10), entre "No los dejes escapar" y "Seguinos en redes":
+     A. Armá tu pulsera ........ snipplets/panthera/armar.tpl   (armador 3D: armar3d.js + armar3d.css, en su propio componente)
+     B. Colecciones Disney ...... snipplets/panthera/disney.tpl  (arcos por personaje, B2)
+     C. Cómo cuidar tu plata .... snipplets/panthera/cuidar.tpl  (título + foto | acordeón + botón, V1)
+     D. Nuestros locales ........ snipplets/panthera/locales.tpl (cuatro tarjetas, D18; oculta)
+     E. Conocenos ............... snipplets/panthera/conocenos.tpl (2026-11-11: réplica de "Nuestro local" de BS23, con el video del local)
+   Paleta: la de marca.css (--pnt-*). Títulos: Archivo bold apretada (--pnt-titulo-general, la de toda la tienda) y el resto
+   en Outfit; las dos las aplica marca.css a todos los elementos, acá solo se pisa --pnt-fuente en los números grandes.
+   La carga layouts/layout.tpl (y el preview local). ⚠️ No se sube por FTP hasta que Panthera dé el OK. */
+
+/* ==========================================================================
+   Base compartida
+   ========================================================================== */
+.pnt-s {
+    position: relative;
+    z-index: 2;
+    padding: clamp(56px, 7vw, 112px) 0;
+    background: var(--pnt-blanco);
+    color: var(--pnt-texto);
+}
+.pnt-s *, .pnt-s *::before, .pnt-s *::after { box-sizing: border-box; }
+/* Los resets van con :where() (especificidad 0) para que los margin de cada clase de abajo les ganen */
+:where(.pnt-s) :where(ul, ol) { margin: 0; padding: 0; list-style: none; }
+:where(.pnt-s) :where(p, h2, h3) { margin: 0; }
+.pnt-s button { font: inherit; letter-spacing: inherit; -webkit-appearance: none; appearance: none; }
+.pnt-s-caja { max-width: 1280px; margin: 0 auto; padding: 0 clamp(16px, 3vw, 40px); }
+
+/* Cabecera de cada sección: texto chico arriba (con su rayita), título grande y una bajada a la derecha */
+.pnt-s-cab {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px 48px;
+    margin-bottom: clamp(28px, 4vw, 56px);
+}
+.pnt-s-cab--centro { flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.pnt-s-eb {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--pnt-gris);
+}
+.pnt-s-eb::before { content: ""; width: 30px; height: 1px; background: currentColor; }
+.pnt-s-eb--sin-linea::before { display: none; }
+.pnt-s-titulo {
+    margin: 14px 0 0;
+    color: var(--pnt-texto);
+    font-size: clamp(32px, 4.4vw, 60px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+    text-transform: none;
+}
+.pnt-s-bajada { max-width: 420px; color: var(--pnt-gris); font-size: 16px; line-height: 1.55; }
+.pnt-s-cab--centro .pnt-s-bajada { max-width: 560px; margin-top: 16px; }
+
+/* Botón negro (el principal) y enlace subrayado: mismo hover que "Ver todos" de las ofertas: rosa del hover y la flecha se corre */
+.pnt-s-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 28px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--pnt-texto);
+    color: var(--pnt-blanco) !important;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    line-height: 1;
+    text-decoration: none !important;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.pnt-s-btn svg, .pnt-s-link svg {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.45s var(--pnt-suave);
+}
+.pnt-s-btn:hover { background: var(--pnt-rosa-hover); color: var(--pnt-texto) !important; }
+.pnt-s-btn:hover svg, .pnt-s-link:hover svg { transform: translateX(5px); }
+.pnt-s-btn:focus-visible, .pnt-s-link:focus-visible { outline: 2px solid var(--pnt-texto); outline-offset: 3px; }
+.pnt-s-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid currentColor;
+    color: var(--pnt-texto) !important;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    line-height: 1;
+    text-decoration: none !important;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+.pnt-s-mas { display: flex; justify-content: center; margin-top: clamp(28px, 4vw, 48px); }
+
+/* Aparecer al bajar (secciones.js agrega html.pnt-sj y .is-in; sin JS no se esconde nada) */
+.pnt-sj .pnt-rv {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.9s var(--pnt-suave) var(--pnt-rv-demora, 0ms), transform 0.9s var(--pnt-suave) var(--pnt-rv-demora, 0ms);
+}
+.pnt-sj .pnt-rv.is-in { opacity: 1; transform: none; }
+
+/* ==========================================================================
+   A. Armá tu pulsera (3D, 2026-11-10)
+   ========================================================================== */
+/* El armador vive en un componente con Shadow DOM: sus estilos están en armar3d.css (los carga armar.tpl adentro del componente).
+   Acá solo va lo de afuera: el lugar que ocupa y que no se vea hasta que cargan sus estilos (armar3d.js le pone .listo). */
+/* A todo el ancho, como "Los más elegidos" y "No los dejes escapar" (pedido 2026-11-10): 20 px a cada lado (10 px en el celular),
+   los mismos márgenes que marca.css sección 10 (--pnt-mv-margen); el título queda alineado con el de esas secciones */
+.pnt-a3 .pnt-s-caja { max-width: none; padding: 0 clamp(20px, 4vw, 72px); } /* un poco más angosta que los carruseles (pedido 2026-11-10) */
+@media (max-width: 767px) { .pnt-a3 .pnt-s-caja { padding: 0 10px; } }
+/* Cabecera igual a la de "Mundo Disney" y "Los más elegidos" (pedido 2026-11-10): título en mayúsculas (mismo tamaño) y una frase chica en gris abajo;
+   el título queda a 20 px del borde, alineado con el de esas secciones */
+.pnt-a3-cab { margin: 0 0 clamp(14px, 1.6vw, 24px); }
+.pnt-a3-cab .pnt-s-titulo { margin: 0; font-size: clamp(23px, 2.6vw, 44px); font-weight: 600; line-height: 1; letter-spacing: -0.02em; text-transform: uppercase; }
+.pnt-a3-sub { margin: 8px 0 0; color: var(--pnt-gris); font-size: clamp(12.5px, 0.95vw, 15px); font-weight: 400; line-height: 1.35; }
+@media (max-width: 767px) { .pnt-a3-cab .pnt-s-titulo { font-size: min(23px, 5.3vw); } }
+.pnt-a3-host { display: block; min-height: clamp(560px, 76vh, 690px); }
+.pnt-a3-host:not(.listo) { visibility: hidden; }
+/* celular: mientras se ve la barra fija del total del armador, el botón de WhatsApp sube para no taparla */
+html.pnt-a3-barra body[class] a.btn-whatsapp { bottom: calc(96px + env(safe-area-inset-bottom, 0px)); transition: bottom 0.4s var(--pnt-suave); }
+/* Armá tu oreja (3D, 2026-11-11): el mismo lugar, ancho y cabecera que "Armá tu pulsera" (la sección lleva también .pnt-a3);
+   sus estilos internos están en oreja3d.css (adentro del componente) */
+.pnt-or-host { display: block; min-height: clamp(560px, 76vh, 690px); }
+.pnt-or-host:not(.listo) { visibility: hidden; }
+html.pnt-or-barra body[class] a.btn-whatsapp { bottom: calc(96px + env(safe-area-inset-bottom, 0px)); transition: bottom 0.4s var(--pnt-suave); }
+
+/* ==========================================================================
+   B. Colecciones Disney
+   ========================================================================== */
+/* Cinta de fotos rectangulares que se corre sola hacia la izquierda sin parar, como "Último drop" de BS23 (pedido 2026-11-10).
+   La pista lleva 3 copias de la lista y se corre un tercio: cuando termina vuelve al inicio sin que se note.
+   NO se frena al pasar el mouse (pedido 2026-11-10).
+   Velocidad: 25 s por vuelta de la lista (5 fotos, 5 s por foto; ~82 px/s en compu, ~45 en celular). Antes 38 s (copiaba los 7 s por foto de
+   BS23, 54 px/s): el usuario pidió "más rápido" (2026-11-11), se probó 16 s (127 px/s) y dijo "no tan rápido". Para ajustarla, cambiar solo
+   el 25s de .pnt-di-pista (más chico = más rápido). */
+/* Encabezado alineado a la izquierda (pedido 2026-11-10) */
+.pnt-di-cab { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; column-gap: 24px; row-gap: 12px; margin: 0 0 clamp(14px, 1.6vw, 24px); padding: 0 20px; }
+/* Un solo título, igual al de "Los más elegidos" / "Ofertas" (pedido 2026-11-10) */
+.pnt-di-cab .pnt-s-titulo { margin: 0; font-size: clamp(23px, 2.6vw, 44px); font-weight: 600; line-height: 1; letter-spacing: -0.02em; text-transform: uppercase; }
+@media (max-width: 767px) { .pnt-di-cab { padding: 0 10px; } .pnt-di-cab .pnt-s-titulo { font-size: min(23px, 5.3vw); } }
+/* Botón en rosa con letra negra (pedido 2026-11-10); el hover queda en el rosa más oscuro */
+/* Misma estética que los botones de redes (cristal esmerilado, pedido 2026-11-11): vidrio translúcido, letra negra, halo rosa difuminado detrás.
+   Ver "Seguir en Instagram" en marca.css. */
+.pnt-di-cab .pnt-s-btn {
+    gap: 10px; padding: 14px 26px 14px 22px; border: 0;
+    color: var(--pnt-texto) !important; font-size: 14.5px; font-weight: 600; letter-spacing: 0.02em; text-transform: none;
+    background: rgba(255, 255, 255, 0.5);
+    -webkit-backdrop-filter: blur(14px) saturate(160%); backdrop-filter: blur(14px) saturate(160%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.85), 0 14px 30px -16px rgba(238, 119, 159, 0.7);
+    transition: transform 0.35s var(--pnt-suave), background-color 0.35s ease;
+}
+/* El halo va en la caja de afuera (no en el botón): el vidrio del botón tiene que quedar POR ENCIMA de la mancha, como en los botones de redes */
+.pnt-di-btncaja { position: relative; isolation: isolate; display: inline-flex; padding: 14px 0; margin-right: 56px; }   /* el margen deja lugar para que la mancha entre entera y no se corte en el borde */
+.pnt-di-btncaja::before {
+    content: ""; position: absolute; z-index: -1; inset: -60px -70px; border-radius: 50%; pointer-events: none;
+    /* una sola mancha centrada en el botón, pareja de punta a punta (pedido 2026-11-11) */
+    background: radial-gradient(closest-side at 50% 50%, rgba(244, 172, 196, 0.8), rgba(244, 172, 196, 0.42) 55%, rgba(244, 172, 196, 0) 100%);
+    filter: blur(14px);
+}
+.pnt-di { overflow-x: clip; }   /* la mancha rosa del botón se sale por el borde derecho: se recorta para que no aparezca scroll horizontal */
+.pnt-di-cab .pnt-s-btn:hover { background: rgba(255, 255, 255, 0.82); color: var(--pnt-texto) !important; transform: translateY(-2px); }
+.pnt-di-sub { margin: 8px 0 0; color: var(--pnt-gris); font-size: clamp(12.5px, 0.95vw, 15px); font-weight: 400; line-height: 1.35; }
+.pnt-di-cinta { overflow: hidden; }
+.pnt-di-pista { display: flex; width: max-content; animation: pnt-di-cinta 25s linear infinite !important; animation-play-state: running !important; will-change: transform; }
+@keyframes pnt-di-cinta { to { transform: translateX(-33.3333%); } }
+.pnt-di-lista { display: flex; flex: none; gap: clamp(6px, 0.55vw, 10px); margin: 0; padding: 0 clamp(6px, 0.55vw, 10px) 0 0; list-style: none; }
+.pnt-di-li { flex: none; width: clamp(222px, 27.8vw, 598px); }   /* un poco más chicas (-14%, pedido 2026-11-10; se probó -25% y era mucho); antes clamp(240px, 31.5vw, 680px) */
+.pnt-di-item { display: block; width: 100%; color: inherit !important; text-decoration: none !important; }
+.pnt-di-foto { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: clamp(6px, 0.5vw, 10px); background: #f3f4f5; }
+.pnt-di-foto img { position: absolute; inset: 0; width: 100%; height: 100%; padding: 12% 8%; object-fit: contain; mix-blend-mode: multiply; }
+.pnt-di-foto--foto img { padding: 0; object-fit: cover; mix-blend-mode: normal; }
+/* SIN zoom al pasar el mouse (pedido 2026-11-11): antes la foto se agrandaba un 4 % (scale 1,04, transición de 1,2 s). Las fotos quedan quietas. */
+.pnt-di-foto--rosa { background: rgba(244, 172, 196, 0.35); }
+.pnt-di-foto--dorado { background: rgba(238, 192, 73, 0.22); }
+@media (max-width: 767px) {
+    .pnt-di-li { width: 56vw; }
+}
+
+/* ==========================================================================
+   C. Cómo cuidar tu plata (rediseño 2026-11-10, V1 del artefacto de acordeones: título + foto + botón a la izquierda,
+      acordeón de cinco cuidados a la derecha)
+   ========================================================================== */
+/* sección más baja que las demás (pedido 2026-11-10: comprimirla sin achicar la foto) */
+.pnt-s.pnt-cu { padding: clamp(44px, 5vw, 80px) 0; }
+/* mismo ancho que "Los más elegidos" y "No los dejes escapar" (pedido 2026-11-10): de borde a borde con 20px de margen */
+.pnt-cu .pnt-s-caja { max-width: none; padding: 0 clamp(20px, 8vw, 160px); } /* más angosta que los carruseles (pedido 2026-11-10, dos veces) */
+@media (max-width: 767px) { .pnt-cu .pnt-s-caja { padding: 0 10px; } }
+.pnt-cu-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(32px, 5vw, 72px); }
+.pnt-cu-izq { min-width: 0; }
+/* Cabecera igual a la de "Armá tu pulsera" (pedido 2026-11-10) */
+.pnt-cu-cab { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 32px; margin: 0 0 clamp(18px, 2vw, 28px); }
+.pnt-cu-cab .pnt-s-titulo { margin: 0; font-size: clamp(23px, 2.6vw, 44px); font-weight: 600; line-height: 1; letter-spacing: -0.02em; text-transform: uppercase; }
+.pnt-cu-sub { margin: 10px 0 0 !important; color: var(--pnt-gris); font-size: clamp(13px, 1vw, 15px); line-height: 1.45; }
+@media (max-width: 767px) { .pnt-cu-cab .pnt-s-titulo { font-size: min(23px, 5.3vw); } }
+
+/* la foto ocupa todo el alto del acordeón (sin achicarse); en una columna vuelve a 16:10 */
+.pnt-cu-grid { align-items: stretch; }
+.pnt-cu-izq { display: flex; }
+.pnt-cu-foto { flex: 1 1 auto; width: 100%; aspect-ratio: 16 / 10; border-radius: 24px; overflow: hidden; background: rgba(244, 172, 196, 0.2); }
+.pnt-cu-foto img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* en compu la foto copia el alto del acordeón (no lo estira con su proporción): así la sección queda más baja */
+@media (min-width: 900px) { .pnt-cu-foto { aspect-ratio: auto; min-height: 430px; } .pnt-cu-foto img { position: absolute; inset: 0; } .pnt-cu-foto { position: relative; } }
+
+.pnt-cu-der { min-width: 0; }
+
+/* Acordeón: uno abierto a la vez (secciones.js, sección 3). Sin JS (.pnt-cu sin .is-js) se ven todos abiertos */
+.pnt-cu-lista { min-width: 0; }
+/* Transiciones suaves (pedido 2026-11-10): fondo, alto, texto y flecha se mueven juntos con la misma curva; la línea de
+   separación es un ::after que se desvanece (antes el borde y las esquinas saltaban) */
+.pnt-cu-item {
+    position: relative;
+    border-radius: 22px;
+    background-color: rgba(244, 172, 196, 0);
+    transition: background-color 0.7s var(--pnt-suave);
+}
+.pnt-cu-item::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.12);
+    transition: opacity 0.5s var(--pnt-suave);
+}
+.pnt-cu-item.is-open { background-color: rgba(244, 172, 196, 0.2); }
+.pnt-cu-item.is-open::after, .pnt-cu-item:has(+ .is-open)::after { opacity: 0; }
+.pnt-cu-btn:hover .pnt-cu-t { transform: translateX(4px); }
+.pnt-cu-t { transition: transform 0.5s var(--pnt-suave); }
+.pnt-cu-h { margin: 0; font-size: inherit; line-height: inherit; }
+.pnt-cu-btn {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr) 36px;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 20px 22px;   /* más alto (pedido 2026-11-11; antes 13px) */
+    border: 0;
+    background: none;
+    color: var(--pnt-texto);
+    text-align: left;
+    cursor: pointer;
+}
+.pnt-cu-btn:focus-visible { outline: 2px solid var(--pnt-texto); outline-offset: -2px; border-radius: 22px; }
+.pnt-cu-n { --pnt-fuente: var(--pnt-letra); color: var(--pnt-gris); font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; transition: color 0.6s var(--pnt-suave); }
+.pnt-cu-item.is-open .pnt-cu-n { color: var(--pnt-texto); }
+.pnt-cu-t { font-size: clamp(17px, 1.4vw, 20px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; }
+.pnt-cu-flecha {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    transition: background-color 0.6s var(--pnt-suave), border-color 0.6s var(--pnt-suave);
+}
+.pnt-cu-flecha svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.7s var(--pnt-suave); }
+.pnt-cu-btn:hover .pnt-cu-flecha { border-color: var(--pnt-rosa); background: rgba(244, 172, 196, 0.2); } /* rosa, no negro (pedido 2026-11-10) */
+.pnt-cu-item.is-open .pnt-cu-flecha { background: var(--pnt-rosa); border-color: var(--pnt-rosa); }
+.pnt-cu-item.is-open .pnt-cu-btn:hover .pnt-cu-flecha { background: var(--pnt-rosa-hover); border-color: var(--pnt-rosa-hover); }
+.pnt-cu-item.is-open .pnt-cu-flecha svg { transform: rotate(180deg); }
+
+.pnt-cu-resp { display: grid; grid-template-rows: 1fr; }
+.pnt-cu.is-js .pnt-cu-resp { grid-template-rows: 0fr; transition: grid-template-rows 0.7s var(--pnt-suave); }
+.pnt-cu.is-js .pnt-cu-item.is-open .pnt-cu-resp { grid-template-rows: 1fr; }
+.pnt-cu-resp-in { min-height: 0; overflow: hidden; }
+.pnt-cu.is-js .pnt-cu-resp-in { opacity: 0; transform: translateY(-8px); transition: opacity 0.35s ease, transform 0.7s var(--pnt-suave); }
+.pnt-cu.is-js .pnt-cu-item.is-open .pnt-cu-resp-in { opacity: 1; transform: none; transition: opacity 0.6s ease 0.15s, transform 0.7s var(--pnt-suave) 0.1s; }
+/* el texto arranca alineado con el título (26 de margen + 112 de la columna "Cuidado N" + 12 de separación) */
+.pnt-cu-resp-in p { margin: 0 !important; padding: 0 70px 16px 146px; color: var(--pnt-gris); font-size: 15.5px; line-height: 1.6; }
+
+@media (max-width: 899px) {
+    .pnt-cu-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 599px) {
+    .pnt-cu-btn { grid-template-columns: minmax(0, 1fr) 38px; grid-template-areas: "n f" "t f"; gap: 6px 12px; padding: 18px; }
+    .pnt-cu-n { grid-area: n; }
+    .pnt-cu-t { grid-area: t; }
+    .pnt-cu-flecha { grid-area: f; width: 38px; height: 38px; }
+    .pnt-cu-resp-in p { padding: 0 18px 20px; }
+}
+
+/* ==========================================================================
+   D. Nuestros locales
+   ========================================================================== */
+.pnt-lo-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 20px); }
+.pnt-lo-tile {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 48px;
+    min-height: clamp(260px, 24vw, 320px);
+    padding: clamp(20px, 2.2vw, 28px);
+    border-radius: 22px;
+    color: var(--pnt-texto) !important;
+    text-decoration: none !important;
+}
+.pnt-lo-tile--negro { background: var(--pnt-texto); color: var(--pnt-blanco) !important; }
+.pnt-lo-tile--rosa { background: var(--pnt-rosa); }
+.pnt-lo-tile--blanco { background: var(--pnt-blanco); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.14); }
+.pnt-lo-tile--dorado { background: var(--pnt-dorado); }
+.pnt-lo-arriba { display: flex; align-items: flex-start; justify-content: space-between; }
+.pnt-lo-ico { width: 40px; height: 40px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.pnt-lo-tile--negro .pnt-lo-ico { color: var(--pnt-dorado); }
+.pnt-lo-flecha {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px currentColor;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+.pnt-lo-flecha svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.4s var(--pnt-suave); }
+.pnt-lo-tile:hover .pnt-lo-flecha { opacity: 1; }
+.pnt-lo-tile:hover .pnt-lo-flecha svg { transform: translate(3px, -3px); }
+.pnt-lo-abajo { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.pnt-lo-t { margin: 0; color: inherit; font-size: clamp(22px, 2vw, 29px); letter-spacing: -0.04em; line-height: 1.05; }
+.pnt-lo-s { font-size: 14px; line-height: 1.45; opacity: 0.78; }
+.pnt-lo-cta { margin-top: 10px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; }
+@media (max-width: 899px) {
+    .pnt-lo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+    .pnt-lo-grid { grid-template-columns: minmax(0, 1fr); }
+    .pnt-lo-tile { min-height: 200px; gap: 28px; }
+}
+
+/* ==========================================================================
+   E. Conocenos (2026-11-11): réplica de "Nuestro local" de BS23 (../Pagina web BS23/tienda-rio/static/bs23/secciones.css:
+      .locales-caja, .local-media, .locales-info y .locales-datos), con la paleta y las letras de Panthera.
+      Cambios a propósito: video en 4:5 (es vertical; BS23 usa una foto 6:5), pin rosa (en BS23 es rojo), botones de la
+      tienda (.pnt-s-btn) y sin horario (no está cargado: la columna del medio es el local de Monte Hermoso).
+   ========================================================================== */
+.pnt-s.pnt-co { padding: clamp(56px, 7vw, 112px) 0; }
+/* mismo ancho que la de BS23 */
+.pnt-co-caja { display: flex; flex-direction: column; gap: 34px; width: calc((100% - 110px) * 0.79); margin: 0 auto; }
+@media (min-width: 1100px) { .pnt-co-caja { width: min(calc(100% - 40px), max(calc((100% - 110px) * 0.79), 1100px)); } }
+.pnt-co-fila { display: flex; align-items: center; justify-content: space-between; gap: 48px; }
+
+/* La tarjeta del video: sombra de abajo para leer la dirección, viñeta, pin que late y, al pasar el mouse, sube y se acerca */
+.pnt-co-local { flex: 0 1 44%; min-width: 0; max-width: 540px; display: block; color: var(--pnt-blanco) !important; text-decoration: none !important; }
+.pnt-co-local:focus-visible { outline: 2px solid var(--pnt-texto); outline-offset: 4px; border-radius: 30px; }
+.pnt-co-media {
+    position: relative;
+    display: block;
+    aspect-ratio: 1 / 1;   /* cuadrado (pedido 2026-11-11: "el video debe ser menos alto"; antes 4/5); el video 4:5 se recorta con cover */
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: 28px;
+    background: var(--pnt-texto);
+    box-shadow: 0 40px 60px -34px rgba(0, 0, 0, 0.45);
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.5s ease;
+}
+.pnt-co-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; transition: transform 1.1s cubic-bezier(0.2, 0.7, 0.2, 1); }
+/* la sombra llega a un tercio del alto (en BS23, a la mitad): así no oscurece el cartel rosa del local */
+.pnt-co-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.86) 10%, rgba(0, 0, 0, 0.58) 19%, rgba(0, 0, 0, 0.24) 28%, rgba(0, 0, 0, 0) 38%);
+}
+.pnt-co-media::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 0 70px 8px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+    transition: box-shadow 0.5s ease;
+}
+.pnt-co-cab { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; display: flex; flex-direction: column; padding: 0 92px 26px 28px; transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.pnt-co-ciudad { margin-bottom: 8px; color: rgba(255, 255, 255, 0.72); font-size: 12px; font-weight: 700; letter-spacing: 0.2em; line-height: 1.2; text-transform: uppercase; }
+.pnt-co-dir { color: var(--pnt-blanco); font-size: clamp(22px, 2.3vw, 31px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; text-wrap: balance; }
+.pnt-co-linea { display: block; width: 34px; height: 1px; margin: 14px 0 12px; background: rgba(255, 255, 255, 0.7); transition: width 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.pnt-co-nota { display: flex; align-items: center; gap: 7px; color: rgba(255, 255, 255, 0.9); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; line-height: 1.2; text-transform: uppercase; }
+.pnt-co-nota svg { flex: none; width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.pnt-co-pin {
+    position: absolute;
+    right: 22px;
+    bottom: 24px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border: 1px solid var(--pnt-rosa);
+    border-radius: 50%;
+    background: var(--pnt-rosa);   /* botón en el rosa de la marca (pedido 2026-11-11) */
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.pnt-co-pin::before { content: ""; position: absolute; inset: -1px; border: 1px solid var(--pnt-rosa); border-radius: 50%; pointer-events: none; animation: pnt-co-onda 2.6s ease-out infinite; }
+@keyframes pnt-co-onda { 0% { transform: scale(1); opacity: 0.7; } 70%, 100% { transform: scale(1.55); opacity: 0; } }
+.pnt-co-pin svg { display: block; width: 24px; height: 24px; fill: none; stroke: var(--pnt-texto); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.pnt-co-local:hover .pnt-co-media { transform: translateY(-6px); box-shadow: 0 46px 64px -34px rgba(0, 0, 0, 0.5); }
+.pnt-co-local:hover .pnt-co-media::before { box-shadow: inset 0 0 70px 8px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.4); }
+.pnt-co-local:hover .pnt-co-video { transform: scale(1.06); }
+.pnt-co-local:hover .pnt-co-cab { transform: translateY(-4px); }
+.pnt-co-local:hover .pnt-co-linea { width: 100%; }
+.pnt-co-local:hover .pnt-co-pin { transform: scale(1.1); background-color: var(--pnt-rosa-hover); border-color: var(--pnt-rosa-hover); box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5); }
+.pnt-co-local:hover .pnt-co-pin svg { transform: translateY(-3px) scale(1.08); }
+
+/* Texto: lo chico de arriba, el título enorme (Archivo, sin punto final), la bajada al ancho del título y los botones */
+.pnt-co-info { display: flex; flex: 0 1 auto; flex-direction: column; gap: 18px; width: max-content; max-width: 50%; min-width: 0; }
+.pnt-co-ojo { color: var(--pnt-gris); font-size: 13px; font-weight: 700; letter-spacing: 0.2em; line-height: 1.2; text-transform: uppercase; }
+.pnt-co-titulo { margin: 0 !important; color: var(--pnt-texto); font-size: clamp(42px, 5vw, 80px);   /* más chico (pedido 2026-11-12); antes clamp(60px, 7.6vw, 122px) */ font-weight: 700; letter-spacing: -0.06em; line-height: 0.9; text-transform: none; }
+.pnt-co-texto { width: 0; min-width: 100%; color: var(--pnt-gris); font-size: 18px; line-height: 1.45; }
+/* Botones con la estética de "Seguir en Instagram / TikTok" (marca.css, cristal esmerilado sobre un halo rosa; pedido 2026-11-11) */
+.pnt-co-botones { position: relative; isolation: isolate; display: flex; flex-wrap: wrap; gap: 10px; width: fit-content; max-width: 100%; margin-top: 4px; padding: 14px 0; }
+.pnt-co-botones::before {
+    content: ""; position: absolute; z-index: -1; inset: -70px -110px -70px -90px; border-radius: 50%; pointer-events: none;
+    background:
+        radial-gradient(closest-side at 30% 50%, rgba(244, 172, 196, 0.8), rgba(244, 172, 196, 0.4) 55%, rgba(244, 172, 196, 0) 100%),
+        radial-gradient(closest-side at 70% 50%, rgba(244, 172, 196, 0.8), rgba(244, 172, 196, 0.4) 55%, rgba(244, 172, 196, 0) 100%);
+    filter: blur(14px);
+}
+.pnt-s-btn.pnt-co-btn {
+    justify-content: center; gap: 10px; padding: 14px 26px 14px 22px; border: 0;
+    color: var(--pnt-texto) !important; font-size: 14.5px; font-weight: 600; letter-spacing: 0.02em; text-transform: none;
+    background: rgba(255, 255, 255, 0.5);
+    -webkit-backdrop-filter: blur(14px) saturate(160%); backdrop-filter: blur(14px) saturate(160%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.85), 0 14px 30px -16px rgba(238, 119, 159, 0.7);
+    transition: transform 0.35s var(--pnt-suave), background-color 0.35s ease;
+}
+.pnt-s-btn.pnt-co-btn--borde { background: rgba(255, 255, 255, 0.22); }
+.pnt-s-btn.pnt-co-btn:hover { background: rgba(255, 255, 255, 0.82); color: var(--pnt-texto) !important; transform: translateY(-2px); }
+.pnt-s-btn.pnt-co-btn:hover svg { transform: none; }
+.pnt-s-btn.pnt-co-btn svg { width: 18px; height: 18px; }
+
+/* Fila de datos con una raya arriba: los dos locales (abren el mapa) y el WhatsApp */
+.pnt-co-datos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid rgba(0, 0, 0, 0.14); }
+.pnt-co-dato { display: flex; flex-direction: column; align-items: center; gap: 11px; padding: 24px 16px 0; color: var(--pnt-texto) !important; text-align: center; text-decoration: none !important; }
+.pnt-co-rotulo { color: var(--pnt-gris); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; line-height: 1.2; text-transform: uppercase; }
+.pnt-co-valor { color: var(--pnt-texto); font-size: 21px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+.pnt-co-sub { color: var(--pnt-gris); font-size: 14px; line-height: 1.35; }
+
+/* Tablet: el video y el texto mitad y mitad */
+@media (max-width: 1023px) {
+    .pnt-co-caja { width: calc(100% - 48px); }
+    .pnt-co-fila { gap: 32px; }
+    .pnt-co-local { flex: 1 1 46%; }
+    .pnt-co-info { flex: 1 1 54%; width: auto; max-width: none; }
+    .pnt-co-texto { width: auto; min-width: 0; font-size: 16px; }
+    .pnt-co-valor { font-size: 18px; }
+    .pnt-co-dato { padding-left: 8px; padding-right: 8px; }
+}
+/* Celular, como BS23: título y bajada arriba, el video, los botones en una fila y los datos en tres columnas */
+@media (max-width: 767px) {
+    .pnt-co-caja { gap: 24px; width: auto; padding: 0 16px; }
+    .pnt-co-fila { flex-wrap: wrap; gap: 22px; }
+    .pnt-co-info { display: contents; }
+    .pnt-co-ojo, .pnt-co-titulo, .pnt-co-texto, .pnt-co-botones { flex-basis: 100%; }
+    .pnt-co-ojo { order: 0; margin-bottom: -16px; font-size: 11px; }
+    .pnt-co-titulo { order: 0; font-size: 36px; white-space: nowrap; }   /* antes 46px */
+    .pnt-co-texto { order: 1; width: auto; min-width: 0; margin-top: -12px !important; font-size: 14.5px; }
+    .pnt-co-local { order: 2; flex: 1 1 100%; max-width: none; }
+    .pnt-co-media { border-radius: 24px; }
+    .pnt-co-botones { order: 3; flex-wrap: nowrap; justify-content: center; gap: 8px; margin-top: -6px; }
+    .pnt-s-btn.pnt-co-btn { gap: 8px; padding: 13px 18px 13px 16px; font-size: 13.5px; }
+    .pnt-s-btn.pnt-co-btn svg { width: 16px; height: 16px; }
+    .pnt-co-largo { display: none; }
+    .pnt-co-cab { padding: 0 76px 20px 20px; }
+    .pnt-co-ciudad { font-size: 10px; }
+    .pnt-co-dir { font-size: 21px; }
+    .pnt-co-linea { margin: 11px 0 10px; }
+    .pnt-co-nota { font-size: 9.5px; }
+    .pnt-co-pin { right: 14px; bottom: 18px; width: 46px; height: 46px; }
+    .pnt-co-pin svg { width: 21px; height: 21px; }
+    .pnt-co-dato { gap: 6px; padding: 16px 4px; }
+    .pnt-co-dato + .pnt-co-dato { border-left: 1px solid rgba(0, 0, 0, 0.14); }
+    .pnt-co-rotulo { font-size: 8.5px; letter-spacing: 0.12em; }
+    .pnt-co-valor { font-size: clamp(11.5px, 3.45vw, 13.5px); }
+    .pnt-co-sub { font-size: clamp(9.5px, 2.75vw, 10.5px); line-height: 1.3; }
+}

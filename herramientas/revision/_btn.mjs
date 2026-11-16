@@ -1,0 +1,3 @@
+export default async (p, h) => { await h.espera(8500);
+  const r = await p.evaluate(() => { const b = document.querySelector('.pnt-hero-cartel-btn'), c = document.querySelector('.pnt-hero-cartel'); const x = b.getBoundingClientRect(), y = c.getBoundingClientRect(); return { texto: b.textContent, boton: [Math.round(x.width), Math.round(x.height)], cartel: [Math.round(y.left), Math.round(y.right)], botonDer: Math.round(x.right), renglones: Math.round(x.height / parseFloat(getComputedStyle(b).lineHeight || 20)) }; });
+  await p.screenshot({ path: 'revision-responsive/btn-ver-ofertas.png', clip: { x: 0, y: 0, width: innerWidth, height: innerHeight } }); return r; };

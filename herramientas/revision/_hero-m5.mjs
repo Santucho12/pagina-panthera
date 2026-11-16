@@ -1,0 +1,3 @@
+export default async (p, h) => { await h.espera(8000);
+  const r = await p.evaluate(() => { const c = document.querySelector('.pnt-hero-v'), v = c.querySelector('video'), b = c.getBoundingClientRect(), car = document.querySelector('.pnt-hero-cartel').getBoundingClientRect(); return { pantalla: [innerWidth, innerHeight], hero: [Math.round(b.width), Math.round(b.height)], video: v.videoWidth + 'x' + v.videoHeight, cartel: [Math.round(car.left), Math.round(car.top), Math.round(car.right), Math.round(car.bottom)] }; });
+  await p.screenshot({ path: 'revision-responsive/hero-completo.png' }); return r; };

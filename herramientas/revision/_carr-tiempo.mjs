@@ -1,0 +1,12 @@
+import { createRequire } from 'module'; const require = createRequire(import.meta.url); const puppeteer = require('../../node_modules/puppeteer-core');
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+const b = await puppeteer.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: 'new', args: ['--no-sandbox'] });
+const p = await b.newPage(); await p.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+await p.evaluateOnNewDocument(() => { window.__c = []; const ult = {};
+  (function f() { document.querySelectorAll('[data-store="home-products-featured"], [data-store="home-products-sale"]').forEach((s) => { const k = s.getAttribute('data-store').replace('home-products-', ''); const sw = s.querySelector('.swiper-container, .swiper, .js-swiper-container'); const w = sw && sw.swiper; const vis = [...s.querySelectorAll('.swiper-slide, .js-item-product')].filter((e) => { const r = e.getBoundingClientRect(); return r.width > 0 && r.right > 4 && r.left < innerWidth - 4; }).length;
+      const est = (s.querySelector('[data-pnt-carrusel]') ? 'NUESTRO' : 'de Tiendanube') + ' · por vista ' + (w ? w.params.slidesPerView : '-') + ' · a la vista ' + vis + ' · opac ' + getComputedStyle(s.querySelector('.js-item-product') || s).opacity;
+      if (ult[k] !== est) { ult[k] = est; window.__c.push(Math.round(performance.now()) + ' ms  ' + k + ': ' + est); } });
+    if (performance.now() < 9000) requestAnimationFrame(f); })(); });
+await p.goto('http://localhost:5700/', { waitUntil: 'domcontentloaded', timeout: 120000 }); await espera(9500);
+(await p.evaluate(() => window.__c)).forEach((x) => console.log(x));
+await b.close(); process.exit(0);

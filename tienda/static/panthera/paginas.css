@@ -1,0 +1,859 @@
+/* ==========================================================================
+   PANTHERA · Arreglos de las páginas internas (revisión completa de la tienda, 2026-11-12)
+   Va en un archivo aparte (carga después de marca.css y secciones.css) para no chocar con otra sesión que edita marca.css.
+   Pedido: "revisá absolutamente todas las pages ... a ver si me falta modificarle la estética a algo" → "dale sí".
+   ========================================================================== */
+
+/* 1. Títulos de las páginas, todos iguales: en MAYÚSCULAS y al tamaño de "INICIAR SESIÓN" / "CONTACTO" (antes el carrito, la
+      búsqueda y las categorías iban en minúsculas y mucho más grandes). No toca el inicio ni la ficha de producto. */
+body:not(.template-home):not(.template-product) h1:not([class*="pnt-"]),
+/* En los listados y la búsqueda Lima pone el título dos veces: el h1 (celular) y un div.h1 en la fila de Ordenar/Filtrar (compu) */
+body:not(.template-home):not(.template-product) .page-header .h1:not(.js-price-display):not([class*="pnt-"]) {
+    font-size: clamp(24px, 2.1vw, 34px) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em !important;
+    line-height: 1.1 !important;
+    text-transform: uppercase !important;
+}
+
+/* 2. Listados en el celular: "Ordenar: Novedad…" se cortaba. En el celular el botón muestra solo el orden elegido ("Novedades"). */
+@media (max-width: 767px) {
+    .pnt-orden-btn .pnt-orden-pre { display: none; }
+    .pnt-orden-btn > span { overflow: visible; text-overflow: clip; white-space: nowrap; }
+}
+
+/* 3. Footer en el celular: "Enterate de las novedades" quedaba pegado al mail de contacto, y los íconos de redes tenían un
+      recuadrito gris alrededor. */
+@media (max-width: 767px) {
+    footer.js-footer > .container > .row:first-child > .pnt-pie-contacto { margin-bottom: 30px !important; }
+    footer.js-footer .social-icon-rounded,
+    footer.js-footer .social-icon-rounded:hover {
+        border: 0 !important;
+        background: none !important;
+        box-shadow: none !important;
+    }
+    footer.js-footer .social-icon-rounded { padding: 8px !important; }
+}
+
+/* 4. 404: los productos sugeridos eran 3 tarjetas de un cuarto de ancho, con un hueco a la derecha. Ahora ocupan el ancho
+      en tercios (en el celular siguen de a dos). */
+@media (min-width: 768px) {
+    .template-404 #page-error .section-products-related .row-grid > .js-item-product {
+        flex: 0 0 33.3333% !important;
+        max-width: 33.3333% !important;
+    }
+}
+
+/* 5. Ventana "¡Descuento exclusivo!" (venta cruzada de Tiendanube, ítem 96 de PENDIENTES.md). Lima la abre después de agregar al
+      carrito un producto con una promoción de venta cruzada; el contenido lo arma Tiendanube (componente promotions/cross-selling-form).
+      Misma estética que la compra rápida y los paneles: tarjeta blanca redondeada, cabecera espaciada en mayúsculas, cruz rosa (regla
+      general de marca.css), foto en fondo gris claro con la píldora del descuento, nombre en mayúsculas, precio tachado + precio
+      exclusivo grande en el rosa de los precios, talle en píldora y "Agregar al carrito" rosa. Queda por encima del carrito lateral. */
+#js-cross-selling-modal {
+    overflow: hidden;
+    background: var(--pnt-blanco);
+    color: var(--pnt-texto);
+    font-family: var(--pnt-letra);
+    border-radius: 24px 24px 0 0 !important;
+    box-shadow: 0 -24px 60px -24px rgba(77, 77, 77, 0.4);
+}
+@media (min-width: 768px) {
+    #js-cross-selling-modal { width: min(420px, 92vw) !important; border-radius: 28px !important; box-shadow: 0 40px 80px -30px rgba(77, 77, 77, 0.45); }
+    /* En compu Lima la centra con top: 50% y además la estira hasta abajo: el alto quedaba corto y se cortaban el talle y el botón.
+       Centrada, con el alto del contenido (y como mucho la pantalla) y una entrada suave propia */
+    #js-cross-selling-modal.modal-show {
+        top: 50% !important;
+        bottom: auto !important;
+        height: auto !important;
+        max-height: calc(100vh - 40px);
+        transform: translate(-50%, -50%) !important;
+        animation: pnt-cs-entra 0.55s var(--pnt-suave) both;
+    }
+    @keyframes pnt-cs-entra { from { opacity: 0; margin-top: 24px; } to { opacity: 1; margin-top: 0; } }
+}
+#js-cross-selling-modal .modal-header {
+    padding: 14px 14px 14px 24px !important;
+    border-bottom: 1px solid rgba(77, 77, 77, 0.1);
+    background: var(--pnt-blanco) !important;
+    color: var(--pnt-texto);
+    font-family: var(--pnt-letra) !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.2em !important;
+    text-transform: uppercase;
+}
+#js-cross-selling-modal .modal-header .row { align-items: center; flex-wrap: nowrap; margin: 0; }
+#js-cross-selling-modal .modal-header .col,
+#js-cross-selling-modal .modal-header .col-2 { padding: 0; }
+#js-cross-selling-modal .modal-header .col-2 { flex: 0 0 auto; width: auto; max-width: none; }
+#js-cross-selling-modal .modal-body { padding: 20px 22px 6px !important; }
+#js-cross-selling-modal .modal-footer { display: none !important; }   /* Lima la deja vacía: solo sumaba aire abajo */
+#js-cross-selling-modal .js-cross-selling-container { width: 100%; }
+/* Foto con la píldora del descuento (como "-20%" de las tarjetas) */
+#js-cross-selling-modal .js-cross-selling-container .position-relative:first-child,
+#js-cross-selling-modal .js-cross-selling-product-image { border-radius: 18px; }
+#js-cross-selling-modal .js-cross-selling-container .position-relative:first-child { overflow: hidden; background: #F6F6F6; }
+#js-cross-selling-modal .js-cross-selling-product-image { display: block; width: 100%; height: clamp(180px, 30vh, 250px) !important; max-height: none !important; object-fit: contain; mix-blend-mode: multiply; }   /* el blanco de la foto se funde con el gris */
+#js-cross-selling-modal .label.label-accent {
+    top: 12px !important;
+    left: 12px !important;
+    margin: 0 !important;
+    padding: 5px 11px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: var(--pnt-rosa) !important;
+    color: var(--pnt-blanco) !important;
+    font-family: var(--pnt-letra) !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+}
+/* Nombre y precios */
+#js-cross-selling-modal form,
+#js-cross-selling-modal .js-cross-selling-container > :not(:first-child) { padding-left: 0 !important; padding-right: 0 !important; }
+#js-cross-selling-modal .js-cross-selling-product-name {
+    margin: 16px 0 8px !important;
+    color: var(--pnt-texto);
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.02em;
+    line-height: 1.25;
+    text-align: center;
+    text-transform: uppercase;
+}
+#js-cross-selling-modal .price-container { display: flex; align-items: baseline; justify-content: center; flex-wrap: wrap; gap: 4px 12px; margin: 0 0 14px !important; }
+#js-cross-selling-modal .price-compare {
+    color: var(--pnt-gris) !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    text-decoration: line-through;
+    text-decoration-color: var(--pnt-rosa-precio);
+    text-decoration-thickness: 1px;
+}
+#js-cross-selling-modal .js-cross-selling-promo-price,
+#js-cross-selling-modal .price-container .text-primary {
+    color: var(--pnt-rosa-precio) !important;
+    font-size: 30px !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.025em;
+    line-height: 1;
+}
+/* Talle o modelo: el desplegable en píldora */
+#js-cross-selling-modal .form-group { position: relative; margin: 0 0 6px !important; padding: 0 !important; }
+#js-cross-selling-modal .form-label { display: block; margin: 0 0 6px; color: var(--pnt-gris); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+#js-cross-selling-modal .form-select {
+    width: 100%;
+    height: 46px;
+    padding: 0 44px 0 18px;
+    border: 1px solid rgba(77, 77, 77, 0.25);
+    border-radius: 999px !important;
+    background: var(--pnt-blanco);
+    color: var(--pnt-texto);
+    font-family: var(--pnt-letra);
+    font-size: 14px;
+    font-weight: 500;
+    -webkit-appearance: none;
+    appearance: none;
+}
+#js-cross-selling-modal .form-select:focus { border-color: var(--pnt-rosa); outline: none; }
+#js-cross-selling-modal .form-select-icon { position: absolute; right: 18px; bottom: 15px; pointer-events: none; }
+#js-cross-selling-modal .form-select-icon svg { width: 12px; height: 12px; fill: var(--pnt-texto); }
+/* "Agregar al carrito" rosa, como el de la ficha */
+#js-cross-selling-modal .btn-primary,
+#js-cross-selling-modal .js-addtocart {
+    width: 100%;
+    min-height: 54px;
+    margin: 14px 0 18px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: var(--pnt-rosa) !important;
+    box-shadow: none !important;
+    color: var(--pnt-texto) !important;
+    font-family: var(--pnt-letra);
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: background-color 0.25s ease, transform 0.35s var(--pnt-suave);
+}
+#js-cross-selling-modal .btn-primary:hover,
+#js-cross-selling-modal .js-addtocart:hover { background: var(--pnt-rosa-hover) !important; transform: translateY(-2px); }
+
+/* 6. Aviso "Seguí acá tu última compra" (ítem 97): Lima lo pone ADENTRO del encabezado, como una barra de todo el ancho, y rompía la
+      isla de la navbar. paginas.js lo saca del encabezado y acá es una píldora de vidrio flotante abajo al centro, con un paquetito
+      rosa y la cruz en círculo rosa. Si paginas.js no corre, adentro del encabezado queda oculto (mejor eso que romper la navbar). */
+.js-head-main .js-notification-status-page { display: none !important; }
+body > .js-notification-status-page.notification {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    z-index: 1500;
+    width: auto !important;
+    max-width: calc(100% - 32px);
+    margin: 0;
+    padding: 8px 8px 8px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.86);
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
+    backdrop-filter: blur(14px) saturate(120%);
+    box-shadow: 0 18px 40px -18px rgba(77, 77, 77, 0.45);
+    color: var(--pnt-texto);
+    font-family: var(--pnt-letra);
+    text-align: left;
+    transform: translateX(-50%);
+    animation: pnt-pedido-entra 0.7s var(--pnt-suave) both;
+}
+@keyframes pnt-pedido-entra { from { opacity: 0; transform: translate(-50%, 16px); } to { opacity: 1; transform: translate(-50%, 0); } }
+body > .js-notification-status-page.notification .container { max-width: none; padding: 0; }
+body > .js-notification-status-page.notification .row { margin: 0; }
+body > .js-notification-status-page.notification .col { display: flex; align-items: center; gap: 12px; padding: 0; }
+/* El link es texto corrido (no flex: si no, en el celular "Seguí acá" y "tu última compra" se partían en dos columnas) y el paquetito
+   va en el margen izquierdo */
+body > .js-notification-status-page.notification .col > a:first-child {
+    position: relative;
+    display: block !important;
+    min-height: 30px;
+    margin: 0 !important;
+    padding: 6px 0 6px 40px;
+    color: var(--pnt-texto) !important;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.3;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+body > .js-notification-status-page.notification .col > a:first-child strong { font-weight: 800; }
+/* Paquetito rosa antes del texto y flechita después */
+body > .js-notification-status-page.notification .col > a:first-child::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 30px;
+    height: 30px;
+    margin-top: -15px;
+    border-radius: 50%;
+    background: var(--pnt-rosa) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8l-9-5-9 5v8l9 5 9-5z'/%3E%3Cpath d='M3 8l9 5 9-5M12 13v8'/%3E%3C/svg%3E") center / 16px no-repeat;
+}
+body > .js-notification-status-page.notification .col > a:first-child::after { content: "→"; display: inline-block; margin-left: 8px; color: var(--pnt-rosa-precio); font-weight: 700; transition: transform 0.3s var(--pnt-suave); }
+body > .js-notification-status-page.notification .col > a:first-child:hover::after { transform: translateX(3px); }
+body > .js-notification-status-page.notification .notification-close {
+    position: static !important;
+    display: inline-grid !important;
+    flex: none;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    padding: 0 !important;
+    border-radius: 50%;
+    background: rgba(77, 77, 77, 0.08);
+    transition: background-color 0.25s ease;
+}
+body > .js-notification-status-page.notification .notification-close:hover { background: var(--pnt-rosa); }
+body > .js-notification-status-page.notification .notification-close svg { width: 12px; height: 12px; fill: var(--pnt-texto); }
+@media (max-width: 767px) {
+    /* en el celular, a la izquierda, sin taparle el lugar al botón de WhatsApp */
+    body > .js-notification-status-page.notification { left: 12px; right: 84px; bottom: 22px; max-width: none; transform: none; animation-name: pnt-pedido-entra-celu; }
+    body > .js-notification-status-page.notification { padding: 6px 6px 6px 10px; }
+    body > .js-notification-status-page.notification .col { gap: 8px; }
+    body > .js-notification-status-page.notification .col > a:first-child { overflow: hidden; padding-left: 34px; font-size: 12.5px; text-overflow: ellipsis; }
+    body > .js-notification-status-page.notification .col > a:first-child::before { width: 26px; height: 26px; margin-top: -13px; background-size: 14px; }
+    body > .js-notification-status-page.notification .col > a:first-child::after { content: none; }   /* toda la píldora se toca: sin flechita, así entra en un renglón */
+    @keyframes pnt-pedido-entra-celu { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+}
+
+/* ── 7. Revisión de los ítems 46–115 (2026-11-13) ─────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+    /* 50: en el celular quedaban 54 px entre el título del listado y "Novedades / Filtrar" (20 + 18 + 14 de margen): ahora ~24 */
+    .template-category .page-header, .template-search .page-header { margin-bottom: 20px !important; }
+    .template-category .js-category-controls.category-controls, .template-search .js-category-controls.category-controls { padding-top: 0 !important; }
+    .pnt-controles-col { margin-top: 0 !important; }
+}
+/* 51: "Te va a interesar" (ficha) con la info de las tarjetas IGUAL que en los listados: nombre a todo el ancho (2 renglones reservados) y
+   las estrellas debajo. Antes iban lado a lado y en tarjetas angostas el nombre se partía en 3–4 renglones. */
+.section-products-related .pnt-mv-card .item-description { padding: 0; text-align: left; }
+.section-products-related .pnt-mv-info { align-items: flex-start; text-align: left; }
+.section-products-related .pnt-mv-encab { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 3px 10px; text-align: left; }
+.section-products-related .pnt-mv-encab .pnt-mv-nombre { flex: 0 0 100%; min-height: 2.1em; line-height: 1.05; text-align: left; }
+.section-products-related .pnt-mv-encab:not(:has(.pnt-mv-estrellas))::after { content: ""; flex: 0 0 100%; height: 17px; }
+.section-products-related .pnt-mv-caja { justify-items: start; text-align: left; }
+.section-products-related .pnt-mv-lista, .section-products-related .pnt-mv-transf, .section-products-related .pnt-mv-cuotas { justify-content: flex-start; text-align: left; }
+@media (min-width: 768px) {
+    .section-products-related .pnt-mv-nombre { font-size: 14px; }
+    .section-products-related .pnt-mv-estrellas { font-size: 13px; }
+}
+/* 53: carrito con productos. Lima repite "precio tachado + -20%" dos veces por producto (uno va con el subtotal de celular y otro con el
+   de compu) pero los tachados se veían los dos: queda solo el que acompaña al precio que se ve. */
+@media (min-width: 768px) {
+    .js-cart-item .d-flex.flex-column:has(> .js-cart-item-subtotal.d-md-none) > .js-cart-item-subtotal-compare-price-container { display: none !important; }
+}
+@media (max-width: 767px) {
+    .js-cart-item .d-flex.flex-column:has(> .js-cart-item-subtotal.d-none.d-md-block) > .js-cart-item-subtotal-compare-price-container { display: none !important; }
+}
+/* 55 y 58: "Quizás te interesen…" (404 y búsqueda sin resultados) en MAYÚSCULAS, como "Te va a interesar" y los demás títulos de sección */
+#page-error h3 { font-family: var(--pnt-titulo-general); font-size: clamp(22px, 2.6vw, 38px) !important; font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; text-transform: uppercase; }
+/* 56: Contacto, una fila por local (paginas.js separa "Bahía Blanca - Monte Hermoso") con la ciudad arriba en chiquito */
+.template-contact .pnt-local-ciudad { display: block; margin-bottom: 2px; color: var(--pnt-gris); font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+.template-contact a.btn-link[href*="wa.me/"] { font-size: 15px; text-transform: none; letter-spacing: 0; }
+/* 106: en el celular los 15 logos del pie quedaban 7 + 7 + 1 suelto: 5 por fila, tres filas parejas */
+@media (max-width: 767px) {
+    footer .footer-payments-shipping-logos > span { display: grid !important; grid-template-columns: repeat(5, auto); justify-content: center; gap: 6px 4px; }
+}
+/* 66: "FILTROS" a la altura del centro de la cruz rosa (quedaba más arriba) */
+#nav-filters .modal-header > .row { align-items: center; }
+#nav-filters .modal-header > .row > .col { display: flex; align-items: center; min-height: 40px; }
+/* 69: los errores de los formularios de la cuenta ("Estos datos no son correctos…") usan .notification-centered sin .notification:
+   salían en el rojo de Lima. Misma tarjeta que el resto de los avisos (gris, borde negro a la izquierda). */
+.notification-centered {
+    display: block; margin: 10px 0 14px; padding: 12px 16px; border: 0; border-left: 3px solid var(--pnt-rosa); border-radius: 14px;
+    background: rgba(244, 172, 196, 0.16); color: var(--pnt-texto) !important; font-family: var(--pnt-letra); font-size: 14px; line-height: 1.45; text-align: left;
+}
+.notification-centered.notification-danger, .notification-centered.notification-warning { border-left-color: var(--pnt-texto); background: rgba(77, 77, 77, 0.08); }
+/* 70: "Ver más productos" con letra negra, como los demás botones rosas (Agregar al carrito, Iniciar compra); la ruedita también en negro */
+.pnt-ver-mas-btn { color: var(--pnt-texto) !important; }
+.pnt-ver-mas-btn.is-cargando::after { border-color: rgba(0, 0, 0, 0.2); border-top-color: var(--pnt-texto); }
+/* 80/91: mientras entra con la animación al bajar, el título lleva la clase pnt-an-in y la regla 1 (que excluye las clases "pnt-") no
+   lo alcanzaba: se veía en minúsculas y más grande y al terminar saltaba a MAYÚSCULAS. Misma regla para el título que anima. */
+body:not(.template-home):not(.template-product) h1[class*="pnt-an"],
+body:not(.template-home):not(.template-product) .page-header .h1[class*="pnt-an"]:not(.js-price-display) {
+    font-size: clamp(24px, 2.1vw, 34px) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em !important;
+    line-height: 1.1 !important;
+    text-transform: uppercase !important;
+}
+/* 87: página de Ofertas. Sus tarjetas van dentro de .pnt-ofertas-grilla (display: contents) y las reglas de la grilla de los listados piden
+   hijos directos de .js-product-table: quedaba en 4 por fila, sin separación entre columnas ni entre filas. Mismas medidas que los listados. */
+.js-product-table > .pnt-ofertas-grilla > .col-grid { margin-bottom: 52px; }
+@media (min-width: 768px) and (max-width: 1023px) { .js-product-table > .pnt-ofertas-grilla > .col-grid { flex: 0 0 33.3333%; max-width: 33.3333%; } }
+@media (min-width: 1280px) {
+    .js-product-table:has(> .pnt-ofertas-grilla) { margin-left: -18px; margin-right: -18px; }
+    .js-product-table > .pnt-ofertas-grilla > .col-grid { flex: 0 0 20%; max-width: 20%; padding-left: 18px; padding-right: 18px; }
+}
+@media (max-width: 767px) { .js-product-table > .pnt-ofertas-grilla > [class*="col-"] { padding-left: 5px; padding-right: 5px; } }
+/* 93: el "OK" del cálculo de envío de la ficha era rosa con letra blanca (poco contraste): letra negra como los demás botones rosas */
+.template-product .js-calculate-shipping { color: var(--pnt-texto) !important; }
+.template-product .js-calculate-shipping svg { fill: var(--pnt-texto); }
+/* 93: el horario del punto de retiro ("Domingo a sábado, de 10:00 a 21:00") quedaba con sangría de lista: alineado con el resto */
+.js-shipping-calculator-response ul.pl-3 { padding-left: 0 !important; list-style: none; }
+/* 94: ventana "Medios de pago": la pestaña elegida y "Volver al producto" eran rosas con letra blanca: letra negra, como el resto de los botones rosas */
+#installments-modal .tab.active .tab-link { color: var(--pnt-texto) !important; }
+#installments-modal .modal-body a.btn-link, #installments-modal .js-modal-close.btn-link, #installments-modal .modal-body > a:last-child { color: var(--pnt-texto) !important; }
+/* 95: foto ampliada. Las flechas de Fancybox en esta tienda son botones de Lima (svg-circle swiper-button-prev/next) de 30 px y blancos sobre
+   el fondo blanco: no se veían. Círculo rosa de 50 px con la flecha blanca, como la cruz de cerrar. */
+.fancybox__container .fancybox__nav .swiper-button-prev,
+.fancybox__container .fancybox__nav .swiper-button-next {
+    display: grid !important; place-items: center; width: 50px !important; height: 50px !important; margin-top: -25px !important; padding: 0 !important;
+    border: 0 !important; border-radius: 50% !important; background: var(--pnt-rosa) !important; box-shadow: 0 10px 22px -12px rgba(238, 119, 159, 0.9);
+    opacity: 1 !important; cursor: pointer; transition: background-color 0.25s ease, transform 0.25s ease;
+}
+.fancybox__container .fancybox__nav .swiper-button-prev { left: 24px !important; }
+.fancybox__container .fancybox__nav .swiper-button-next { right: 24px !important; }
+.fancybox__container .fancybox__nav .swiper-button-prev:hover, .fancybox__container .fancybox__nav .swiper-button-next:hover { background: var(--pnt-rosa-hover) !important; }
+.fancybox__container .fancybox__nav .swiper-button-prev svg, .fancybox__container .fancybox__nav .swiper-button-next svg { width: 10px; height: 18px; fill: var(--pnt-blanco) !important; }
+.fancybox__container .fancybox__nav .swiper-button-prev::after, .fancybox__container .fancybox__nav .swiper-button-next::after { content: none !important; }
+@media (max-width: 767px) {
+    .fancybox__container .fancybox__nav .swiper-button-prev { left: 10px !important; }
+    .fancybox__container .fancybox__nav .swiper-button-next { right: 10px !important; }
+    .fancybox__container .fancybox__nav .swiper-button-prev, .fancybox__container .fancybox__nav .swiper-button-next { width: 42px !important; height: 42px !important; margin-top: -21px !important; }
+}
+
+/* ── 8. Revisión a fondo de los ítems 46–115 (2026-11-13, segunda vuelta: probando cada cosa en compu y celular) ── */
+/* El cartel de WhatsApp aparecía (desenfocado) detrás del menú, el buscador, los filtros o el carrito lateral: espera escondido mientras
+   haya una ventana abierta (Lima le pone .overflow-none al body; el carrito lateral, .pnt-cp-abierto al html) */
+body.overflow-none .wa-globo, html.pnt-cp-abierto .wa-globo { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+/* 77: "Sin stock" en la ficha (modelo agotado). Las reglas del botón rosa de marca.css (".template-product input.js-addtocart.btn-primary"
+   y "html input.js-addtocart.btn-primary", con !important y después) le ganaban a la de "sin stock": quedaba rosa, con sombra y como si se
+   pudiera tocar. Gris claro, sin sombra ni movimiento, también al pasar el mouse. */
+html body input.js-addtocart.btn-primary.nostock, html body input.js-addtocart.btn-primary[disabled],
+html body input.js-addtocart.btn-primary.nostock:hover, html body input.js-addtocart.btn-primary[disabled]:hover {
+    background: rgba(77, 77, 77, 0.12) !important; color: var(--pnt-gris) !important; box-shadow: none !important; transform: none !important; cursor: not-allowed;
+}
+/* "0 en stock" debajo de la cantidad cuando el modelo está agotado (o " en stock" sin número): paginas.js le pone esta clase; ya lo dice el botón */
+.pnt-stock-oculto { display: none !important; }
+/* 93: la línea de abajo de "Medios de envío" era más corta que las de "Descripción" y "Medios de pago" (la dibujaba la caja de adentro, que
+   tiene 16 px de margen a cada lado) y de otro gris. Pasa a la caja de afuera, del mismo ancho y color que las demás. */
+.template-product .product-shipping-calculator > .js-toggle-shipping.divider { border-bottom: 0 !important; }
+.template-product .product-shipping-calculator { border-top-color: rgba(77, 77, 77, 0.14) !important; border-bottom: 1px solid rgba(77, 77, 77, 0.14); }
+/* 50/51: los nombres largos ("Argollita colgante con dos circonios colgante y shine al final") ocupaban 3 renglones y corrían hacia abajo
+   la línea, el precio y las cuotas de esa tarjeta: la fila quedaba despareja (en celular, 7 de cada 34 filas). Como máximo 2 renglones,
+   con "…"; el nombre entero aparece al pasar el mouse (paginas.js le pone el título) y en la ficha. Listados, búsqueda, Ofertas, 404 y
+   "Te va a interesar". */
+.js-product-table .pnt-mv-encab .pnt-mv-nombre, #page-error .pnt-mv-encab .pnt-mv-nombre, .section-products-related .pnt-mv-encab .pnt-mv-nombre {
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
+}
+/* 51: en celular los títulos de los desplegables de la ficha ("Descripción", "Medios de pago", "Medios de envío") y la cruz quedaban 31 px
+   adentro de la línea (en compu, 16): a la fila le faltaba el margen negativo que compensa el de la columna. Igual que en compu. */
+@media (max-width: 767px) {
+    .template-product .js-product-form .js-accordion-container .row { margin-left: -15px !important; margin-right: -15px !important; }
+}
+/* (marca.css pone ".template-product .section-single-product .row { margin: 0 }" en celular para el armado general de la ficha; también le
+   sacaba el margen a las filas de adentro de los desplegables: el campo del código postal quedaba 15 px más adentro que el título) */
+/* 93: el "OK" de la calculadora de envío seguía con letra blanca: la regla de marca.css va con el id (#product-shipping-container) y le
+   ganaba a la de la clase. Letra negra, como el resto de los botones rosas. */
+#product-shipping-container .js-calculate-shipping, #product-shipping-container .js-calculate-shipping .js-calculate-shipping-wording { color: var(--pnt-texto) !important; }
+#product-shipping-container .js-calculate-shipping svg { fill: var(--pnt-texto) !important; }
+/* 53/79: calculadora de envío del CARRITO (la página /comprar/ y el carrito lateral, que es la misma página) igual a la de la ficha: campo en
+   píldora con borde rosa, "OK" rosa con letra negra, "Cambiar CP" en píldora blanca con borde rosa y "No sé mi código postal" en gris (antes:
+   "OK" blanco con borde negro, "Cambiar CP" negro o rosa según la página y "NO SÉ MI CÓDIGO POSTAL" en mayúsculas subrayado). */
+#cart-shipping-container .js-shipping-input { height: 44px; padding: 0 18px; border: 1.5px solid rgba(244, 172, 196, 0.8) !important; border-radius: 999px !important; font-family: var(--pnt-letra); font-size: 14px; }
+#cart-shipping-container .js-shipping-input:focus { border-color: var(--pnt-rosa-precio) !important; box-shadow: none !important; }
+#cart-shipping-container .js-calculate-shipping { height: 44px; padding: 0 22px !important; border: 0 !important; border-radius: 999px !important; background: var(--pnt-rosa) !important; color: var(--pnt-texto) !important; font-family: var(--pnt-letra); font-size: 14px; font-weight: 800; }
+#cart-shipping-container .js-calculate-shipping:hover { background: var(--pnt-rosa-hover) !important; }
+#cart-shipping-container .js-calculate-shipping .js-calculate-shipping-wording { color: inherit !important; }
+#cart-shipping-container .js-calculate-shipping svg { fill: var(--pnt-texto) !important; }
+#cart-shipping-container .js-shipping-calculator-change-zipcode { padding: 6px 14px !important; border: 1.5px solid var(--pnt-rosa) !important; border-radius: 999px !important; background: var(--pnt-blanco) !important; color: var(--pnt-rosa-precio) !important; font-family: var(--pnt-letra); font-size: 11.5px !important; font-weight: 800; letter-spacing: 0.06em; text-transform: none; }
+#cart-shipping-container .js-shipping-calculator-change-zipcode:hover { background: var(--pnt-rosa) !important; border-color: var(--pnt-rosa) !important; color: var(--pnt-texto) !important; }
+#cart-shipping-container .shipping-calculator-form a.btn-link, #cart-shipping-container .js-shipping-zipcode-help { color: var(--pnt-gris) !important; font-size: 12px !important; letter-spacing: 0 !important; text-decoration: none !important; text-transform: none !important; }
+/* En el carrito las opciones de envío SE ELIGEN (en la ficha solo se muestran): el circulito de Lima estaba escondido (la regla es de la
+   ficha) y la elegida solo tenía dos rayitas sueltas a los costados (el borde de Lima, sin el de arriba ni el de abajo). Circulito rosa,
+   lleno en la elegida, y la mano al pasar el mouse. */
+#cart-shipping-container .js-shipping-calculator-response .radio-button { cursor: pointer; }
+#cart-shipping-container .js-shipping-calculator-response .radio-button-content { position: relative; border: 0 !important; padding-left: 30px !important; }
+#cart-shipping-container .js-shipping-calculator-response .radio-button-content::before {
+    content: ""; position: absolute; top: 1px; left: 0; box-sizing: border-box; width: 18px; height: 18px; border: 1.5px solid rgba(77, 77, 77, 0.35); border-radius: 50%;
+    background: var(--pnt-blanco); transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+#cart-shipping-container .js-shipping-calculator-response input[type="radio"]:checked + .radio-button-content::before { border-color: var(--pnt-rosa); background: var(--pnt-rosa); box-shadow: inset 0 0 0 3.5px var(--pnt-blanco); }
+#cart-shipping-container .js-shipping-calculator-response .radio-button:hover input[type="radio"]:not(:checked) + .radio-button-content::before { border-color: var(--pnt-rosa-hover); }
+/* 66: títulos de Filtros parejos. marca.css los quiere chicos, grises y en mayúsculas espaciadas (como "TALLE" y "MODELO" de la ficha) con
+   "#nav-filters .h5", pero solo "Precio" tiene esa clase: "Categorías", "Color", "Talle" y "Modelo" son <h5> sin la clase y salían en negrita
+   negra de 16 px. Los cinco iguales. */
+#nav-filters h5.font-big {
+    margin: 22px 0 6px !important; color: var(--pnt-gris) !important; font-family: var(--pnt-letra) !important; font-size: 11px !important;
+    font-weight: 700 !important; letter-spacing: 0.16em !important; text-transform: uppercase;
+}
+/* 50/87: en compu el cartel de WhatsApp (abajo a la derecha) quedaba ENCIMA del desplegable "Ordenar" de los listados y de Ofertas: al tocar
+   "Menor precio" el clic le llegaba al cartel y abría WhatsApp en vez de ordenar. Mientras el desplegable está abierto, el cartel espera escondido. */
+html.pnt-orden-abierto .wa-globo { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+/* 88: letra mínima de 10 px en celular (revisión 2026-11-13): "AÑOS" del cartel del aniversario (8,5 px), "Ahorrás" de las tarjetas en
+   oferta (8,2 px) y "Dentro del shopping" de Conocenos (9,5 px). La cinta "Hasta 50% off" del cartel tenía 6,5 px: 8 px (no entra más sin
+   cortarse) con la cinta un poco más larga y corrida hacia adentro de la esquina, así "OFF" no queda contra el borde (probadas 4 posiciones). */
+@media (max-width: 767px) {
+    .pnt-hero-cartel-cinta { top: 30px; right: -46px; width: 170px; font-size: 8px; letter-spacing: 0.06em; }
+    .pnt-hero-cartel-n em { font-size: 10px !important; }
+    .pnt-mv-ahorro small { font-size: 10px; }
+    .pnt-co-nota span { font-size: 10px; }
+}
+/* 51: "¡No te lo pierdas, es el último!" salía rosa en los productos con talles/modelos y gris oscuro en los que no tienen (Lima solo le pone
+   la clase js-last-product cuando hay variantes): igual en todos. */
+.template-product .js-product-form .text-accent.font-weight-bold.mb-4 { color: var(--pnt-rosa-precio) !important; font-family: var(--pnt-letra); font-size: 13px; font-weight: 700; letter-spacing: 0.04em; }
+
+/* ── 9. Revisión "responsive" en 10 anchos (2026-11-14: de 320 a 1920 px, celular, tablet y compu; herramientas/revision/responsive.mjs) ── */
+/* Logo del pie: entre 1024 y 1100 px salía de ~700 px (casi todo el ancho). marca.css lo pasa a su propia fila hasta 1100 px, pero su
+   tope de 340 px llegaba solo hasta 1023 (iPad acostado y compus chicas). Mismo tope hasta 1100. */
+@media (min-width: 1024px) and (max-width: 1100px) {
+    footer.js-footer .pnt-pie-logo, footer.js-footer .pie-logo { max-width: 340px; }
+}
+/* iPhone: Lima les pone .form-control-ios a los campos (letra de 16 px achicada al 75 %, así Safari no agranda la página al tocarlos).
+   La regla del newsletter del pie le bajaba la letra a 14 px y dejaba el achique: el campo quedaba al 75 % del ancho de la píldora, con
+   letra de 10,5 px, y al tocarlo Safari hacía zoom. Solo en iPhone (en compu y Android sigue igual). */
+footer.js-footer .newsletter-form .form-control.form-control-ios { width: 100% !important; transform: none !important; font-size: 16px !important; }
+/* Nombres de las tarjetas de los carruseles del inicio en 2 renglones como máximo (con "…"; el nombre entero aparece al pasar el mouse,
+   paginas.js 8): en tablet "Broche Mickey y Minnie" ocupaba 3 y bajaba el precio de esa tarjeta un renglón respecto de las otras. */
+[data-store^="home-products"] .pnt-mv-nombre { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+/* Pie en tablet parada (768–1023 px): las 4 columnas de compu no entraban bien y el campo del newsletter quedaba de 139 px (un email
+   largo no se veía). En ese rango el newsletter va arriba, a todo el ancho y centrado, y Categorías · Seguinos · Contacto en 3 columnas.
+   En compu (desde 1024) queda como se pidió el 2026-11-11. */
+@media (min-width: 768px) and (max-width: 1023px) {
+    footer.js-footer > .container > .row:first-child { grid-template-columns: repeat(3, 1fr); row-gap: 28px; }
+    footer.js-footer > .container > .row:first-child > :has(.newsletter-form) { grid-column: 1 / -1; text-align: center; }
+    footer.js-footer > .container > .row:first-child > :has(.newsletter-form) .newsletter-form { max-width: 400px; margin: 0 auto; }
+}
+/* Ficha en tablet parada (768–991 px): la foto ocupaba 2/3 (col-md-8 de Lima) y a la columna de compra le quedaban ~230 px: nombre en
+   5 renglones, modelos de a uno por fila, descripción de ~20 letras por renglón y "AGREGAR AL CARRITO" partido. Mitad y mitad (desde
+   992 px sigue 58/42, como estaba). */
+@media (min-width: 768px) and (max-width: 991px) {
+    .template-product .section-single-product > .col-md-8 { flex: 0 0 50%; max-width: 50%; }
+    /* y "AGREGAR AL CARRITO" en una línea al lado de la cantidad (con 0,16 em de espaciado no entraba en 219 px) */
+    .template-product input.js-addtocart.btn-primary { letter-spacing: 0.07em; padding-left: 12px; padding-right: 12px; }
+}
+/* Carrito (la página) de 768 a 1199 px: cada producto usa la "tabla" de Lima (nombre · cantidad · precio · subtotal) y la columna de la
+   cantidad (3/12) no alcanzaba para la píldora "− 1 +": el precio unitario quedaba ENCIMA del "+" y al tocarlo no sumaba (también el
+   tachito fallaba). Sin la columna de precio unitario (el subtotal ya lo dice; en el celular tampoco está), sin la cabecera de la tabla,
+   la cantidad con su ancho y el precio al lado. Ojo: Lima le pone .cart-item-quantity a la columna Y a la píldora: va solo la columna. */
+@media (min-width: 768px) and (max-width: 1199px) {
+    html:not(.pnt-en-panel) #shoppingCartPage .row > .col-8.d-md-block { display: none !important; }
+    html:not(.pnt-en-panel) #shoppingCartPage .cart-item .js-cart-item-unit-price { display: none !important; }
+    html:not(.pnt-en-panel) #shoppingCartPage .cart-item .row > .cart-item-quantity { flex: 0 0 auto; width: auto; max-width: none; margin-right: 18px; }
+    html:not(.pnt-en-panel) #shoppingCartPage .cart-item .row > .cart-item-quantity ~ .d-flex { flex: 1 1 0; max-width: none; align-items: flex-start; text-align: left; }
+}
+/* y en tablet parada (768–991) todo en una columna, como en el celular: los productos se apretaban en 2/3 y "Medios de envío" quedaba en
+   una columna de 170 px (una palabra por renglón); el resumen va abajo, a todo el ancho. */
+@media (min-width: 768px) and (max-width: 991px) {
+    html:not(.pnt-en-panel) #shoppingCartPage .col-12.col-md-8,
+    html:not(.pnt-en-panel) #shoppingCartPage .col-12.col-md-4 { flex: 0 0 100%; max-width: 100%; }
+    html:not(.pnt-en-panel) #shoppingCartPage .col-md-5:has(> .cart-fulfillment-info) { flex: 0 0 100%; max-width: 100%; }
+}
+/* Cartel de WhatsApp (compu): "En línea" (9,5 px) y la hora de los mensajes (8,5 px) eran de lo más chico de la tienda */
+.wa-estado { font-size: 10.5px; }
+.wa-hora { font-size: 10px; }
+/* Pantallas bajas (celular acostado: 390–500 px de alto). El botón de WhatsApp (62 px, a 25 px del borde) quedaba encima del "Filtrar"
+   de los listados y el aviso de cookies (texto arriba y botón abajo) tapaba casi un tercio de la pantalla. Botón de 48 px más pegado
+   al borde y aviso en una sola fila (texto y "Entendido" al lado). En celular parado, tablet y compu no cambia nada. */
+@media (max-height: 500px) and (max-width: 1024px) {
+    body[class] a.btn-whatsapp { right: 14px; bottom: 14px; width: 48px; height: 48px; }
+    body[class] a.btn-whatsapp svg { width: 26px; height: 26px; min-width: 26px; }
+    .js-notification-cookie-banner.notification-fixed-bottom { left: 10px !important; bottom: 10px !important; width: min(600px, calc(100vw - 86px)); padding: 9px 12px 9px 16px; font-size: 12px; line-height: 1.35; }
+    .js-notification-cookie-banner .row { flex-direction: row; flex-wrap: nowrap; align-items: center !important; gap: 14px; }
+    .js-notification-cookie-banner [class*="col"] { flex: 1 1 auto; width: auto; }
+    .js-notification-cookie-banner [class*="col"]:last-child { flex: none; }
+    .js-notification-cookie-banner .btn { min-height: 34px; padding: 0 16px; white-space: nowrap; }
+    /* los 72 px entre la barra y el título de los listados (pedidos para compu el 2026-11-12) dejaban el listado arrancando a la mitad
+       de una pantalla de 390 px de alto */
+    .template-category .category-controls, .template-search .category-controls { padding-top: 22px !important; }
+}
+/* Celular acostado, al bajar: la franja rosa (34 px) y la isla (74 px) tapaban el 29 % de una pantalla de 390 px TODO el tiempo. Al bajar
+   (html.pnt-nav-abajo) la franja se va para arriba y la isla sube y se achica (~16 %); arriba de todo queda como siempre. (En la ficha la
+   barra no sigue al bajar: ahí no cambia nada.) Pisa la regla "Pantallas bajas" de marca.css (540 px). */
+@media (max-height: 540px) and (max-width: 1024px) {
+    .pnt-barra { transition: transform 0.4s ease; }
+    html.pnt-nav-abajo .pnt-barra { transform: translateY(-100%); }
+    html.pnt-nav-abajo .js-head-main.head-main { top: 6px !important; height: 58px !important; }
+    html.pnt-nav-abajo .js-head-main .logo-img { height: 38px !important; }
+}
+/* Muestras de COLOR de la ficha y de la compra rápida (pedido 2026-11-14: "El borde de los colores debe estar blanco con sombra negra y el
+   color adentro"): cada color es un círculo con el color adentro, borde blanco y sombra negra suave. Antes: un puntito de 18 px dentro de
+   una píldora gris, y el elegido en una píldora rosa. El elegido lleva además un aro rosa por fuera (como los talles elegidos) y el
+   agotado va apagado y tachado en diagonal. El borde gris #eee viene escrito en el HTML de Lima: se pisa con !important. */
+.js-product-variants .btn-variant.btn-variant-color,
+#quickshop-modal .btn-variant.btn-variant-color {
+    position: relative;
+    width: 40px !important; min-width: 0 !important; height: 40px !important;
+    margin: 0 12px 12px 0 !important; padding: 0 !important;
+    border: 0 !important; border-radius: 50% !important;
+    background: transparent !important; box-shadow: none !important;
+}
+.js-product-variants .btn-variant.btn-variant-color > .btn-variant-content,
+#quickshop-modal .btn-variant.btn-variant-color > .btn-variant-content {
+    display: block; box-sizing: border-box !important; flex: 0 0 34px; width: 34px !important; min-width: 34px; height: 34px !important; padding: 0 !important;
+    border: 3px solid var(--pnt-blanco) !important; border-radius: 50% !important;
+    box-shadow: 0 1px 7px rgba(0, 0, 0, 0.38) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.js-product-variants .btn-variant.btn-variant-color:hover > .btn-variant-content,
+#quickshop-modal .btn-variant.btn-variant-color:hover > .btn-variant-content { transform: scale(1.07); }
+.js-product-variants .btn-variant.btn-variant-color.selected > .btn-variant-content,
+#quickshop-modal .btn-variant.btn-variant-color.selected > .btn-variant-content { box-shadow: 0 0 0 2px var(--pnt-rosa-precio), 0 2px 9px rgba(0, 0, 0, 0.4) !important; }
+.js-product-variants .btn-variant.btn-variant-color.nostock,
+#quickshop-modal .btn-variant.btn-variant-color.nostock { opacity: 1; }
+.js-product-variants .btn-variant.btn-variant-color.nostock > .btn-variant-content,
+#quickshop-modal .btn-variant.btn-variant-color.nostock > .btn-variant-content { opacity: 0.4; }
+.js-product-variants .btn-variant.btn-variant-color.nostock::after,
+#quickshop-modal .btn-variant.btn-variant-color.nostock::after {
+    content: ""; position: absolute; left: calc(50% - 1px); top: 3px; bottom: 3px; width: 2px; border-radius: 2px;
+    background: var(--pnt-gris); transform: rotate(45deg); pointer-events: none;
+}
+/* Celulares de menos de 360 px (iPhone SE de primera, Android chicos) */
+@media (max-width: 359px) {
+    /* "Más vendido ★" y "-20%" no entran juntos arriba de una tarjeta de 138 px: se pisaban 19 px. El "-20%" va abajo del sello. */
+    .js-item-product:has(.pnt-mv-sello) .pnt-mv-off { top: 6px; left: auto; right: 6px; }   /* (2026-11-15) uno al lado del otro, a la misma altura: se achican en vez de apilarse */
+    html .pnt-mv-card .pnt-mv-sello { padding: 3px 6px; letter-spacing: 0.02em; }
+    html .pnt-mv-card .pnt-mv-sello .pnt-mv-letra { font-size: 7.5px !important; }
+    html .pnt-mv-card .pnt-mv-off { padding: 3px 6px; }
+    /* Los títulos de los banners que van de a dos ("Pulseras", "Charms") se salían 4 px del banner */
+    .pnt-banner:not(.pnt-banner--disney) .pnt-banner-tit { font-size: 25px; }
+    /* "Ver todas" de la tarjeta roja de Ofertas y "Ir a Instagram" de los bloques del listado se partían en 2 renglones */
+    .pnt-mv-portada-btn { gap: 6px; padding: 7px 11px; white-space: nowrap; }
+    .pnt-bl-btn { gap: 8px; padding: 12px 18px; white-space: nowrap; }
+}
+/* (2026-11-14) Letra mínima de 10 px también en tablet (768–1279): en "Los más elegidos" y "No los dejes escapar" el sello "Más vendido"
+   quedaba en 8,1 px, "Ahorrás" en 8,5 y "Con transferencia" en 9,3 (en celular ya estaban en 10) */
+@media (min-width: 768px) {
+    .pnt-mv-letra, .pnt-mv-sello .pnt-mv-letra { font-size: 10px !important; }
+    .pnt-mv-ahorro small { font-size: 10px; }
+    .pnt-mv-transf span { font-size: max(10px, 1em); }
+}
+@media (min-width: 768px) {
+    .js-product-table .pnt-mv-transf span, .section-products-related .pnt-mv-transf span { font-size: clamp(10px, 3.3cqw, 12px); letter-spacing: 0.03em; }
+}
+@media (max-width: 767px) { .pnt-co-sub { font-size: 10px !important; } }
+/* (2026-11-14) Búsqueda sin resultados a 320 px: "VER TODOS LOS PRODUCTOS" se partía en 2 renglones */
+@media (max-width: 359px) { .pnt-btn { padding-left: 16px; padding-right: 16px; letter-spacing: 0.04em; white-space: nowrap; } }
+/* (2026-11-14, pedido: "scrolleo y se ve todo blanco hasta que van apareciendo") Las entradas al bajar siguen igual (suben de a una),
+   pero se VEN antes: la opacidad llega en 0,5 s (era 1 s) y el movimiento en 0,9 s (era 1,3 s). */
+html.pnt-ap .pnt-ap-vista .pnt-ap-el {
+    transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) var(--pnt-ap-d, 0ms), translate 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--pnt-ap-d, 0ms),
+        scale 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--pnt-ap-d, 0ms);
+}
+/* (2026-11-14, "se ve todo lento y trabado") Celular: el cartel del aniversario ya no desenfoca lo que tiene detrás. Ese desenfoque
+   (backdrop-filter) está sobre el VIDEO en movimiento y se recalcula en cada cuadro; en un celular es de lo que más pesa. Queda el
+   vidrio blanco translúcido, apenas más opaco para que se lea igual. En compu sigue el desenfoque. */
+@media (max-width: 767px) {
+    .pnt-hero-cartel { -webkit-backdrop-filter: none; backdrop-filter: none; background: linear-gradient(135deg, rgba(255, 255, 255, 0.66), rgba(255, 255, 255, 0.5)); }
+}
+/* (2026-11-14, "se ve todo lento y trabado") Animaciones decorativas que seguían corriendo aunque no se vieran (cada una obliga a recalcular
+   estilos en cada cuadro, con una hoja de estilos grande): 
+   · los marcadores de carga de las fotos (placeholder-fade, de Tiendanube) quedaban parpadeando para siempre detrás del video del cartel:
+     quedan quietos (grises);
+   · la luz que cruza los botones ("Ofertas", "Ver toda la colección", "Cómo llegar", "Instagram"…) corre solo mientras el botón se ve
+     (secciones.js agrega .pnt-luz-on cuando entra en pantalla). */
+.placeholder-fade { animation: none !important; }
+html .pnt-di-cab .pnt-s-btn::after,
+html .pnt-hero-cartel-btn::after,
+html .pnt-s-btn.pnt-co-btn::after,
+html .pnt-rh-btn::after { animation-play-state: paused; }
+html .pnt-di-cab .pnt-s-btn.pnt-luz-on::after,
+html .pnt-hero-cartel-btn.pnt-luz-on::after,
+html .pnt-s-btn.pnt-co-btn.pnt-luz-on::after,
+html .pnt-rh-btn.pnt-luz-on::after { animation-play-state: running; }
+/* (2026-11-14, "se ve todo lento y trabado") Más animaciones infinitas que corrían aunque no se vieran: la cinta rosa de arriba, la flecha de
+   "Deslizá", el pulso del pin de "Conocenos" y el hueco libre de los armadores. secciones.js les pone .pnt-fuera cuando salen de pantalla. */
+.pnt-fuera .pnt-barra-pista,
+.pnt-fuera.pnt-barra-pista,
+.pnt-fuera svg,
+.pnt-fuera::before,
+.pnt-fuera::after { animation-play-state: paused !important; }
+/* el cartel del aniversario flota solo mientras el hero se ve: cuando la página lo tapó (parallax = 1) queda quieto */
+.pnt-hero-tapado .pnt-hero-cartel { animation-play-state: paused, paused !important; }
+/* (2026-11-14, pedido: "en mobile quita la foto que está debajo del video del hero") En celular Lima muestra, DEBAJO del video del cartel, su
+   slider de imágenes para móvil (el banner "Sweet Anniversary · Hasta 50% OFF" con sus puntitos). Se saca: el video es lo único del hero.
+   (En compu el slider de Lima ya estaba escondido.) */
+@media (max-width: 767px) {
+    html.pnt-hero-video .section-slider-home .js-home-mobile-slider-visibility { display: none !important; }
+}
+/* (2026-11-15, pedido: "como video del hero usa el de Kling vertical solo en mobile") El video de celular es vertical (720×1200) y ya viene sin la
+   marca de agua: sin el zoom de 1,16 que el video de compu necesita para esconder la suya, y encuadrado más arriba (aritos y manos). */
+@media (max-width: 767px) {
+    .pnt-hero-v video { scale: 1; object-position: center center; }
+    /* (2026-11-15, pedido: "ocupando toda la pantalla") el hero de celular ocupa TODA la pantalla (ancho y alto): el video vertical se ve casi
+       entero (cubre el alto; a los costados se recorta lo justo). svh = el alto con la barra del navegador a la vista (no se corta abajo). */
+    .pnt-hero-v { height: 100vh !important; height: 100svh !important; height: 100dvh !important; min-height: 100svh !important; }
+    /* (2026-11-15) 100dvh = el alto de pantalla que se ve en cada momento (con la barra del navegador a la vista o escondida): el video nunca deja un
+       hueco abajo. El video y su póster cubren toda la caja (object-fit: cover). */
+    .pnt-hero-v video { min-height: 100%; }
+}
+/* (2026-11-15, pedido: "quita el parallax en mobile del hero") En celular el hero se va con la página como un banner normal: ya no queda
+   fijo detrás de las secciones (sticky), el video no se mueve más lento, no se oscurece y el cartel no sube más rápido. En compu sigue igual. */
+@media (max-width: 767px) {
+    html.pnt-hero-video .section-slider-home { position: relative !important; }
+    .pnt-hero-v video { transform: none !important; }
+    .pnt-hero-oscuro { display: none !important; }
+    .pnt-hero-cartel { translate: none !important; }
+}
+/* (2026-11-15, pedido: "quitá la animación de entrada que tienen las categorías") Los banners de categorías aparecen enteros, sin cortina ni fundido. */
+.pnt-banners .textbanner-image { clip-path: none !important; }
+.pnt-banners .pnt-ap-el, .pnt-banners .pnt-banner { opacity: 1 !important; translate: none !important; scale: none !important; filter: none !important; }
+/* ═══ 13. Carga sin saltos (2026-11-15, pedido: "que el scroll vaya suave sin saltos, que nada se trabe") ═══
+   Medido (herramientas/revision/analisis-fluidez.mjs y _salto-carga.mjs): en el primer cuadro (~0,85 s) se veía el inicio ORIGINAL de Tiendanube
+   (su slider de 583 px y los productos debajo) y a los ~1,15 s marca.js ponía el hero de video, escondía el slider y subía los banners: toda la
+   página saltaba 580 px (CLS 0,13). Ahora el CSS deja el inicio en su forma final desde el primer cuadro, sin esperar a marca.js:
+   · el slider de Lima no se muestra nunca en el inicio y el lugar del hero queda reservado con su misma foto (el póster del video, ubicado igual
+     que el video: cubre el ancho, 16 % más grande desde arriba a la izquierda en compu; en celular el video vertical, centrado);
+   · los banners de categorías van debajo del hero por orden de CSS (marca.js igual los mueve en el HTML: el orden se ve igual antes y después);
+   · la barra de navegación espera invisible hasta tener su forma de isla (si marca.js no llegara, aparece igual a los 2,5 s). */
+body.template-home .js-home-sections-container { display: flex; flex-direction: column; }
+body.template-home .js-home-sections-container > .section-slider-home { order: -2; }
+body.template-home .js-home-sections-container > .section-banners-home { order: -1; }
+body.template-home .section-slider-home .js-home-main-slider-container,
+body.template-home .section-slider-home .js-home-mobile-slider-visibility { display: none !important; }
+body.template-home .section-slider-home { min-height: max(320px, min(56.25vw, 100vh)); background: #efe6e2 url("hero/video-hero.webp") 0 8% / 116% auto no-repeat; }
+html.pnt-hero-video body.template-home .section-slider-home { min-height: 0; background: none; }      /* ya está el hero de video: manda su propio alto */
+@media (max-width: 767px) {
+    body.template-home .section-slider-home { min-height: 100svh; min-height: 100dvh; background: #efe6e2 url("hero/video-hero-m.webp") center / cover no-repeat; }
+}
+html:not(.pnt-nav) .js-head-main { opacity: 0; animation: pnt-nav-respaldo 0s 2.5s forwards; }
+@keyframes pnt-nav-respaldo { to { opacity: 1; } }
+/* Banners de categorías: su alto final reservado desde el primer cuadro (marca.js los rearma a ~1,1 s y pasaban de 429 a 660 px, corriendo lo de abajo).
+   Mientras tanto no se ven los de Tiendanube (otro formato). Compu/tablet: 15 px arriba y abajo + la grilla (clamp(385px, 41vw, 820px)).
+   Celular: Disney 4:3,6 + Aritos 2:1,1 + Pulseras y Charms 3:4 lado a lado, 11 px entre filas y 15 px arriba y abajo. */
+body.template-home .section-banners-home { min-height: calc(clamp(385px, 41vw, 820px) + 30px); }
+body.template-home .section-banners-home:not(.pnt-banners) > * { visibility: hidden; }
+@media (max-width: 767px) {
+    body.template-home .section-banners-home { min-height: calc((100vw - 30px) * 1.45 + (100vw - 41px) * 0.6667 + 52px); }
+}
+/* Las tarjetas que esperan su animación de entrada se esconden con opacidad 0,001 en vez de 0: a la vista es igual, pero lazysizes (la carga
+   diferida de fotos de la tienda) NO carga fotos dentro de algo con opacidad 0 y así las fotos se pedían recién cuando la tarjeta ya entraba. */
+html.pnt-an [data-pnt-an]:not(.pnt-an-in) { opacity: 0.001; }
+html.pnt-ap .pnt-ap-sec:not(.pnt-ap-vista) .pnt-ap-el { opacity: 0.001; }
+.pnt-sj .pnt-rv:not(.is-in) { opacity: 0.001; }
+/* Los armadores 3D entran solo con un fundido, sin desplazarse: su animación de entrada les ponía translate (y scale: 1), y un ancestro con translate
+   hace que lo "fixed" de adentro (la barra del total de celular, el aviso "Deshacer") se ubique respecto del armador y no de la pantalla. Al
+   terminar la animación la barra saltaba al borde de abajo (el salto de 0,08 medido en celular al llegar a "Armá tu pulsera"). */
+html.pnt-ap .pnt-ap-sec:not(.pnt-ap-vista) .pnt-ap-el.pnt-ap-liso,
+html.pnt-ap .pnt-ap-vista .pnt-ap-el.pnt-ap-liso { translate: none; scale: none; }
+/* Ficha: la columna de compra aparece ya rearmada (marca.js pone html.pnt-ficha-armada); antes se veía la de Tiendanube y saltaba ~120 px */
+html:not(.pnt-ficha-armada) body.template-product .section-single-product > [data-store^="product-info-"] { opacity: 0; animation: pnt-ficha-respaldo 0s 2.5s forwards; }
+body.template-product .section-single-product > [data-store^="product-info-"] { transition: opacity 0.25s ease; }
+@keyframes pnt-ficha-respaldo { to { opacity: 1; } }
+/* (2026-11-15, captura del usuario en iPhone: "el video no ocupa la altura de toda la pantalla, se ve la segunda sección") En Safari de iPhone la barra
+   de abajo es translúcida y la página sigue por detrás: 100dvh / 100svh descuentan esa barra y debajo del video asomaba la sección siguiente. El hero
+   mide ahora el alto COMPLETO de la pantalla (100lvh: hasta el borde, también detrás de la barra). El cartel queda a la misma distancia del borde
+   VISIBLE (sube lo que mide la barra: 100lvh - 100svh), así no lo tapa la barra de Safari ni, en Android, la de direcciones. */
+@media (max-width: 767px) {
+    .pnt-hero-v { height: 100vh !important; height: 100lvh !important; min-height: 0 !important; }
+    body.template-home .section-slider-home { min-height: 100vh; min-height: 100lvh; }
+    .pnt-hero-cartel { bottom: 16px; bottom: calc(100lvh - 100svh + 16px); }
+}
+/* (2026-11-15, pedido del usuario: "Mundo Disney: más pequeño el subtítulo, más pequeño el botón y su tipografía, a la derecha y apenas más abajo") Celular. */
+@media (max-width: 767px) {
+    .pnt-di-sub { font-size: 11.5px; }
+    .pnt-di-btncaja { margin-left: auto; margin-right: 0; padding: 20px 0 6px; }
+    html .pnt-di-cab .pnt-s-btn { gap: 7px; padding: 9px 15px 9px 16px; font-size: 12.5px; }
+    html .pnt-di-cab .pnt-s-btn svg { width: 15px; height: 15px; }
+}
+/* (2026-11-15, el usuario en su iPhone: "el video del hero sigue sin ocupar toda la altura, aumentá la altura de la sección del hero en mobile")
+   100lvh solo no alcanzó en Safari de iPhone: el hero mide 60 px más que la pantalla, así llega hasta abajo aunque Safari no cuente la franja de su barra.
+   El cartel sigue a la misma distancia del borde VISIBLE (sube esos 60 px más lo que mide la barra). */
+@media (max-width: 767px) {
+    .pnt-hero-v { height: calc(100vh + 60px) !important; height: calc(100lvh + 60px) !important; }
+    body.template-home .section-slider-home { min-height: calc(100vh + 60px); min-height: calc(100lvh + 60px); }
+    .pnt-hero-cartel { bottom: 76px; bottom: calc(100lvh - 100svh + 76px); }
+}
+/* (2026-11-15, pedido: "aumentá la altura del video en el hero en mobile porque se ve un espacio en blanco abajo") Otra vuelta: el hero mide 160 px más que la
+   pantalla (antes 60) y su fondo ya no es blanco (el color del póster): si en el celular el alto de pantalla se cuenta más corto, el video igual llega
+   hasta abajo y, si algo asomara, no se ve blanco. El cartel sigue a 16 px del borde VISIBLE (sube esos 160 px más lo que mide la barra). */
+@media (max-width: 767px) {
+    .pnt-hero-v { height: calc(100vh + 160px) !important; height: calc(100lvh + 160px) !important; background: #efe6e2; }
+    body.template-home .section-slider-home { min-height: calc(100vh + 160px); min-height: calc(100lvh + 160px); }
+    .pnt-hero-cartel { bottom: 176px; bottom: calc(100lvh - 100svh + 176px); }
+}
+/* (2026-11-15, pedidos del usuario en celular) 1) "Cuando pongo el dedo encima de las categorías debería funcionar como el hover": mientras el dedo está
+   apoyado (paginas.js 15 pone .pnt-toque) la foto se agranda y el velo rosa se aclara, igual que con el mouse. 2) "Mundo Disney" más compacto en altura. */
+.pnt-banner.pnt-toque .pnt-banner-img { transform: scale(1.06); }
+.pnt-banner.pnt-toque .textbanner-image::after { opacity: 0.4; }
+/* (2026-11-15, pedido: "cuando pongo el dedo por encima de alguna categoría debe aparecer el Ver productos") En celular el botón estaba escondido
+   (display: none); ahora está, invisible, y aparece mientras el dedo está apoyado (igual que con el mouse). */
+@media (max-width: 767px) {
+    .pnt-banners .pnt-banner-ver { display: inline-flex; font-size: 11px; }
+    .pnt-banners .pnt-banner.pnt-toque .pnt-banner-ver { opacity: 1; transform: none; }
+    .pnt-banners .pnt-banner.pnt-toque .pnt-banner-ver svg { transform: translateX(4px); }
+}
+@media (max-width: 767px) {
+    .pnt-di-cab { row-gap: 0; }
+    .pnt-di-sub { margin-top: 4px; }
+    .pnt-di-btncaja { padding: 8px 0 0; }
+}
+/* 3) "¿Estás seguro de que la segunda sección sube por encima del hero? No está tan claro": en compu el hero queda QUIETO (marca.js ya no mueve el video ni
+   el cartel) y la sección que sube tiene las esquinas de arriba redondeadas y una sombra en su borde: se ve claramente cómo se desliza por encima del video
+   (que se oscurece debajo). En celular el hero no queda fijo (pedido anterior), así que no lleva esquinas. */
+@media (min-width: 768px) {
+    html.pnt-hero-video body.template-home .section-banners-home { border-radius: 0; box-shadow: 0 -26px 48px -20px rgba(0, 0, 0, 0.38); }   /* (2026-11-15, pedido: "no quiero los bordes superiores redondeados de la segunda section") sin esquinas redondeadas */
+}
+/* (2026-11-15) "Mundo Disney" en celular: menos espacio entre el párrafo y el botón */
+@media (max-width: 767px) { .pnt-di-btncaja { padding-top: 2px; } .pnt-di-sub { margin-bottom: 0; } }
+
+/* ── 16. Pedidos del 2026-11-15 en celular ── */
+/* a) "Seguir en Instagram" y "Seguir en TikTok" en UNA fila, uno al lado del otro (pedido: "deberían estar en 1 fila, 1 al lado del otro").
+      Antes cada uno medía ~225 px y el segundo bajaba a otra fila. Los dos del mismo ancho; en pantallas muy angostas se va "Seguir en". */
+@media (max-width: 767px) {
+    html .pnt-rh-botones { flex-wrap: nowrap; justify-content: center; gap: 8px; width: 100%; max-width: 420px; margin-left: auto; margin-right: auto; }
+    html .pnt-rh-botones .pnt-rh-btn { flex: 1 1 0; min-width: 0; justify-content: center; gap: 6px; padding: 12px 10px; font-size: 12.5px; letter-spacing: 0.01em; }
+    html .pnt-rh-botones .pnt-rh-ico { width: 16px; height: 16px; }
+}
+@media (max-width: 374px) {
+    html .pnt-rh-botones .pnt-rh-btn { font-size: 12px; }
+    .pnt-rh-seguir { display: none; }
+}
+/* b) Botones con fondo ROSA: letra BLANCA (pedido 2026-11-15: "quiero que los botones con bgc rosa tengan la letra en lugar de en color negro en
+      color blanco"). Reemplaza la convención del 2026-11-13 (botones rosas con letra negra). Los que ya eran blancos (marca.css sección 21) siguen igual.
+      Lista sacada de herramientas/revision/botones-rosas.mjs (busca fondo rosa + letra oscura en compu y celular). */
+html [class*="template-account"] .btn-primary:not([disabled]):not(:disabled),
+html .template-contact .btn-primary:not([disabled]):not(:disabled),
+html .template-cart .btn-primary:not([disabled]):not(:disabled),
+html .template-password .btn-primary:not([disabled]):not(:disabled),
+html .js-acknowledge-cookies.btn, html .js-acknowledge-cookies.btn:hover,
+html #nav-search .search-input-submit, html #nav-search .search-input-submit:hover,
+html .btn-price-filter, html .btn-price-filter:hover,
+html .pnt-ver-mas-btn, html .pnt-ver-mas-btn:hover,
+html .pnt-btn, html .pnt-btn:hover, html .pnt-btn--borde:hover,
+html .btn-variant.selected, html .template-product .btn-variant.selected, html #quickshop-modal .btn-variant.selected, html .js-product-variants .btn-variant.selected,
+html .template-product .js-addtocart-placeholder.btn-primary,
+html #product-shipping-container .js-calculate-shipping, html #product-shipping-container .js-calculate-shipping .js-calculate-shipping-wording,
+html .template-product .js-calculate-shipping,
+html #cart-shipping-container .js-calculate-shipping, html #cart-shipping-container .js-calculate-shipping:hover,
+html #installments-modal .tab.active .tab-link,
+html #installments-modal .modal-body a.btn-link, html #installments-modal .js-modal-close.btn-link, html #installments-modal .modal-body > a:last-child {
+    color: var(--pnt-blanco) !important;
+}
+html [class*="template-account"] .btn-primary:not([disabled]):hover, html .template-contact .btn-primary:not([disabled]):hover,
+html .template-cart .btn-primary:not([disabled]):hover, html .template-password .btn-primary:not([disabled]):hover { color: var(--pnt-blanco) !important; }
+html .js-acknowledge-cookies.btn svg, html #nav-search .search-input-submit svg, html .btn-price-filter svg, html .pnt-ver-mas-btn svg,
+html #product-shipping-container .js-calculate-shipping svg, html .template-product .js-calculate-shipping svg, html #cart-shipping-container .js-calculate-shipping svg,
+html .template-cart .btn-primary svg { fill: var(--pnt-blanco) !important; }
+html .pnt-ver-mas-btn.is-cargando::after { border-color: rgba(255, 255, 255, 0.35); border-top-color: var(--pnt-blanco); }
+/* c) El hero queda FIJO detrás y la sección siguiente SUBE tapándolo, también en celular (pedido 2026-11-15: "tanto en mobile como en desktop,
+      cuando scrolleo en el hero, en lugar de bajar a la segunda sección, la segunda sección tiene que subir hacia arriba, como en BS23").
+      Reemplaza la regla de la mañana que lo dejaba "relative" en celular. Sin parallax: el video no se mueve ni se oscurece (pedido anterior).
+      Como en compu, la sección que sube lleva las esquinas de arriba redondeadas y una sombra en su borde. marca.js frena el video cuando queda tapado. */
+@media (max-width: 767px) {
+    html.pnt-hero-video .section-slider-home { position: sticky !important; top: 0; z-index: 0; }
+    html.pnt-hero-video body.template-home .section-banners-home { border-radius: 0; box-shadow: 0 -20px 36px -18px rgba(0, 0, 0, 0.42); }   /* sin esquinas redondeadas (pedido 2026-11-15) */
+}
+/* d) Banners de categorías en celular: fotos más grandes y la MITAD de espacio en blanco (pedido 2026-11-15: "las fotos más grandes y menos espacio
+      en blanco, reducilo a la mitad"). Antes: 15 px por fuera y 11 px entre fotos; ahora 8 y 6. Además cada foto es un poco más alta
+      (Disney 4:3,6 → cuadrada; Aritos 2:1,1 → 2:1,2; Pulseras y Charms 3:4 → 3:4,3). El lugar reservado del primer cuadro (sección 13) se calcula igual. */
+@media (max-width: 767px) {
+    html .pnt-banners.section-banners-home { padding: 8px 0; }
+    html .pnt-banners .js-banners-news.container { padding-left: 8px; padding-right: 8px; }
+    html .pnt-banners .js-banner-row.banners-row { gap: 6px; }
+    html .pnt-banners .pnt-banner--disney { aspect-ratio: 1 / 1; }
+    html .pnt-banners .pnt-banner--aritos { aspect-ratio: 2 / 1.2; }
+    html .pnt-banners .pnt-banner--pulseras, html .pnt-banners .pnt-banner--charms { aspect-ratio: 3 / 4.3; }
+    /* Disney (W) + Aritos (0,6 W) + Pulseras/Charms ((W − 6)/2 × 4,3/3) + 2 espacios de 6 + 8 arriba y abajo, con W = 100vw − 16 */
+    body.template-home .section-banners-home { min-height: calc((100vw - 16px) * 1.6 + (100vw - 22px) * 0.71667 + 28px); }
+}
+/* e) Listados en celular: UN solo botón, "Filtrar", a la derecha; "Ordenar por" va adentro del panel de filtros (paginas.js 16). Pedido 2026-11-15.
+      Y en Ofertas, aire entre la franja roja "SALE" y ese botón (pedido: "más distancia entre ofertas y los botones": estaban pegados, 1 px). */
+.pnt-fo { display: none; }
+@media (max-width: 767px) {
+    html.pnt-orden-en-filtros .pnt-controles .pnt-orden { display: none !important; }
+    html.pnt-orden-en-filtros .pnt-controles { justify-content: flex-end; }
+    html.pnt-orden-en-filtros .pnt-controles > .pnt-filtrar-btn { flex: 0 0 auto; width: auto; padding: 0 20px !important; gap: 8px !important; }
+    .pnt-fo { display: block; margin-bottom: 44px; }
+    .pnt-fo-ops { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pnt-fo-op {
+        display: inline-flex; align-items: center; height: 38px; padding: 0 16px; margin: 0;
+        border: 1px solid rgba(77, 77, 77, 0.25); border-radius: 999px; background: var(--pnt-blanco); color: var(--pnt-texto);
+        font-family: var(--pnt-letra); font-size: 13.5px; font-weight: 400; line-height: 1; cursor: pointer;
+    }
+    .pnt-fo-op.is-activa { border-color: var(--pnt-rosa); background: var(--pnt-rosa); color: var(--pnt-blanco); font-weight: 700; }
+    html.pnt-pag-ofertas .pnt-sale { margin-bottom: 18px; }
+}
+/* f) Carruseles del inicio ("Los más elegidos" y "Ofertas") ANTES de que se armen: las tarjetas ya con su tamaño final (2,04 por vista en celular,
+      3,15 en tablet y 4,31 en compu, con los mismos espacios que el carrusel de marca.js). Antes, hasta que se armaba el carrusel (unos segundos en un
+      celular lento), cada tarjeta medía el ancho entero (lo que Swiper pone por defecto): 1 por fila. Armado (.pnt-sw-listo), las medidas las pone Swiper. */
+.js-swiper-featured:not(.pnt-sw-listo) > .swiper-wrapper > .swiper-slide,
+.js-swiper-sale:not(.pnt-sw-listo) > .swiper-wrapper > .swiper-slide { width: calc((100% - 18.72px) / 2.04); margin-right: 18px; }
+@media (min-width: 768px) {
+    .js-swiper-featured:not(.pnt-sw-listo) > .swiper-wrapper > .swiper-slide,
+    .js-swiper-sale:not(.pnt-sw-listo) > .swiper-wrapper > .swiper-slide { width: calc((100% - 68.8px) / 3.15); margin-right: 32px; }
+}
+@media (min-width: 1100px) {
+    .js-swiper-featured:not(.pnt-sw-listo) > .swiper-wrapper > .swiper-slide,
+    .js-swiper-sale:not(.pnt-sw-listo) > .swiper-wrapper > .swiper-slide { width: calc((100% - 158.88px) / 4.31); margin-right: 48px; }
+}
+
+/* ── 17. Pedidos del 2026-11-15 (celular) ── */
+/* a) "Más ppequeña la tipografía del badge de más vendido en mobile": el sello baja de ~10 px a 8,5 px y la píldora se achica con él. */
+@media (max-width: 767px) {
+    html .pnt-mv-card .pnt-mv-sello { font-size: 9px; padding: 4px 9px; }
+    html .pnt-mv-card .pnt-mv-sello .pnt-mv-letra { font-size: 8.5px !important; }
+}
+/* b) "Los botones con fondo rosa y letra negra deberían tener la letra blanca": la cinta "Hasta 50% off" del cartel del hero y las etiquetas rosas
+      ("Gratis", "-20%"). Lista de herramientas/revision/botones-rosas.mjs (hoy 0 con letra oscura). */
+html .pnt-hero-cartel-cinta, html .pnt-hero-cartel-cinta b,
+html .label.label-accent, html .label-accent, html .js-shipping-label-private, html .js-offer-label-private { color: var(--pnt-blanco) !important; }
+html .label.label-accent svg, html .label-accent svg, html .js-offer-label-private svg { fill: var(--pnt-blanco) !important; }
+/* c) "Cuando mantengo mucho tiempo el dedo en una categoría se pone en rosa la foto, no quiero eso": era la SELECCIÓN de texto/imagen de iOS (rosa en esta
+      tienda). En los banners de categorías no se selecciona nada ni sale el menú de "guardar imagen". */
+.pnt-banner, .pnt-banner * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-user-drag: none; }
+.pnt-banner ::selection, .pnt-banner::selection { background: transparent !important; color: inherit !important; }
+/* b2) "Agregar al carrito" de la ficha: la regla de marca.css (.template-product input.js-addtocart.btn-primary, con !important) le ganaba a la blanca */
+html .template-product input.js-addtocart.btn-primary:not(.nostock):not([disabled]), html .template-product input.js-addtocart.btn-primary:not(.nostock):not([disabled]):hover,
+html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-blanco) !important; }
+/* ── 18. Carrito: cuánto falta para el envío gratis (pedido 2026-11-15, noche: "en el carrito me debe decir cuánto me falta para llegar al envío
+      gratis, además de decirme cuál es el monto del envío gratis"). La barra la arma marca.js (barraEnvio): arriba "Te faltan $X para tener envío
+      gratis" (o "¡Ya tenés envío gratis!") y abajo "Envío gratis en compras desde $150.000". En el lateral y en la página del carrito. ── */
+.pnt-envio-gratis .pnt-envio-txt { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.pnt-envio-gratis .pnt-envio-txt b { font-size: 13.5px; font-weight: 500; line-height: 1.3; color: var(--pnt-texto); }
+.pnt-envio-gratis .pnt-envio-txt b strong, .pnt-envio-gratis.pnt-envio-listo .pnt-envio-txt b { font-weight: 800; }
+.pnt-envio-gratis .pnt-envio-txt small { font-size: 12px; font-weight: 400; line-height: 1.3; color: var(--pnt-gris); }
+/* página del carrito: arriba del resumen (subtotal, total e "Iniciar compra") */
+#cart-sticky-summary > .pnt-envio-gratis { margin: 0 0 -6px; }
+/* ── 19. Ofertas = la categoría "Ofertas" de la tienda (2026-11-16, pedido: "que el carrusel de ofertas de inicio muestre lo que hay en la categoría
+      Ofertas"). marca.js (mvDeOfertas) baja la categoría y pone sus productos en "No los dejes escapar": mientras llegan, la sección no muestra tarjetas
+      (así no se ven un momento las que había elegido el panel). Tope: 5 s. ── */
+[data-store="home-products-sale"].pnt-of-cargando .swiper-wrapper { visibility: hidden; }

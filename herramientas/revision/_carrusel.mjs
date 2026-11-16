@@ -1,0 +1,3 @@
+export default async (p, h) => { await h.espera(9000);
+  return p.evaluate(() => [...document.querySelectorAll('.pnt-mv')].map((s) => { const sw = s.querySelector('.pnt-mv-swiper'), w = sw && sw.swiper; const sl = [...s.querySelectorAll('.swiper-slide')].filter((x) => x.getBoundingClientRect().width > 0).slice(0, 3);
+    return { sec: s.getAttribute('data-store'), anchoSeccion: Math.round(s.getBoundingClientRect().width), anchoSwiper: sw ? Math.round(sw.getBoundingClientRect().width) : null, porVista: w ? w.params.slidesPerView : null, porVistaActual: w ? w.slidesPerViewDynamic && w.slidesPerViewDynamic() : null, tarjetas: sl.map((x) => Math.round(x.getBoundingClientRect().width)), breakpoint: w ? w.currentBreakpoint : null }; })); };

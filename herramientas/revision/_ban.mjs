@@ -1,0 +1,1 @@
+export default async (p, h) => { await h.espera(6000); return p.evaluate(() => { const s = document.querySelector('.section-banners-home'); return { alto: Math.round(s.getBoundingClientRect().height), minAlto: getComputedStyle(s).minHeight, fila: Math.round((s.querySelector('.js-banner-row') || s).getBoundingClientRect().height) }; }); };

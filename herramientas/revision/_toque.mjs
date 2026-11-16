@@ -1,0 +1,15 @@
+import { createRequire } from 'module'; const require = createRequire(import.meta.url); const puppeteer = require('../../node_modules/puppeteer-core');
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+const b = await puppeteer.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: 'new', args: ['--no-sandbox'] });
+const p = await b.newPage(); await p.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+await p.goto('http://localhost:5700/', { waitUntil: 'load', timeout: 120000 }); await espera(5000);
+await p.evaluate(() => { const s = document.querySelector('.section-banners-home'); scrollTo(0, s.getBoundingClientRect().top + scrollY - 100); }); await espera(1200);
+const pt = await p.evaluate(() => { const r = document.querySelector('.pnt-banner').getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; });
+const cdp = await p.target().createCDPSession();
+const estado = () => p.evaluate(() => { const bn = document.querySelector('.pnt-banner'); const im = bn.querySelector('.pnt-banner-img'); return { clase: bn.classList.contains('pnt-toque'), zoom: getComputedStyle(im).transform }; });
+await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: pt.x, y: pt.y }] }); await espera(700);
+console.log('dedo apoyado:', JSON.stringify(await estado()));
+await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: pt.x, y: pt.y - 40 }] }); await espera(200);
+console.log('dedo deslizándose (scroll):', JSON.stringify(await estado()));
+await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+await b.close(); process.exit(0);

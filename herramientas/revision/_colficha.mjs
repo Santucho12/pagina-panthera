@@ -1,0 +1,1 @@
+export default async (p, h) => { await h.espera(4000); return p.evaluate(() => { const t = document.querySelector('.js-product-name, h1'); const out = []; for (let n = t; n && n !== document.body; n = n.parentElement) out.push(n.tagName + '.' + (n.className + '').replace(/\s+/g, '.').slice(0, 70)); return out; }); };

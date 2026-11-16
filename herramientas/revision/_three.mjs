@@ -1,0 +1,1 @@
+export default async (p, h) => { await h.espera(12000); return p.evaluate(() => performance.getEntriesByType('resource').filter((e) => /three|jsdelivr/.test(e.name)).map((e) => [Math.round(e.duration) + 'ms', Math.round((e.transferSize || 0) / 1024) + 'KB', e.name.replace(/^https?:\/\/[^/]+/, '').slice(0, 70)])); };

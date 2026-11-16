@@ -1,0 +1,13 @@
+/* f) Carruseles del inicio ("Los más elegidos" y "Ofertas") ANTES de que se armen: las tarjetas ya con su tamaño final (2,04 por vista en celular,
+      3,15 en tablet y 4,31 en compu, con los mismos espacios que el carrusel de marca.js). Antes, hasta que se armaba el carrusel (unos segundos en un
+      celular lento), cada tarjeta medía el ancho entero (lo que Swiper pone por defecto): 1 por fila. Armado (.pnt-sw-listo), las medidas las pone Swiper. */
+.js-swiper-featured:not(.pnt-sw-listo) > .swiper-wrapper > .swiper-slide,
+.js-swiper-sale:not(.pnt-sw-listo) > .swiper-wrapper > .swiper-slide { width: calc((100% - 18.72px) / 2.04); margin-right: 18px; }
+@media (min-width: 768px) {
+    .js-swiper-featured:not(.pnt-sw-listo) > .swiper-wrapper > .swiper-slide,
+    .js-swiper-sale:not(.pnt-sw-listo) > .swiper-wrapper > .swiper-slide { width: calc((100% - 68.8px) / 3.15); margin-right: 32px; }
+}
+@media (min-width: 1100px) {
+    .js-swiper-featured:not(.pnt-sw-listo) > .swiper-wrapper > .swiper-slide,
+    .js-swiper-sale:not(.pnt-sw-listo) > .swiper-wrapper > .swiper-slide { width: calc((100% - 158.88px) / 4.31); margin-right: 48px; }
+}

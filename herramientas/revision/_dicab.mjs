@@ -1,0 +1,4 @@
+export default async (p, h) => { await h.espera(6000);
+  await p.evaluate(() => { const c = document.querySelector('.pnt-di-cab'); scrollTo(0, c.getBoundingClientRect().top + scrollY - 140); }); await h.espera(1500);
+  const r = await p.evaluate(() => { const g = (s) => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect(), cs = getComputedStyle(e); return { x: Math.round(b.left), y: Math.round(b.top), w: Math.round(b.width), h: Math.round(b.height), fs: cs.fontSize, pad: cs.padding }; }; return { cab: g('.pnt-di-cab'), tit: g('.pnt-di-cab .pnt-s-titulo'), sub: g('.pnt-di-sub'), caja: g('.pnt-di-btncaja'), btn: g('.pnt-di-cab .pnt-s-btn') }; });
+  const c = r.cab; await p.screenshot({ path: 'revision-responsive/dicab.png', clip: { x: 0, y: c.y + (await p.evaluate(() => scrollY)) - 10, width: 390, height: c.h + 30 } }); return r; };

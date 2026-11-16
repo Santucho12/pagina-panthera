@@ -1,0 +1,40 @@
+[
+ {
+  "url": "/productos/mono-minnie-20961/",
+  "cat": "cuff",
+  "nombre": "Moño minnie - 2096",
+  "pid": 173863918,
+  "vid": 662674662,
+  "p": 17760,
+  "a": 22200,
+  "st": 1,
+  "disp": true,
+  "nvars": 1,
+  "opciones": [
+   ""
+  ],
+  "img": "//acdn-us.mitiendanube.com/stores/001/276/084/products/mono-minnie-11-b932a9dc745e0a1a1016876395407960-1024-1024.webp",
+  "fotos": [
+   "mono-minnie-11-b932a9dc745e0a1a1016876395407960",
+   "mono-minnie-21-2ece54c7d652f6497d16876395413206",
+   "mono-minnie-31-8f09aa0ad106d667a316876395413412"
+  ]
+ },
+ {
+  "url": "/productos/aro-ear-cuff-bellatrix-silver-395/",
+  "cat": "cuff",
+  "nombre": "Ear cuff shine silver - 4005",
+  "pid": 60423257,
+  "vid": 180339875,
+  "p": 19120,
+  "a": 23900,
+  "st": 2,
+  "disp": true,
+  "nvars": 1,
+  "opciones": [
+   ""
+  ],
+  "img": "//acdn-us.mitiendanube.com/stores/001/276/084/products/ear-cuff-plata1-132ae54974f960eb0015974440435362-1024-1024.jpg",
+  "fotos": []
+ }
+]
