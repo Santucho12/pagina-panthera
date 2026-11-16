@@ -84,8 +84,8 @@
     { k: 'sat2', n: 'Saturn silver', cat: 'Plateados', id: 353893560, v: 1553816182, p: 17680, a: 22100, st: 1, tipo: 'aro', asp: 0.6574, ag: 0.012, cx: 0.4532, alto: 2.2, url: '/productos/saturn-silver-1580-1tau8/', arg: '0.0,0.5221,0.5221,0.5019,0.186,plata,0' },
     { k: 'swhi', n: 'Sweet white', cat: 'Brillos', id: 117698140, v: 453821556, p: 27760, a: 34700, st: 1, tipo: 'aro', asp: 0.4609, ag: 0.0114, cx: 0.5429, alto: 3.576, url: '/productos/sweet-white-1033/', arg: '0.0,0.543,0.543,0.4852,0.24,oro,1' },
     { k: 'tene', n: 'Tenedor', cat: 'Disney', id: 210722948, v: 881103143, p: 17760, a: 22200, st: 11, tipo: 'aro', asp: 0.4521, ag: 0.012, cx: 0.0878, alto: 2.5, url: '/productos/tenedor-2374/', arg: '0.001,0.458,0.458,0.5032,0.24,oro,0' },
-    { k: 'cmin', n: 'Ear cuff Moño Minnie', cat: 'Ear cuffs', id: 173863918, v: 662674662, p: 17760, a: 22200, st: 1, tipo: 'cuff', asp: 1.7338, ag: 0.5, cx: 0.5, alto: 0.62, url: '/productos/mono-minnie-20961/', arg: '' },
-    { k: 'cshi', n: 'Ear cuff Shine silver', cat: 'Ear cuffs', id: 60423257, v: 180339875, p: 19120, a: 23900, st: 2, tipo: 'cuff', asp: 0.9754, ag: 0.5, cx: 0.5, alto: 0.95, url: '/productos/aro-ear-cuff-bellatrix-silver-395/', arg: '' }
+    { k: 'cmin', n: 'Ear cuff Moño Minnie', cat: 'Ear cuffs', me: 'oro', id: 173863918, v: 662674662, p: 17760, a: 22200, st: 1, tipo: 'cuff', asp: 1.7338, ag: 0.5, cx: 0.5, alto: 0.62, url: '/productos/mono-minnie-20961/', arg: '' },
+    { k: 'cshi', n: 'Ear cuff Shine silver', cat: 'Ear cuffs', me: 'plata', id: 60423257, v: 180339875, p: 19120, a: 23900, st: 2, tipo: 'cuff', asp: 0.9754, ag: 0.5, cx: 0.5, alto: 0.95, url: '/productos/aro-ear-cuff-bellatrix-silver-395/', arg: '' }
 ] %}
 
 <section class="pnt-s pnt-a3 pnt-or" id="armar-oreja" aria-labelledby="pnt-or-t" data-wa-evitar>
@@ -99,7 +99,7 @@
             <template>
 <link rel="stylesheet" href="{{ 'panthera/oreja3d.css' | static_url }}?v=20261116j">
 <ul hidden data-or-aros>
-{% for c in pnt_or_aros %}<li data-k="{{ c.k }}" data-n="{{ c.n }}" data-cat="{{ c.cat }}" data-id="{{ c.id }}" data-v="{{ c.v }}" data-p="{{ c.p }}" data-a="{{ c.a }}" data-st="{{ c.st }}" data-tipo="{{ c.tipo }}" data-asp="{{ c.asp }}" data-ag="{{ c.ag }}" data-cx="{{ c.cx }}" data-alto="{{ c.alto }}" data-url="{{ c.url }}" data-arg="{{ c.arg }}" data-img="{{ ('panthera/oreja/aros/' ~ c.k ~ '.webp') | static_url }}" data-hd="{{ ('panthera/oreja/aros-hd/' ~ c.k ~ '.webp') | static_url }}" data-hdn="{{ ('panthera/oreja/aros-hd/' ~ c.k ~ '-n.webp') | static_url }}"></li>
+{% for c in pnt_or_aros %}<li data-k="{{ c.k }}" data-n="{{ c.n }}" data-cat="{{ c.cat }}" data-me="{{ c.me }}" data-id="{{ c.id }}" data-v="{{ c.v }}" data-p="{{ c.p }}" data-a="{{ c.a }}" data-st="{{ c.st }}" data-tipo="{{ c.tipo }}" data-asp="{{ c.asp }}" data-ag="{{ c.ag }}" data-cx="{{ c.cx }}" data-alto="{{ c.alto }}" data-url="{{ c.url }}" data-arg="{{ c.arg }}" data-img="{{ ('panthera/oreja/aros/' ~ c.k ~ '.webp') | static_url }}" data-hd="{{ ('panthera/oreja/aros-hd/' ~ c.k ~ '.webp') | static_url }}" data-hdn="{{ ('panthera/oreja/aros-hd/' ~ c.k ~ '-n.webp') | static_url }}"></li>
 {% endfor %}</ul>
 <div class="app">
   <section class="stage" id="stage" aria-label="Vista 3D de tu oreja">

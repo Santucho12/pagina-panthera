@@ -38,9 +38,10 @@
     { k: 'rigi', n: 'Rígida broche de circonios azules', id: 339456487, url: '/productos/pulsera-broche-de-circonios-azules-q6cim/', p: 94320, a: 117900, cierre: 'rigida', desc: 'Rígida, con cierre de cristales azules', rad: 0.05,
       talles: [{ t: '18 cm', v: 1508669179, st: 1 }, { t: '19 cm', v: 1508669180, st: 0 }] }
 ] %}
+{# 2026-11-16: me: 'oro' = charm dorado (filtro por metal del armador; sin me = plateado). Sacado de las fotos: Flor rose cristal (rose gold), Travel lover, Árbol gold y Mickey gold. #}
 {# 2026-11-11: se sumaron los 35 charms/dijes que faltaban (62 en total, todos los de la categoría Charms/Dijes de la tienda ese día) #}
 {% set pnt_a3_charms = [
-    { k: 'vali', n: 'Valija rosa', cat: 'Viajes', id: 129656252, v: 507888073, p: 68160, a: 85200, st: 1, tipo: 'c', ag: 0.5583, alto: 0.4532, asp: 0.9547, url: '/productos/valija-rosa-love-traels-1537/', hueco: 'no' },
+    { k: 'vali', n: 'Valija rosa', cat: 'Viajes', me: 'oro', id: 129656252, v: 507888073, p: 68160, a: 85200, st: 1, tipo: 'c', ag: 0.5583, alto: 0.4532, asp: 0.9547, url: '/productos/valija-rosa-love-traels-1537/', hueco: 'no' },
     { k: 'adve', n: 'Adventure', cat: 'Viajes', id: 95732339, v: 364652442, p: 72880, a: 91100, st: 1, tipo: 'd', ag: 0.1825, alto: 0.9863, asp: 0.4554, url: '/productos/adventure-816/', hueco: 'no' },
     { k: 'stit', n: 'Stitch', cat: 'Disney', id: 168374749, v: 636613295, p: 68160, a: 85200, st: 1, tipo: 'c', ag: 0.4921, alto: 0.5072, asp: 0.761, url: '/productos/stitch-1806/' },
     { k: 'mmb', n: 'Mickey manitos', cat: 'Disney', id: 168376469, v: 636621706, p: 77760, a: 97200, st: 1, tipo: 'd', ag: 0.209, alto: 0.7842, asp: 0.6009, url: '/productos/mickey-manitos-blancas-2199/', hueco: '0.45,0.209,0.055,0.1035' },
@@ -52,7 +53,7 @@
     { k: 'jess', n: 'Jessie', cat: 'Disney', id: 209884900, v: 876361534, p: 71520, a: 89400, st: 1, tipo: 'd', ag: 0.15, alto: 1.1387, asp: 0.2937, url: '/productos/jessie-1933/', hueco: '0.336,0.15,0.06,0.078,1' },
     { k: 'ange', n: 'Angelito celeste', cat: 'Amor y familia', id: 173473022, v: 660772310, p: 65920, a: 82400, st: 1, tipo: 'c', ag: 0.4744, alto: 0.436, asp: 1.1393, url: '/productos/angelito-celeste-1975/' },
     { k: 'buzz', n: 'Buzz Lightyear', cat: 'Disney', id: 149152220, v: 571539890, p: 71520, a: 89400, st: 1, tipo: 'd', ag: 0.161, alto: 0.9831, asp: 0.4138, url: '/productos/buzz-lightyear-1932/' },
-    { k: 'flor', n: 'Flor rose cristal', cat: 'Brillos y cielo', id: 363804266, v: 1585855381, p: 69760, a: 87200, st: 2, tipo: 'd', ag: 0.153, alto: 0.7481, asp: 0.5581, url: '/productos/flor-rose-cristal-y-violeta-2426-90y16/', hueco: '0.5,0.153,0.155,0.09,1' },
+    { k: 'flor', n: 'Flor rose cristal', cat: 'Brillos y cielo', me: 'oro', id: 363804266, v: 1585855381, p: 69760, a: 87200, st: 2, tipo: 'd', ag: 0.153, alto: 0.7481, asp: 0.5581, url: '/productos/flor-rose-cristal-y-violeta-2426-90y16/', hueco: '0.5,0.153,0.155,0.09,1' },
     { k: 'rosa', n: 'Super rosa crystal', cat: 'Brillos y cielo', id: 363800372, v: 1585842951, p: 81600, a: 102000, st: 2, tipo: 'c', ag: 0.5065, alto: 0.4936, asp: 0.9677, url: '/productos/super-rosa-crystal-3545-z6y2n/', hueco: 'no' },
     { k: 'fam', n: 'Family forever', cat: 'Amor y familia', id: 363797957, v: 1585834719, p: 66960, a: 83700, st: 9, tipo: 'c', ag: 0.5054, alto: 0.4749, asp: 1.0396, url: '/productos/family-forever-cristal-3293-gjvco/' },
     { k: 'ceni', n: 'Cenicienta', cat: 'Disney', id: 363772724, v: 1585768576, p: 78480, a: 98100, st: 4, tipo: 'd', ag: 0.163, alto: 1.0152, asp: 0.3333, url: '/productos/princesa-cenicienta-con-vestido-magico-3291-m6c3x/' },
@@ -85,7 +86,7 @@
     { k: 'cesp', n: 'Corazón esmaltado pink', cat: 'Amor y familia', id: 363819461, v: 1585891532, p: 59520, a: 74400, st: 1, tipo: 'd', ag: 0.1, alto: 0.86, asp: 0.7218, url: '/productos/corazon-esmaltado-pink-3922-1mast/', hueco: 'no' },
     { k: 'ruea', n: 'Around the world', cat: 'Viajes', id: 363806433, v: 1585861425, p: 71040, a: 88800, st: 1, tipo: 'c', ag: 0.35, alto: 0.47, asp: 0.9966, url: '/productos/ruedita-arround-the-world-3651-1ay9l/' },
     { k: 'vaqu', n: 'Vaquita de San Antonio', cat: 'Varios', id: 363782492, v: 1585793608, p: 68160, a: 85200, st: 2, tipo: 'd', ag: 0.13, alto: 0.9, asp: 0.4303, url: '/productos/vaquita-de-san-antonio-silver-roja-860-id6ht/' },
-    { k: 'trav', n: 'Travel lover', cat: 'Viajes', id: 363757082, v: 1585727691, p: 68160, a: 85200, st: 1, tipo: 'd', ag: 0.187, alto: 1.05, asp: 0.7387, url: '/productos/travel-lover-avion-maleta-planetario-gold-3941-w4i0b/', hueco: '0.505,0.187,0.062,0.11' },
+    { k: 'trav', n: 'Travel lover', cat: 'Viajes', me: 'oro', id: 363757082, v: 1585727691, p: 68160, a: 85200, st: 1, tipo: 'd', ag: 0.187, alto: 1.05, asp: 0.7387, url: '/productos/travel-lover-avion-maleta-planetario-gold-3941-w4i0b/', hueco: '0.505,0.187,0.062,0.11' },
     { k: 'demo', n: 'Demogorgon', cat: 'Varios', id: 363717127, v: 1585611844, p: 78720, a: 98400, st: 1, tipo: 'd', ag: 0.19, alto: 1.0, asp: 0.7064, url: '/productos/demogorgon-3891-1ru1x/', hueco: '0.565,0.19,0.012,0.08,-1' },
     { k: 'arbo', n: 'Árbol gold', cat: 'Amor y familia', id: 356631150, v: 1562404103, p: 58720, a: 73400, st: 3, tipo: 'd', ag: 0.208, alto: 0.62, asp: 0.474, url: '/productos/arbol-gold-con-circonios-3346-pqj1v/' },
     { k: 'cpin', n: 'Corazón pink mini', cat: 'Amor y familia', id: 356628942, v: 1562398413, p: 53680, a: 67100, st: 1, tipo: 'd', ag: 0.176, alto: 0.6, asp: 0.522, url: '/productos/corazon-pink-mini-ms35c/' },
@@ -96,7 +97,7 @@
     { k: 'medi', n: 'Medalla infinito', cat: 'Amor y familia', id: 340278329, v: 1511996738, p: 59520, a: 74400, st: 1, tipo: 'd', ag: 0.171, alto: 0.95, asp: 0.6452, url: '/productos/medalla-infinito-3930-smbru/' },
     { k: 'solr', n: 'Sol reluciente', cat: 'Brillos y cielo', id: 340273327, v: 1511982310, p: 53680, a: 67100, st: 1, tipo: 'd', ag: 0.185, alto: 0.62, asp: 0.5235, url: '/productos/sol-reluciente-mini-1550-1re64/', hueco: '0.42,0.185,0.075,0.115,1' },
     { k: 'timo', n: 'Timón y Pumba', cat: 'Disney', id: 338537447, v: 1504619480, p: 105600, a: 132000, st: 2, tipo: 'd', ag: 0.18, alto: 0.95, asp: 0.7443, url: '/productos/timon-y-pumba-3768-j56m9/', hueco: 'no' },
-    { k: 'cmic', n: 'Mickey gold', cat: 'Disney', id: 321469353, v: 1424907840, p: 72000, a: 90000, st: 3, tipo: 'd', ag: 0.18, alto: 0.8, asp: 0.5333, url: '/productos/contorno-mickey-gold-3698-1k42t/', hueco: '0.49,0.18,0.06,0.085,-1' },
+    { k: 'cmic', n: 'Mickey gold', cat: 'Disney', me: 'oro', id: 321469353, v: 1424907840, p: 72000, a: 90000, st: 3, tipo: 'd', ag: 0.18, alto: 0.8, asp: 0.5333, url: '/productos/contorno-mickey-gold-3698-1k42t/', hueco: '0.49,0.18,0.06,0.085,-1' },
     { k: 'clov', n: 'Love silver', cat: 'Amor y familia', id: 321458131, v: 1424874890, p: 73440, a: 91800, st: 1, tipo: 'c', ag: 0.5, alto: 0.5, asp: 1.1739, url: '/productos/contorno-love-silver-1820-uvgcy/', hueco: '0.15,0.47,0.05,0.15,1' },
     { k: 'ping', n: 'Pingüino', cat: 'Varios', id: 321062471, v: 1423019123, p: 68160, a: 85200, st: 1, tipo: 'c', ag: 0.52, alto: 0.62, asp: 0.6641, url: '/productos/pinguino-3823-7ju9l/' },
     { k: 'drca', n: 'Color dream catcher', cat: 'Brillos y cielo', id: 267390559, v: 1186454914, p: 61360, a: 76700, st: 1, tipo: 'd', ag: 0.1, alto: 1.1, asp: 0.4933, url: '/productos/color-dream-catcher-4741/', hueco: 'no' },
@@ -120,7 +121,7 @@
 {% for b in pnt_a3_bases %}<li data-k="{{ b.k }}" data-n="{{ b.n }}" data-id="{{ b.id }}" data-p="{{ b.p }}" data-a="{{ b.a }}" data-cierre="{{ b.cierre }}" data-desc="{{ b.desc }}" data-rad="{{ b.rad }}" data-url="{{ b.url }}" data-img="{{ ('panthera/arma/bases/' ~ b.k ~ '.webp') | static_url }}" data-talles="{% for t in b.talles %}{{ t.t }}|{{ t.v }}|{{ t.st }}{% if not loop.last %};{% endif %}{% endfor %}"></li>
 {% endfor %}</ul>
 <ul hidden data-a3-charms>
-{% for c in pnt_a3_charms %}<li data-k="{{ c.k }}" data-n="{{ c.n }}" data-cat="{{ c.cat }}" data-id="{{ c.id }}" data-v="{{ c.v }}" data-p="{{ c.p }}" data-a="{{ c.a }}" data-st="{{ c.st }}" data-tipo="{{ c.tipo }}" data-ag="{{ c.ag }}" data-alto="{{ c.alto }}" data-asp="{{ c.asp }}" data-hueco="{{ c.hueco }}" data-url="{{ c.url }}" data-img="{{ ('panthera/arma/charms/' ~ c.k ~ '.webp') | static_url }}" data-hd="{{ ('panthera/arma/charms-hd/' ~ c.k ~ '.webp') | static_url }}" data-hdn="{{ ('panthera/arma/charms-hd/' ~ c.k ~ '-n.webp') | static_url }}"></li>
+{% for c in pnt_a3_charms %}<li data-k="{{ c.k }}" data-n="{{ c.n }}" data-cat="{{ c.cat }}" data-me="{{ c.me }}" data-id="{{ c.id }}" data-v="{{ c.v }}" data-p="{{ c.p }}" data-a="{{ c.a }}" data-st="{{ c.st }}" data-tipo="{{ c.tipo }}" data-ag="{{ c.ag }}" data-alto="{{ c.alto }}" data-asp="{{ c.asp }}" data-hueco="{{ c.hueco }}" data-url="{{ c.url }}" data-img="{{ ('panthera/arma/charms/' ~ c.k ~ '.webp') | static_url }}" data-hd="{{ ('panthera/arma/charms-hd/' ~ c.k ~ '.webp') | static_url }}" data-hdn="{{ ('panthera/arma/charms-hd/' ~ c.k ~ '-n.webp') | static_url }}"></li>
 {% endfor %}</ul>
 <div class="app">
   <section class="stage" id="stage" aria-label="Vista 3D de tu pulsera">

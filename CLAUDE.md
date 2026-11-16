@@ -568,3 +568,8 @@ reales (`Input.dispatchTouchEvent`; `synthesizeScrollGesture` NO mueve la págin
 - **Celular, más pedidos del 2026-11-16** (paginas.css 21 c–f, secciones.js): WhatsApp a 28 px del borde y cartel del aniversario 20 px más arriba;
   Mundo Disney en 20 s; **mientras el 3D de un armador llega o está pegado arriba, la barra rosa y la isla se esconden** (`html.pnt-3d-arriba`,
   secciones.js) y el escenario se pega a 8 px del borde (`--pega`); "Cómo cuidar tu plata" con letras más chicas.
+- **Filtro por metal en los dos armadores** (pedido 2026-11-16: "que también se pueda filtrar por dorado o plateado"): en el panel de "Filtrar", debajo
+  de los temas, la fila "Metal" (Todos / Plateado / Dorado), combinable con el tema (`aplicaFiltros`, chips con `data-m`; tarjetas con `data-me`).
+  Charms: `me: 'oro'` en armar.tpl (sin `me` = plateado); sacado de las fotos: Flor rose cristal (rose gold), Travel lover, Árbol gold y Mickey gold.
+  Aritos: el metal de la argolla de `arg` (oro/plata) y `me` a mano en los ear cuffs (Moño Minnie oro, Shine silver plata). oreja.tpl/oreja3d.* a mano:
+  repetirlo si se regenera con construye_tienda.py. Charms nuevos (sincroniza_charms.mjs): si son dorados, agregarles `me: 'oro'`.

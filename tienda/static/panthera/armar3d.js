@@ -33,7 +33,7 @@ function leeDatos() {   // los datos los escribe armar.tpl en dos listas escondi
   var agotados = agotadosGuardados('a3');
   var charms = Array.prototype.map.call(raiz.querySelectorAll('[data-a3-charms] li'), function (li) {
     var d = li.dataset;
-    return { k: d.k, n: d.n, cat: d.cat, id: d.id, v: d.v, p: num(d.p), a: num(d.a), st: num(d.st), tipo: d.tipo, ag: num(d.ag), alto: num(d.alto), asp: num(d.asp), img: d.img, hd: d.hd || '', hdn: d.hdn || '', hueco: d.hueco || '' };
+    return { k: d.k, n: d.n, cat: d.cat, me: d.me || 'plata', id: d.id, v: d.v, p: num(d.p), a: num(d.a), st: num(d.st), tipo: d.tipo, ag: num(d.ag), alto: num(d.alto), asp: num(d.asp), img: d.img, hd: d.hd || '', hdn: d.hdn || '', hueco: d.hueco || '' };
   });
   var temaDe = {};      // tema y forma de TODOS (también los sin stock): para elegir el reemplazo de uno de entrada que se agotó
   charms.forEach(function (c) { temaDe[c.k] = { cat: c.cat, tipo: c.tipo }; });
@@ -136,9 +136,21 @@ $('chips').innerHTML = CATS.map(function (c, i) {
   return '<button type="button" class="chip" aria-pressed="' + (i === 0) + '" data-c="' + (i ? c : '') + '">' + c + '<small>' + n + '</small></button>';
 }).join('');
 $('dock-s').textContent = DATA.charms.length + ' charms de plata 925 · tocalos o arrastralos a la pulsera';
+// (2026-11-16, pedido: "que también se pueda filtrar por dorado o plateado") En el mismo panel de "Filtrar", debajo de los temas, una fila "Metal":
+// Todos / Plateado / Dorado. Se combina con el tema (Disney + Dorado = los de Disney dorados). Los chips de metal llevan data-m.
+var METALES = [['', 'Todos'], ['plata', 'Plateado'], ['oro', 'Dorado']];
+st.metal = '';
+$('chips').insertAdjacentHTML('beforeend', '<span class="chips-sep">Metal</span>' + METALES.map(function (m, i) {
+  return '<button type="button" class="chip" data-m="' + m[0] + '" aria-pressed="' + (i === 0) + '">' + m[1] + '</button>';
+}).join(''));
+function aplicaFiltros() {
+  $$('.card').forEach(function (el) { el.hidden = (!!st.filtro && el.dataset.cat !== st.filtro) || (!!st.metal && el.dataset.me !== st.metal); });
+  var t = [st.filtro, st.metal ? (st.metal === 'oro' ? 'Dorado' : 'Plateado') : ''].filter(Boolean).join(' · ');
+  $('filtro-t').textContent = t || 'Filtrar'; $('filtro-b').classList.toggle('activo', !!t);
+}
 var MAS = '<svg viewBox="0 0 12 12"><path d="M6 1v10M1 6h10"/></svg>';
 $('tira').innerHTML = DATA.charms.map(function (c) {
-  return '<button type="button" class="card" data-k="' + c.k + '" data-cat="' + c.cat + '" aria-pressed="false" aria-label="' + c.n + ', ' + fmt(c.p) + '">' +
+  return '<button type="button" class="card" data-k="' + c.k + '" data-cat="' + c.cat + '" data-me="' + c.me + '" aria-pressed="false" aria-label="' + c.n + ', ' + fmt(c.p) + '">' +
     '<span class="card-f"><img class="cg" data-src="' + c.img + '" alt="" draggable="false" decoding="async">' + (c.st === 1 ? '<span class="ult">Última</span>' : '') +
     (c.a > c.p ? '<span class="off">-' + Math.round((1 - c.p / c.a) * 100) + '%</span>' : '') +
     '<span class="mas">' + MAS + '</span><span class="en">En tu pulsera</span></span>' +
@@ -328,11 +340,11 @@ raiz.addEventListener('click', function (e) { if (!e.target.closest('.filtro')) 
 raiz.addEventListener('keydown', function (e) { if (e.key === 'Escape') cierraFiltro(); });
 $('chips').addEventListener('click', function (e) {
   var b = e.target.closest('.chip'); if (!b) return;
-  st.filtro = b.dataset.c;
-  $$('.chip').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-  $('filtro-t').textContent = st.filtro ? st.filtro : 'Filtrar'; $('filtro-b').classList.toggle('activo', !!st.filtro);
+  var esMetal = b.hasAttribute('data-m');
+  if (esMetal) st.metal = b.dataset.m; else st.filtro = b.dataset.c;
+  $$(esMetal ? '.chip[data-m]' : '.chip:not([data-m])').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
   cierraFiltro();
-  $$('.card').forEach(function (el) { el.hidden = !!st.filtro && el.dataset.cat !== st.filtro; });
+  aplicaFiltros();
   $('tira').scrollTo({ left: 0, top: 0, behavior: REDUCE ? 'auto' : 'smooth' }); flechas();
 });
 var ignorarClic = false;
