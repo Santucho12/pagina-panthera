@@ -924,3 +924,9 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
     .pnt-co-sub { font-size: 9px !important; }
     .pnt-co-dato { gap: 5px; }
 }
+/* h) "Cuando está activo en mobile el 3D que quedó fijo (pulsera o aritos), que el botón de WhatsApp desaparezca, así no ocupa lugar": con
+      html.pnt-3d-arriba (secciones.js, el mismo aviso que esconde la barra) el botón se va con un fundido y vuelve al terminar el armador. */
+@media (max-width: 699px) {
+    body[class] a.btn-whatsapp { transition: bottom 0.4s var(--pnt-suave), opacity 0.3s ease, scale 0.3s ease !important; }
+    html.pnt-3d-arriba body[class] a.btn-whatsapp { opacity: 0 !important; scale: 0.6; pointer-events: none !important; }
+}
