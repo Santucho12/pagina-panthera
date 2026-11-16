@@ -557,7 +557,8 @@ reales (`Input.dispatchTouchEvent`; `synthesizeScrollGesture` NO mueve la págin
   regla de `armar3d.css` y `oreja3d.css` usa `var(--pnt-vh,1vh)*46` para el 3D (oreja3d.css a mano: repetirlo si se regenera con construye_tienda.py).
 - **"No los dejes escapar" = LITERALMENTE la categoría Ofertas**: `home-featured-products.tpl` arma la sección aunque el panel no tenga productos
   "en oferta", y `mvDeOfertas` ya NO deja las del panel: si la categoría no se puede leer (oculta), tarda > 5 s o está vacía, la sección se esconde.
-  **La categoría tiene que estar VISIBLE** en el panel para que se vea algo.
+  **La categoría tiene que estar VISIBLE** en el panel para que se vea algo. Si la tienda no trae la sección (sin productos "en oferta" en el panel; y
+  la vista previa no usa los .tpl), `mvSeccionOfertas` la arma copiando la estructura de "Los más elegidos" justo debajo.
 - **Carruseles del inicio con el dedo**: en pantallas táctiles arrastre libre con inercia (`freeMode` + `freeModeSticky`, speed 450; Swiper 6.3.2) y el
   avance automático se frena mientras el dedo está apoyado (vuelve 2,5 s después). En compu igual que antes.
 - **Mundo Disney más compacto en celular** (paginas.css 21 a) y **sin la historia de Collares en celular** (21 b, por su aria-label).

@@ -1357,8 +1357,36 @@ var PNT_OFERTAS = window.PNT_OFERTAS = {
         }).catch(fin);
     }
 
+    // (2026-11-16, pedido: "no veo el carrusel de ofertas debajo de los más elegidos") Tiendanube arma "No los dejes escapar" SOLO si en el panel hay
+    // productos marcados "en oferta"; si no hay, la sección no existe en la página (y la vista previa no usa los .tpl, así que el arreglo de
+    // home-featured-products.tpl no alcanza para verla). Si falta, se arma copiando la estructura de "Los más elegidos" (vacía, con las clases de
+    // "sale") justo debajo; después mvDeOfertas la llena con la categoría Ofertas o la esconde si la categoría no se puede leer.
+    function mvSeccionOfertas() {
+        if (document.querySelector('[data-store="home-products-sale"]')) { return; }
+        var base = document.querySelector('[data-store="home-products-featured"]');
+        if (!base || base.classList.contains('pnt-mv')) { return; }
+        var nueva = base.cloneNode(true);
+        nueva.setAttribute('data-store', 'home-products-sale');
+        [nueva].concat([].slice.call(nueva.querySelectorAll('[class]'))).forEach(function (el) {
+            [].slice.call(el.classList).forEach(function (c) {
+                if (/^js-.*featured/.test(c)) { el.classList.replace(c, c.replace(/featured/g, 'sale')); }
+            });
+        });
+        [].forEach.call(nueva.querySelectorAll('[id]'), function (el) { el.removeAttribute('id'); });
+        [].forEach.call(nueva.querySelectorAll('.js-products-sale-image-container'), function (el) { el.remove(); });
+        [].forEach.call(nueva.querySelectorAll('[data-section-id]'), function (el) { el.setAttribute('data-section-id', 'sale'); });
+        var grilla = nueva.querySelector('.swiper-wrapper');
+        if (grilla) { grilla.innerHTML = ''; grilla.removeAttribute('style'); }
+        var tit = nueva.querySelector('.js-products-sale-title');
+        if (tit) { tit.textContent = 'No los dejes escapar'; }
+        var link = nueva.querySelector('.js-products-sale-link-link');
+        if (link) { link.setAttribute('href', PNT_OFERTAS.url); }
+        base.parentNode.insertBefore(nueva, base.nextSibling);
+    }
+
     // "Los más elegidos" y "No los dejes escapar" (MV_SECCIONES)
     function masElegidos() {
+        try { mvSeccionOfertas(); } catch (e) { if (window.console) { console.warn('[pnt] sección de ofertas:', e); } }
         MV_SECCIONES.forEach(function (cfg, orden) {
             var seccion = document.querySelector('[data-store="' + cfg.store + '"]');
             if (!seccion || seccion.classList.contains('pnt-mv')) { return; }
