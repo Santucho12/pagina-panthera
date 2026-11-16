@@ -890,3 +890,7 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
     .pnt-hero-cartel { bottom: 196px; bottom: calc(100lvh - 100svh + 196px); }
     html.pnt-alto-fijo .pnt-hero-cartel { bottom: calc(var(--pnt-alto-l) - var(--pnt-alto-s) + 196px); }
 }
+/* d) "El carrusel de Mundo Disney apenas más rápido en mobile": la cinta da la vuelta en 20 s (era 25 s, igual que en compu). */
+@media (max-width: 767px) {
+    .pnt-di-pista { animation-duration: 20s !important; }
+}
