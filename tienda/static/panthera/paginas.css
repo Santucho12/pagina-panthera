@@ -930,3 +930,11 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
     body[class] a.btn-whatsapp { transition: bottom 0.4s var(--pnt-suave), opacity 0.3s ease, scale 0.3s ease !important; }
     html.pnt-3d-arriba body[class] a.btn-whatsapp { opacity: 0 !important; scale: 0.6; pointer-events: none !important; }
 }
+/* i) "Apenas menos ancho el cartel del aniversario en mobile": 24 px más angosto (termina más lejos del botón de WhatsApp). */
+@media (max-width: 767px) { .pnt-hero-cartel { right: 108px !important; } }
+/* j) "En mobile, al scrollear en el hero que se baje a la segunda sección, no que la sección suba; eso solo en desktop": en celular el hero ya no
+      queda fijo (sticky) detrás: se va con la página como un bloque normal. Los banners sin esquinas ni sombra de "tapa". En compu sigue igual. */
+@media (max-width: 767px) {
+    html.pnt-hero-video body.template-home .section-slider-home { position: relative !important; top: auto !important; }
+    html.pnt-hero-video body.template-home .section-banners-home { border-radius: 0 !important; box-shadow: none !important; }
+}
