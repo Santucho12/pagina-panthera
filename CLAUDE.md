@@ -565,3 +565,6 @@ reales (`Input.dispatchTouchEvent`; `synthesizeScrollGesture` NO mueve la págin
 - **3D más nítido en celular** (pedido: "en mobile los charms, la pulsera y los aritos se ven con mucha menos calidad que en la compu"): `dprDe()` en
   `armar3d-escena.js` y `oreja3d-escena.js` (a mano: repetirlo si se regenera la oreja): con el escenario de < 700 px el piso es 2 píxeles por punto y el
   nivel alto usa 3 (antes tope 2 y bajaba a 1,5 / 1,25 con cualquier cuadro lento del scroll). En compu igual.
+- **Celular, más pedidos del 2026-11-16** (paginas.css 21 c–f, secciones.js): WhatsApp a 28 px del borde y cartel del aniversario 20 px más arriba;
+  Mundo Disney en 20 s; **mientras el 3D de un armador llega o está pegado arriba, la barra rosa y la isla se esconden** (`html.pnt-3d-arriba`,
+  secciones.js) y el escenario se pega a 8 px del borde (`--pega`); "Cómo cuidar tu plata" con letras más chicas.

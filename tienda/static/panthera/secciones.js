@@ -203,13 +203,21 @@
     var mq = window.matchMedia ? window.matchMedia('(max-width: 699px)') : { matches: false };
     var lista = [], pend = false;
     function poner(o, on) { if (o.on !== on) { o.on = on; o.h.classList.toggle('pnt-pegado', on); } }
+    // (2026-11-16, pedido: "cuando el 3D queda fijo arriba, que la navbar se oculte, así puede ir más arriba y queda más lugar abajo") El escenario
+    // se pega casi al borde (--pega, paginas.css 21 e) y, mientras llega o está pegado, <html> lleva .pnt-3d-arriba: la barra rosa y la isla de
+    // navegación suben y se esconden. Vuelven apenas el escenario se despega (al terminar el armador) o al subir de nuevo por encima.
+    var root = document.documentElement, arribaAntes = false;
     function revisar() {
         pend = false;
+        var arriba = false;
         lista.forEach(function (o) {
             if (!mq.matches || !o.cerca) { poner(o, false); return; }
             if (o.top == null) { o.top = parseFloat(getComputedStyle(o.st).top) || 104; }
-            poner(o, Math.abs(o.st.getBoundingClientRect().top - o.top) < 1.5);
+            var t = o.st.getBoundingClientRect().top;
+            poner(o, Math.abs(t - o.top) < 1.5);
+            if (t <= 112 && t >= o.top - 30) { arriba = true; }      // llegando a la barra o pegado (y no despegándose hacia arriba)
         });
+        if (arriba !== arribaAntes) { arribaAntes = arriba; root.classList.toggle('pnt-3d-arriba', arriba); }
     }
     function pedir() { if (!pend) { pend = true; requestAnimationFrame(revisar); } }
     function preparar() {

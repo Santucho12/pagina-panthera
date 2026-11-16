@@ -894,3 +894,25 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
 @media (max-width: 767px) {
     .pnt-di-pista { animation-duration: 20s !important; }
 }
+/* e) "En mobile, cuando el 3D de Armá tu pulsera o de los aritos queda fijo arriba, que la navbar se oculte; así puede ir más arriba y queda más
+      lugar abajo". El escenario se pega a 8 px del borde (era 104: debajo de la barra rosa y la isla) y, mientras llega o está pegado, secciones.js
+      pone html.pnt-3d-arriba: la barra rosa y la isla suben y se esconden. Vuelven solas al terminar el armador. */
+@media (max-width: 699px) {
+    [data-pnt-a3], [data-pnt-or] { --pega: calc(8px + env(safe-area-inset-top, 0px)); }
+    html.pnt-nav .js-head-main.head-main { transition: background-color 0.5s ease, box-shadow 0.5s ease, translate 0.45s var(--pnt-suave), opacity 0.3s ease !important; }
+    .pnt-barra { transition: translate 0.45s var(--pnt-suave); }
+    html.pnt-3d-arriba .js-head-main.head-main { translate: 0 -160%; opacity: 0; pointer-events: none; }
+    html.pnt-3d-arriba .pnt-barra { translate: 0 -100%; }
+}
+/* f) "Las tipografías de los cuidados en mobile, en Cuidá tu plata, más pequeñas": título de cada cuidado 15 px (era 17), su texto 13,5 px (era 15,5),
+      el rótulo "Cuidado 1…5" 10 px (era 11) y la frase de la cabecera 12 px (era 13). Botones del acordeón con un poco menos de relleno. */
+@media (max-width: 767px) {
+    .pnt-cu-t { font-size: 15px; }
+    .pnt-cu-resp-in p { font-size: 13.5px; line-height: 1.55; }
+    .pnt-cu-n { font-size: 10px; }
+    .pnt-cu-sub { font-size: 12px; }
+}
+@media (max-width: 599px) {
+    .pnt-cu-btn { padding: 15px 16px; }
+    .pnt-cu-resp-in p { padding: 0 16px 16px; }
+}
