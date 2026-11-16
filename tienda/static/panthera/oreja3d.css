@@ -494,3 +494,4 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:
   .tira-caja{margin-top:22px}
   .total-ranura{padding-top:24px;padding-bottom:22px}
 }
+@media (max-width:699px){.lista{gap:10px}.huecos-n{margin-top:12px}}
