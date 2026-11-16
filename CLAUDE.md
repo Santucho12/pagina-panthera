@@ -562,3 +562,6 @@ reales (`Input.dispatchTouchEvent`; `synthesizeScrollGesture` NO mueve la págin
 - **Carruseles del inicio con el dedo**: en pantallas táctiles arrastre libre con inercia (`freeMode` + `freeModeSticky`, speed 450; Swiper 6.3.2) y el
   avance automático se frena mientras el dedo está apoyado (vuelve 2,5 s después). En compu igual que antes.
 - **Mundo Disney más compacto en celular** (paginas.css 21 a) y **sin la historia de Collares en celular** (21 b, por su aria-label).
+- **3D más nítido en celular** (pedido: "en mobile los charms, la pulsera y los aritos se ven con mucha menos calidad que en la compu"): `dprDe()` en
+  `armar3d-escena.js` y `oreja3d-escena.js` (a mano: repetirlo si se regenera la oreja): con el escenario de < 700 px el piso es 2 píxeles por punto y el
+  nivel alto usa 3 (antes tope 2 y bajaba a 1,5 / 1,25 con cualquier cuadro lento del scroll). En compu igual.

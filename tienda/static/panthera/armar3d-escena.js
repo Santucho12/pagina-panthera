@@ -27,6 +27,11 @@ window.PNT_A3_ESCENA = function (THREE, X) {
   renderer.toneMappingExposure = DBG.tm === 'aces' ? 1.1 : 1;
   renderer.setClearColor(0x000000, 0);
   var ANISO = renderer.capabilities.getMaxAnisotropy();
+  /* (2026-11-16, pedido: "en mobile, en 3D, los charms, la pulsera y los aritos se ven con mucha menos calidad que en la computadora") En el celular el
+     escenario es chico (~390 × 300 px) pero la pantalla tiene 3 píxeles por punto: con el tope de 2 (y bajando a 1,5 o 1,25 apenas el scroll del celular
+     hacía un cuadro lento, cosa que pasa siempre al deslizar) se dibujaba a la mitad o menos de la nitidez de la pantalla. En el celular el piso es 2 y
+     el nivel alto usa la pantalla entera (3). En compu no cambia. */
+  function dprDe(d) { return stage.clientWidth < 700 ? (d >= 2 ? 3 : 2) : d; }
   var scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 80);
   var CAPA_SOMBRA = 1, CAPA_SOMBRA_PROPIA = 2;     // 1: proyecta sombra con el material común · 2: con su propio material
@@ -1240,7 +1245,7 @@ window.PNT_A3_ESCENA = function (THREE, X) {
   }
   function aplicaNivel() {
     var n = NIVELES[iNivel];
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, n.dpr));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, dprDe(n.dpr)));
     medir(); preparaSombra(n.sombra);
   }
   new ResizeObserver(medir).observe(stage); aplicaNivel();
