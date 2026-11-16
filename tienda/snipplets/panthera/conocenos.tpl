@@ -5,7 +5,7 @@
    Video: el de Kling "cómo llegar" (Descargas, 2026-11-11), recortado a 4:5 (así queda afuera la marca de agua de Kling) y cortado
    antes de la bolsa (traía "viajes.inolvidables" escrito encima). Se reproduce solo mientras se ve (secciones.js, sección 4).
    Datos: los de la página de Contacto de la tienda (igual que locales.tpl). NO hay horarios cargados: no se inventan, se consultan
-   por WhatsApp. Que el local está dentro del shopping, a mano izquierda, lo dijo el usuario (2026-11-11).
+   por WhatsApp. Que el local está dentro del shopping lo dijo el usuario (2026-11-11; "a mano izquierda" se sacó a pedido el 2026-11-16).
    ⚠️ Preparado en local: NO subido todavía. #}
 {% set pnt_co_wa = store.whatsapp ?: 'https://wa.me/5492915661062' %}
 {% set pnt_co_mapa_bb = 'https://www.google.com/maps/search/?api=1&query=Av.%20Alberto%20Pedro%20Cabrera%202153%2C%20Bah%C3%ADa%20Blanca' %}
@@ -30,7 +30,7 @@
             <div class="pnt-co-info">
                 <span class="pnt-co-ojo pnt-rv" style="--pnt-rv-demora: 80ms">Visitanos</span>
                 <h2 class="pnt-co-titulo pnt-rv" id="pnt-co-t" style="--pnt-rv-demora: 140ms">Conocenos</h2>
-                <p class="pnt-co-texto pnt-rv" style="--pnt-rv-demora: 200ms">Estamos dentro del shopping, a mano izquierda. Mirá el video y vení a conocer Panthera en persona.</p>
+                <p class="pnt-co-texto pnt-rv" style="--pnt-rv-demora: 200ms">Estamos dentro del shopping. Mirá el video y vení a conocer Panthera en persona.</p>
                 <div class="pnt-co-botones pnt-rv" style="--pnt-rv-demora: 260ms">
                     <a class="pnt-s-btn pnt-co-btn" href="{{ pnt_co_mapa_bb }}" target="_blank" rel="noopener">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
