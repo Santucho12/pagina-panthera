@@ -471,3 +471,6 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:
 @media (max-width:699px){.stage{height:clamp(280px,calc(var(--pnt-vh,1vh)*46),420px)}}
 /* (2026-11-15) "Filtrar" con un tema elegido (fondo rosa): letra blanca, como todos los botones rosas (pedido del usuario) */
 .filtro-b.activo{color:#fff}
+/* (2026-11-16, pedido: "el 3D de Armá tu combinación de aritos tiene los bordes superiores redondeados, no quiero eso") Celular: la caja del armador
+   arranca con esquinas rectas arriba (el escenario 3D va de borde a borde); abajo siguen redondeadas. A mano: repetirlo si se regenera la oreja. */
+@media (max-width:699px){.app{border-top-left-radius:0;border-top-right-radius:0}}
