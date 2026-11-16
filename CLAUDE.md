@@ -549,3 +549,15 @@ reales (`Input.dispatchTouchEvent`; `synthesizeScrollGesture` NO mueve la págin
 - **"Los más elegidos" con 10 productos:** el usuario eligió marcarlos como destacados en el panel (Diseño → Organizar productos; el MCP no llega) desde
   su Chrome. Propuestos (más vendidos con stock ≥ 2): Baby boy, Aro cuernito green, Argollitas corazón medium, Zapato Cenicienta, Mom (con corazón
   nácar rosa), Home happy place y Aro plane, sumados a Jazmín, The Moon y Broche Mickey y Minnie. Pendiente: el Chrome no tenía la sesión de Tiendanube.
+
+## 📱 Pedidos del 2026-11-16 (desde el celular, sin vista previa: NO probados en la tienda) — paginas.js 0, paginas.css 20–21, marca.js
+- **Alto FIJO en celular** (pedido: "la altura de las secciones en mobile debería ser fija… cuando aparece la barra del navegador se achica y cuando
+  desaparece se agranda"): paginas.js sección 0 mide UNA vez `--pnt-alto-l` (100lvh), `--pnt-alto-s` (100svh) y `--pnt-vh` (1vh) en píxeles y los
+  vuelve a medir solo si cambia el ANCHO (girar). paginas.css 20 los usa para el hero (+160 px), el cartel y el lugar de los armadores; la última
+  regla de `armar3d.css` y `oreja3d.css` usa `var(--pnt-vh,1vh)*46` para el 3D (oreja3d.css a mano: repetirlo si se regenera con construye_tienda.py).
+- **"No los dejes escapar" = LITERALMENTE la categoría Ofertas**: `home-featured-products.tpl` arma la sección aunque el panel no tenga productos
+  "en oferta", y `mvDeOfertas` ya NO deja las del panel: si la categoría no se puede leer (oculta), tarda > 5 s o está vacía, la sección se esconde.
+  **La categoría tiene que estar VISIBLE** en el panel para que se vea algo.
+- **Carruseles del inicio con el dedo**: en pantallas táctiles arrastre libre con inercia (`freeMode` + `freeModeSticky`, speed 450; Swiper 6.3.2) y el
+  avance automático se frena mientras el dedo está apoyado (vuelve 2,5 s después). En compu igual que antes.
+- **Mundo Disney más compacto en celular** (paginas.css 21 a) y **sin la historia de Collares en celular** (21 b, por su aria-label).

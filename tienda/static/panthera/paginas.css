@@ -857,3 +857,28 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
       Ofertas"). marca.js (mvDeOfertas) baja la categoría y pone sus productos en "No los dejes escapar": mientras llegan, la sección no muestra tarjetas
       (así no se ven un momento las que había elegido el panel). Tope: 5 s. ── */
 [data-store="home-products-sale"].pnt-of-cargando .swiper-wrapper { visibility: hidden; }
+/* ── 20. Alto FIJO en celular (2026-11-16, pedido: "la altura de las secciones en mobile debería ser fija… abajo aparece algo nativo del navegador
+      y cuando aparece se achica y cuando desaparece se agranda"). paginas.js (sección 0) mide el alto de la pantalla UNA vez, en píxeles
+      (--pnt-alto-l = 100lvh, --pnt-alto-s = 100svh, --pnt-vh = 1vh) y lo vuelve a medir solo al girar el celular. Lo que en celular dependía
+      del alto de la pantalla usa esas medidas fijas: ya no cambia de tamaño cuando la barra del navegador aparece o se esconde. Mismos valores
+      que antes (hero = pantalla + 160 px; cartel a 16 px del borde visible); los armadores: última regla de armar3d.css / oreja3d.css. ── */
+@media (max-width: 767px) {
+    html.pnt-alto-fijo .pnt-hero-v { height: calc(var(--pnt-alto-l) + 160px) !important; min-height: 0 !important; }
+    html.pnt-alto-fijo:not(.pnt-hero-video) body.template-home .section-slider-home { min-height: calc(var(--pnt-alto-l) + 160px); }
+    html.pnt-alto-fijo .pnt-hero-cartel { bottom: calc(var(--pnt-alto-l) - var(--pnt-alto-s) + 176px); }
+    html.pnt-alto-fijo .pnt-a3-host, html.pnt-alto-fijo .pnt-or-host { min-height: clamp(560px, calc(var(--pnt-vh) * 76), 690px); }
+    html.pnt-alto-fijo.pnt-pag-ofertas .js-product-table { min-height: calc(var(--pnt-vh) * 60); }
+}
+/* ── 21. Pedidos del 2026-11-16 en celular ── */
+/* a) "Mundo Disney: el párrafo y el botón 'Ver toda la colección' más comprimidos verticalmente, más juntos": menos aire entre el título, el
+      párrafo y el botón (antes 4 px + 2 px y el botón de 9 px de relleno), párrafo con renglones más apretados y menos espacio hasta las fotos. */
+@media (max-width: 767px) {
+    .pnt-di-cab { row-gap: 0; margin-bottom: 10px; }
+    .pnt-di-sub { margin: 2px 0 0; line-height: 1.25; }
+    .pnt-di-btncaja { padding: 0; }
+    html .pnt-di-cab .pnt-s-btn { padding: 7px 14px 7px 15px; }
+}
+/* b) "En Seguinos en redes, oculta la historia de Collares, no hace falta que se vea en mobile" (en el celular tampoco se reproducía). */
+@media (max-width: 767px) {
+    .pnt-rh-circ[aria-label$=": Collares"] { display: none !important; }
+}

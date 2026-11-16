@@ -5,6 +5,42 @@
     var body = document.body;
     if (!body) { return; }
 
+    // 0. Alto FIJO de pantalla en celular (2026-11-16, pedido: "la altura de las secciones en mobile debería ser fija… abajo aparece algo nativo del
+    //    navegador y cuando aparece se achica y cuando desaparece se agranda"). Las unidades vh/dvh/svh/lvh cambian (según el navegador: Safari,
+    //    Chrome, el de Instagram) cuando su barra aparece o se esconde, y con ellas el alto del hero, de los armadores 3D, etc. Se miden UNA vez en
+    //    píxeles y quedan fijas en variables CSS; se vuelven a medir solo si cambia el ANCHO (girar el celular), nunca por la barra.
+    //    --pnt-alto-l = 100lvh (pantalla entera), --pnt-alto-s = 100svh (con la barra a la vista), --pnt-vh = 1vh. Las usa paginas.css (sección 20)
+    //    y la última regla de armar3d.css / oreja3d.css (adentro del Shadow DOM las variables llegan igual: se heredan).
+    (function () {
+        var html = document.documentElement, ancho = -1;
+        function mide(u) {
+            var d = document.createElement('div');
+            d.style.cssText = 'position:absolute;top:0;left:-9999px;width:1px;visibility:hidden;pointer-events:none;height:100' + u;
+            body.appendChild(d);
+            var h = d.getBoundingClientRect().height;
+            body.removeChild(d);
+            return h;
+        }
+        function sirve(u) { return !!(window.CSS && CSS.supports && CSS.supports('height', '100' + u)); }
+        function fija() {
+            var w = window.innerWidth;
+            if (w === ancho) { return; }
+            ancho = w;
+            var v = mide('vh') || window.innerHeight;
+            var l = sirve('lvh') ? mide('lvh') : v;
+            var s = sirve('svh') ? mide('svh') : Math.min(v, window.innerHeight);
+            if (!l || !s) { return; }
+            if (l < s) { l = s; }
+            html.style.setProperty('--pnt-alto-l', Math.round(l) + 'px');
+            html.style.setProperty('--pnt-alto-s', Math.round(s) + 'px');
+            html.style.setProperty('--pnt-vh', (v / 100).toFixed(2) + 'px');
+            html.classList.add('pnt-alto-fijo');
+        }
+        fija();
+        window.addEventListener('resize', fija, { passive: true });
+        window.addEventListener('orientationchange', function () { setTimeout(function () { ancho = -1; fija(); }, 350); });   // por si midió a mitad del giro
+    })();
+
     // 1. Contacto: el WhatsApp salía como "5492915661062". Se muestra como en el footer: "+54 9 291 566-1062".
     function telefono(n) {
         var m = String(n).replace(/\D/g, '').match(/^54(9)?(\d{3})(\d{3})(\d{4})$/);

@@ -1,6 +1,8 @@
 {% set has_featured = has_featured | default(false) and sections.primary.products %}
 {% set has_new = has_new | default(false) and sections.new.products %}
-{% set has_sale = has_sale | default(false) and sections.sale.products %}
+{# (2026-11-16, Panthera) "No los dejes escapar" muestra LITERALMENTE la categoría Ofertas (marca.js, mvDeOfertas): la sección se arma
+   siempre, aunque el panel no tenga productos marcados "en oferta"; sus tarjetas las pone marca.js con lo que haya en /ofertas/. #}
+{% set has_sale = has_sale | default(false) %}
 
 {% if has_featured %}
     {% set section_id = 'featured' %}

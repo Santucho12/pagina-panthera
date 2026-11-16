@@ -1203,11 +1203,23 @@ var PNT_OFERTAS = window.PNT_OFERTAS = {
         // quieto y sin "Deslizá" (watchOverflow → sw.isLocked).
         var vueltas = 1, enRonda = N >= 6;
 
+        // (2026-11-16, pedido: "el scroll lateral en los carruseles no va fluido") En pantallas táctiles el carrusel se arrastra LIBRE, con
+        // inercia, como el scroll nativo: la tarjeta sigue al dedo y al soltar sigue un poco y frena suave en una tarjeta (freeModeSticky).
+        // Antes cada deslizada movía una tarjeta exacta en 0,9 s (speed: 900, pensado para el avance solo): con el dedo se sentía trabado.
+        // Mientras el dedo está apoyado el avance automático se frena. En compu sigue igual (900 y de a una tarjeta). Swiper 6.3.2 (el de Lima).
+        var tactil = !!(window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches);
         var sw = new Swiper(cont, {
             loop: enRonda,
             rewind: !enRonda,
             watchOverflow: true,
-            speed: 900,   // más lento y pesado (2026-11-10)
+            speed: tactil ? 450 : 900,   // más lento y pesado (2026-11-10); con el dedo, más ágil (2026-11-16)
+            freeMode: tactil,
+            freeModeMomentum: true,
+            freeModeMomentumRatio: 0.65,
+            freeModeMomentumVelocityRatio: 0.85,
+            freeModeSticky: true,
+            resistanceRatio: 0.6,
+            threshold: 4,
             grabCursor: true,
             slidesPerView: 2.04,                                  // celular: cada tarjeta ≈ 47% del ancho (BS23)
             spaceBetween: 18,                                     // separación entre tarjetas (era 10; más aire, 2026-11-09)
@@ -1227,11 +1239,14 @@ var PNT_OFERTAS = window.PNT_OFERTAS = {
         }
 
         // Se frena con el mouse encima y cuando la sección no se ve
-        var encima = false, visible = true;
+        var encima = false, visible = true, tocando = false, tSuelta = 0;
         function autoplay() {
             if (!sw.autoplay || sw.isLocked) { return; }      // (2026-11-16) si entran todas, no hay a dónde avanzar
-            if (encima || !visible) { sw.autoplay.stop(); } else if (!sw.autoplay.running) { sw.autoplay.start(); }
+            if (encima || !visible || tocando) { sw.autoplay.stop(); } else if (!sw.autoplay.running) { sw.autoplay.start(); }
         }
+        // (2026-11-16) con el dedo apoyado no avanza solo (si no, el avance automático se metía en medio del arrastre); vuelve 2,5 s después de soltar
+        sw.on('touchStart', function () { clearTimeout(tSuelta); tocando = true; autoplay(); });
+        sw.on('touchEnd', function () { clearTimeout(tSuelta); tSuelta = setTimeout(function () { tocando = false; autoplay(); }, 2500); });
         cont.addEventListener('mouseenter', function () { encima = true; autoplay(); });
         cont.addEventListener('mouseleave', function () { encima = false; autoplay(); });
         if ('IntersectionObserver' in window) {
@@ -1278,7 +1293,7 @@ var PNT_OFERTAS = window.PNT_OFERTAS = {
                 puntos.appendChild(b);
             }
             sw.on('slideChange', marcar);
-            if (!conVuelta) { sw.on('progress', marcar); }      // sin vuelta, la posición puede cambiar sin cambiar la tarjeta activa
+            if (!conVuelta || sw.params.freeMode) { sw.on('progress', marcar); }      // sin vuelta (o arrastre libre en celular), la posición puede cambiar sin cambiar la tarjeta activa
             sw.on('sliderMove', function () { caja.classList.add('is-usado'); });
             // (2026-11-16) si entran todas las tarjetas (pocas ofertas o destacados), no hay nada que deslizar: sin "Deslizá" ni puntitos
             var trabado = function () { caja.hidden = !!sw.isLocked; };
@@ -1297,15 +1312,20 @@ var PNT_OFERTAS = window.PNT_OFERTAS = {
     // (2026-11-16, pedido: "en el carrusel de ofertas de inicio se muestre lo que hay en la categoría Ofertas") Las tarjetas de "No los dejes
     // escapar" salen de la categoría Ofertas: se baja su página (PNT_OFERTAS.url) y sus productos reemplazan a los que eligió el panel para la
     // sección (Diseño → Organizar productos), con el formato de una tarjeta de carrusel del inicio. Mientras llega, la sección no muestra
-    // tarjetas (así no se ven las de antes y después otras). Si la categoría no anda (oculta: Tiendanube da "no encontrada") o tarda más de 5 s,
-    // quedan las de la sección. Sin productos en la categoría, la sección no se muestra.
+    // tarjetas (así no se ven las de antes y después otras). Si la categoría no anda (oculta: Tiendanube da "no encontrada"), tarda más de 5 s o
+    // no tiene productos, la sección NO se muestra (desde el 2026-11-16 ya no quedan las del panel). La sección se arma siempre, aunque el panel no
+    // tenga productos "en oferta" (snipplets/home/home-featured-products.tpl).
     function mvDeOfertas(seccion, listo) {
         var grilla = seccion.querySelector('.swiper-wrapper');
         if (!grilla || !window.fetch || !window.DOMParser) { listo(); return; }
-        var hecho = false;
+        var hecho = false, cargadas = false;
         var fin = function () {
             if (hecho) { return; }
-            hecho = true; seccion.classList.remove('pnt-of-cargando'); listo();
+            hecho = true; seccion.classList.remove('pnt-of-cargando');
+            // (2026-11-16, pedido: "que renderice literalmente lo que tenemos en la categoría Ofertas") Si la categoría no se pudo leer (oculta,
+            // error o tardó más de 5 s) la sección NO muestra lo que eligió el panel: se esconde. Solo se ven productos de la categoría.
+            if (!cargadas) { seccion.hidden = true; return; }
+            listo();
             if (window.lazySizes && window.lazySizes.loader) { window.lazySizes.loader.checkElems(); }
         };
         seccion.classList.add('pnt-of-cargando');
@@ -1332,6 +1352,7 @@ var PNT_OFERTAS = window.PNT_OFERTAS = {
                 slide.appendChild(n);
                 grilla.appendChild(slide);
             });
+            cargadas = true;
             fin();
         }).catch(fin);
     }

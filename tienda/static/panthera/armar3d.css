@@ -412,6 +412,9 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:
 /* (2026-11-15, capturas del usuario en su iPhone: "más alto debe ser, se cortan los charms y arriba entra muy justo… dale más altura a los 3D")
    Celular: 46 % de la pantalla (~343 px en un iPhone, donde vh descuenta las barras de Safari; con 34 % quedaban ~253 px). */
 @media (max-width:699px){.stage{height:clamp(280px,46vh,420px)}}
+/* (2026-11-16, pedido: "la altura en mobile debería ser fija") El mismo 46 %, pero del alto medido UNA vez (--pnt-vh, paginas.js sección 0):
+   ya no crece ni se achica cuando aparece o se esconde la barra del navegador. Sin la variable, queda la regla de arriba. */
+@media (max-width:699px){.stage{height:clamp(280px,calc(var(--pnt-vh,1vh)*46),420px)}}
 /* (2026-11-15) "Filtrar" con un tema elegido (fondo rosa): letra blanca, como todos los botones rosas (pedido del usuario) */
 .filtro-b.activo{color:#fff}
 /* (2026-11-15, pedido del usuario: "agregá esto [Deslizá → ••••] en mobile, en Sumá tus charms a la par del botón Filtrar, en la misma fila, y también en
