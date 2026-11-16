@@ -14,6 +14,12 @@ Esto incluye:
 - No cambiar nada de la tienda por el MCP de Tiendanube (productos, categorías, etc.) sin pedirlo.
 Solo se permiten lecturas: `npm run diferencias` (diff) y `npm run bajar` (pull a carpeta nueva).
 
+**Workflow de GitHub "Publicar tienda por FTP"** (`.github/workflows/publicar-tienda.yml`, creado el 2026-11-16 con el OK del usuario,
+para trabajar desde el celular): solo corre A MANO desde Actions. Modo `probar` = baja respaldo + lista lo que cambiaría (no toca la
+tienda); modo `publicar` = respaldo + sube lo cambiado de `tienda/` (sin borrar nada) y exige escribir `PUBLICAR`. Credenciales en los
+secretos `FTP_SERVER`, `FTP_USER`, `FTP_PASSWORD` (nunca en el repo). La regla de arriba sigue: antes de decirle al usuario que lo
+ejecute en modo `publicar`, pedir el OK y volver a preguntar "¿Estás seguro?". Nunca dispararlo por iniciativa propia.
+
 ## Cómo se trabaja
 Ver LEEME.md. Resumen: `tienda/` es el tema bajado por FTP; `npm run dev` muestra la tienda real en
 localhost:5700 con `tienda/static/` encima (marca.css/marca.js de `static/panthera/` en todas las páginas).

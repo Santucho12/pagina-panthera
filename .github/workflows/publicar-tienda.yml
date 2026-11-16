@@ -1,0 +1,95 @@
+# Publica el tema (carpeta tienda/) en Tiendanube por FTP.
+#
+# ⛔ Solo se ejecuta A MANO (Actions → "Publicar tienda por FTP" → Run workflow). Nunca con un push.
+# Antes de publicar SIEMPRE baja un respaldo del tema que está en la tienda (queda 30 días en "Artifacts").
+#
+# Modos:
+#   - "probar"   → baja el respaldo y lista qué subiría. NO cambia nada en la tienda.
+#   - "publicar" → baja el respaldo y sube tienda/. Además hay que escribir PUBLICAR en "confirmar".
+#
+# Secretos (Settings → Secrets and variables → Actions): FTP_SERVER, FTP_USER, FTP_PASSWORD.
+# No borra nada en la tienda: solo sube archivos nuevos o cambiados.
+
+name: Publicar tienda por FTP
+
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: '"probar" no toca la tienda. "publicar" la actualiza.'
+        required: true
+        default: probar
+        type: choice
+        options:
+          - probar
+          - publicar
+      confirmar:
+        description: 'Para publicar, escribí PUBLICAR (en mayúsculas).'
+        required: false
+        default: ''
+
+concurrency:
+  group: publicar-tienda
+  cancel-in-progress: false
+
+jobs:
+  ftp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      FTP_SERVER: ${{ secrets.FTP_SERVER }}
+      FTP_USER: ${{ secrets.FTP_USER }}
+      FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+    steps:
+      - name: Revisar que no sea un error
+        run: |
+          if [ -z "$FTP_SERVER" ] || [ -z "$FTP_USER" ] || [ -z "$FTP_PASSWORD" ]; then
+            echo "::error::Faltan los secretos FTP_SERVER, FTP_USER o FTP_PASSWORD."; exit 1
+          fi
+          if [ "${{ inputs.modo }}" = "publicar" ] && [ "${{ inputs.confirmar }}" != "PUBLICAR" ]; then
+            echo "::error::Para publicar hay que escribir PUBLICAR en 'confirmar'. No se subió nada."; exit 1
+          fi
+
+      - uses: actions/checkout@v4
+
+      - name: Instalar lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      - name: Respaldo del tema publicado
+        run: |
+          mkdir -p respaldo
+          lftp -u "$FTP_USER","$FTP_PASSWORD" "$FTP_SERVER" -e "set net:max-retries 3; mirror --parallel=4 / respaldo; bye"
+          echo "Archivos en el respaldo: $(find respaldo -type f | wc -l)"
+
+      - name: Guardar el respaldo
+        uses: actions/upload-artifact@v4
+        with:
+          name: respaldo-tienda-${{ github.run_number }}
+          path: respaldo
+          retention-days: 30
+
+      - name: Qué cambiaría (sin subir)
+        if: inputs.modo == 'probar'
+        run: |
+          # Compara por contenido contra el respaldo recién bajado.
+          diff -rq respaldo tienda | sed 's|^Only in tienda.*|NUEVO &|; s|^Files .* and tienda/\(.*\) differ|CAMBIA tienda/\1|' | grep -E '^(NUEVO|CAMBIA)' || echo "No hay diferencias: la tienda ya tiene lo mismo que tienda/."
+
+      - name: Publicar en la tienda
+        if: inputs.modo == 'publicar'
+        run: |
+          # Sube solo lo que cambió (por tamaño y contenido frente al respaldo). No borra nada en la tienda.
+          lista=$(mktemp)
+          (cd tienda && find . -type f | sed 's|^\./||' | while read -r f; do
+            if [ ! -f "../respaldo/$f" ] || ! cmp -s "$f" "../respaldo/$f"; then echo "$f"; fi
+          done) > "$lista"
+          total=$(wc -l < "$lista")
+          if [ "$total" -eq 0 ]; then echo "No hay nada para subir."; exit 0; fi
+          echo "Se suben $total archivos:"; cat "$lista"
+          cmds="set net:max-retries 3;"
+          while read -r f; do
+            d=$(dirname "$f")
+            [ "$d" != "." ] && cmds="$cmds mkdir -p -f \"/$d\";"
+            cmds="$cmds put \"tienda/$f\" -o \"/$f\";"
+          done < "$lista"
+          lftp -u "$FTP_USER","$FTP_PASSWORD" "$FTP_SERVER" -e "$cmds bye"
+          echo "Listo: $total archivos publicados."
