@@ -483,3 +483,14 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:
 /* (2026-11-16, pedido: "la foto del 3D de los aritos apenas más alta, abajo se cortan algunos aritos") Celular: 52 % de la pantalla (era 46 %), medido
    una sola vez (--pnt-vh). La pulsera no cambia. */
 @media (max-width:699px){.stage{height:clamp(300px,calc(var(--pnt-vh,1vh)*52),470px)}}
+/* (2026-11-16, pedido: "en mobile, todos los pasos y la información debajo del 3D más aireados verticalmente, más espacio entre cada cosa") Celular:
+   más aire arriba de cada paso (30 px, era 20), entre el título del paso y su contenido (18 px, era 12), alrededor de la lista de piezas y del total. */
+@media (max-width:699px){
+  .panel>.paso{padding-top:30px}
+  .panel>.paso:last-of-type{padding-bottom:14px}
+  .bases,.talles,.lista,.vacia{margin-top:18px}
+  .base-n{margin-top:16px}
+  .dock{padding-top:10px;padding-bottom:28px}
+  .tira-caja{margin-top:22px}
+  .total-ranura{padding-top:24px;padding-bottom:22px}
+}

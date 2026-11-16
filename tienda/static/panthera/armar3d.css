@@ -446,3 +446,14 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:
 /* (2026-11-16, captura del usuario: "se ve mal el filtro") Celular: el botón "Filtrar" va a la izquierda, pero el panel se abría hacia la izquierda
    (right:0) y quedaba cortado por el borde del armador. Ahora se abre hacia la derecha, con el ancho de la pantalla menos los márgenes. */
 @media (max-width:699px){.filtro .chips{left:0;right:auto;width:calc(100vw - 48px);max-width:360px;gap:8px 6px}}
+/* (2026-11-16, pedido: "en mobile, todos los pasos y la información debajo del 3D más aireados verticalmente, más espacio entre cada cosa") Celular:
+   más aire arriba de cada paso (30 px, era 20), entre el título del paso y su contenido (18 px, era 12), alrededor de la lista de piezas y del total. */
+@media (max-width:699px){
+  .panel>.paso{padding-top:30px}
+  .panel>.paso:last-of-type{padding-bottom:14px}
+  .bases,.talles,.lista,.vacia{margin-top:18px}
+  .base-n{margin-top:16px}
+  .dock{padding-top:10px;padding-bottom:28px}
+  .tira-caja{margin-top:22px}
+  .total-ranura{padding-top:24px;padding-bottom:22px}
+}
