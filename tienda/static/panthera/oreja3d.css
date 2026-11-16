@@ -495,3 +495,14 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:
   .total-ranura{padding-top:24px;padding-bottom:22px}
 }
 @media (max-width:699px){.lista{gap:10px}.huecos-n{margin-top:12px}}
+/* (2026-11-16, "apenas más aireado todo") Celular, segunda vuelta: pasos 38 px arriba (eran 30), título → contenido 22 px (eran 18), charms/aritos y total con más aire. */
+@media (max-width:699px){
+  .panel>.paso{padding-top:38px}
+  .panel>.paso:last-of-type{padding-bottom:20px}
+  .bases,.talles,.lista,.vacia{margin-top:22px}
+  .base-n{margin-top:20px}
+  .dock{padding-top:16px;padding-bottom:34px}
+  .tira-caja{margin-top:26px}
+  .total-ranura{padding-top:30px;padding-bottom:26px}
+}
+@media (max-width:699px){.lista{gap:13px}.huecos-n{margin-top:15px}}
