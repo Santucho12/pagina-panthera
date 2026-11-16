@@ -855,7 +855,7 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
 #cart-sticky-summary > .pnt-envio-gratis { margin: 0 0 -6px; }
 /* ── 19. Ofertas = la categoría "Ofertas" de la tienda (2026-11-16, pedido: "que el carrusel de ofertas de inicio muestre lo que hay en la categoría
       Ofertas"). marca.js (mvDeOfertas) baja la categoría y pone sus productos en "No los dejes escapar": mientras llegan, la sección no muestra tarjetas
-      (así no se ven un momento las que había elegido el panel). Tope: 5 s. ── */
+      (así no se ven un momento las que había elegido el panel). Tope: 15 s. ── */
 [data-store="home-products-sale"].pnt-of-cargando .swiper-wrapper { visibility: hidden; }
 /* ── 20. Alto FIJO en celular (2026-11-16, pedido: "la altura de las secciones en mobile debería ser fija… abajo aparece algo nativo del navegador
       y cuando aparece se achica y cuando desaparece se agranda"). paginas.js (sección 0) mide el alto de la pantalla UNA vez, en píxeles

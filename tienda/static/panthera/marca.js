@@ -1329,7 +1329,7 @@ var PNT_OFERTAS = window.PNT_OFERTAS = {
             if (window.lazySizes && window.lazySizes.loader) { window.lazySizes.loader.checkElems(); }
         };
         seccion.classList.add('pnt-of-cargando');
-        setTimeout(fin, 5000);
+        setTimeout(fin, 15000);      // (2026-11-16) era 5 s: en la vista previa de Cloud Shell la categoría tarda más y la sección quedaba escondida
         fetch(PNT_OFERTAS.url, { credentials: 'same-origin' }).then(function (r) { return r.text(); }).then(function (html) {
             if (hecho) { return; }
             var doc = new DOMParser().parseFromString(html, 'text/html');
