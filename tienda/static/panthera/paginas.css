@@ -882,3 +882,11 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
 @media (max-width: 767px) {
     .pnt-rh-circ[aria-label$=": Collares"] { display: none !important; }
 }
+/* c) "El botón de WhatsApp apenas más abajo en mobile y el cartel del aniversario apenas más arriba" (captura del iPhone: se tocaban). Botón a 28 px
+      del borde (era 40) y cartel 20 px más arriba (196 px sobre el borde visible, era 176). Con la barra fija del total de los armadores el botón
+      sigue subiendo (secciones.css). */
+@media (max-width: 767px) {
+    body[class] a.btn-whatsapp { bottom: 28px; }
+    .pnt-hero-cartel { bottom: 196px; bottom: calc(100lvh - 100svh + 196px); }
+    html.pnt-alto-fijo .pnt-hero-cartel { bottom: calc(var(--pnt-alto-l) - var(--pnt-alto-s) + 196px); }
+}
