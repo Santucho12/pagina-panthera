@@ -134,8 +134,10 @@ function existeLocal(ruta) {
 
 // (2026-11-15) Para verla desde el celular (misma Wi-Fi): el preview escucha en toda la red y los links se reescriben a la dirección
 // con la que se entró (http://192.168.x.x:5700), no siempre a localhost. Solo se aceptan localhost y direcciones de red privada.
+// (2026-11-16) También detrás de la "Web preview" de Google Cloud Shell (https://5700-cs-….cloudshell.dev), para verla desde el celular sin compu.
 function localDe(req) {
     const host = String(req.headers.host || '');
+    if (/^[a-z0-9.-]+\.cloudshell\.dev$/i.test(host)) { return `https://${host}`; }
     return /^(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+)(:\d+)?$/.test(host) ? `http://${host}` : LOCAL;
 }
 function enLaRed() {
