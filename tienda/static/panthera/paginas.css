@@ -916,3 +916,11 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
     .pnt-cu-btn { padding: 15px 16px; }
     .pnt-cu-resp-in p { padding: 0 16px 16px; }
 }
+/* g) "Conocenos: más pequeña la tipografía de los 3 datos de abajo (ubicación, horario y WhatsApp)" en celular: rótulo 8,5 px (era 10), dato
+      ~11,5 px (era hasta 13,5) y la bajada 9 px (era 10). */
+@media (max-width: 767px) {
+    .pnt-co-rotulo { font-size: 8.5px !important; letter-spacing: 0.14em; }
+    .pnt-co-valor { font-size: clamp(10.5px, 2.95vw, 11.5px) !important; }
+    .pnt-co-sub { font-size: 9px !important; }
+    .pnt-co-dato { gap: 5px; }
+}
