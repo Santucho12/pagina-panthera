@@ -952,3 +952,5 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
 /* m) "No debería mostrarse lo que no hay stock": en listados, búsqueda y Ofertas las tarjetas sin stock (Lima les pone el botón .nostock) no se
       muestran. En los carruseles del inicio las saca marca.js antes de armarlos. (:has anclado en la tarjeta, no en body.) */
 .js-product-table .js-item-product:has(input.nostock), .category-body .js-item-product:has(input.nostock) { display: none !important; }
+/* n) "Ocultá Cuidados" del menú de la hamburguesa (el link a /cuidados/ sigue existiendo en el sitio). */
+.nav-list-item:has(> .nav-list-link[href*="/cuidados"]), li:has(> a.nav-list-link[href*="/cuidados"]) { display: none !important; }
