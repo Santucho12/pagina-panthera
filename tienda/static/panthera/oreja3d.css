@@ -521,3 +521,5 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:
 @media (max-width:699px){.stage{height:clamp(320px,calc(var(--pnt-vh,1vh)*58),520px)}}
 /* (2026-11-16) "No tan alto": 58 % → 55 %. */
 @media (max-width:699px){.stage{height:clamp(310px,calc(var(--pnt-vh,1vh)*55),495px)}}
+/* (2026-11-16) "Sumá tus aros debe ser el 2 y Tu combinación el 3": en TODOS los tamaños (antes solo celular). */
+.dock-n{display:grid !important}.dock-tm{display:inline !important}.dock-td{display:none !important}
