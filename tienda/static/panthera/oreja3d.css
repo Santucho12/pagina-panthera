@@ -529,3 +529,5 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:
 @media (max-width:699px){.stage{height:clamp(290px,calc(var(--pnt-vh,1vh)*50),450px)}}
 /* (2026-11-16) "No tanto": celular 50 % → 54 %. */
 @media (max-width:699px){.stage{height:clamp(305px,calc(var(--pnt-vh,1vh)*54),485px)}}
+/* (2026-11-16) "Apenas más alta": celular 54 % → 56 %. */
+@media (max-width:699px){.stage{height:clamp(312px,calc(var(--pnt-vh,1vh)*56),500px)}}
