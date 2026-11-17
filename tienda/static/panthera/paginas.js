@@ -466,6 +466,20 @@
         var aros = [].filter.call(nav.querySelectorAll('a.nav-list-link'), function (x) { return /^\s*aros\s*$/i.test(x.textContent); })[0];
         var liAros = aros && aros.closest('li');
         if (liAros && liAros.parentNode === li.parentNode) { li.parentNode.insertBefore(liAros, li); }
+        // (2026-11-16, pedido: "Todos los productos debería ser un botón que lleve a todos los productos, no que vuelvan a aparecer las subcategorías")
+        [].forEach.call(nav.querySelectorAll('li.item-with-subitems > a.js-toggle-menu-panel'), function (t) {
+            if (!/^\s*todos los productos\s*$/i.test(t.textContent)) { return; }
+            var p = t.parentNode.querySelector(':scope > .js-menu-panel');
+            var ver = p && p.querySelector('a.nav-list-link[href]:not([href="#"])');
+            var n = document.createElement('a');
+            n.className = 'nav-list-link position-relative';
+            n.href = (ver && ver.getAttribute('href')) || '/productos/';
+            if (!/sort_by=/.test(n.getAttribute('href'))) { n.href = n.getAttribute('href') + (n.getAttribute('href').indexOf('?') < 0 ? '?' : '&') + 'sort_by=created-descending'; }
+            n.textContent = t.textContent.trim();
+            t.parentNode.replaceChild(n, t);
+            if (p) { p.remove(); }
+            n.parentNode.classList.remove('item-with-subitems');
+        });
         // (2026-11-16, "quiero que funcione igual que las otras categorías y subcategorías") Mismo armado que los ítems de Lima con subcategorías:
         // el ítem con la flecha rosa abre un panel que entra desde la derecha, con "‹ Crealo vos misma" arriba para volver y las dos opciones.
         // Se copia el panel de otro ítem con subcategorías (su cabecera y estilos) y se le ponen los clics a mano (Lima los engancha al cargar).
