@@ -995,3 +995,17 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 10px 26px -14px rgba(0, 0, 0, 0.28) !important;
     }
 }
+/* u) "En todos lados la navbar, arriba del todo, no debe ser isla; cuando comienzo a scrollear se convierte en isla suavemente": en celular, en
+      TODAS las páginas (antes solo en el inicio) arriba va a todo el ancho y sin vidrio; al bajar (html.pnt-nav-abajo) se encoge en la isla de
+      vidrio con transición. Reemplaza a q) y al vidrio fijo de t) en las páginas internas. En compu ya era así. */
+@media (max-width: 767px) {
+    html.pnt-nav:not(.pnt-nav-abajo) .js-head-main.head-main,
+    html.pnt-nav:not(.pnt-nav-abajo) body:not(.template-home) .js-head-main.head-main {
+        width: 100% !important; border-color: transparent !important; border-radius: 0 !important; background: transparent !important;
+        -webkit-backdrop-filter: none !important; backdrop-filter: none !important; box-shadow: none !important;
+    }
+    html.pnt-nav .js-head-main.head-main {
+        transition: width 0.6s var(--pnt-curva), border-radius 0.6s var(--pnt-curva), background-color 0.5s ease, border-color 0.5s ease,
+                    box-shadow 0.5s ease, backdrop-filter 0.5s ease, translate 0.45s var(--pnt-suave), opacity 0.3s ease !important;
+    }
+}
