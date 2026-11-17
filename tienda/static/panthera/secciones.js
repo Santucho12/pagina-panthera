@@ -212,7 +212,7 @@
         var arriba = false;
         lista.forEach(function (o) {
             if (!mq.matches || !o.cerca) { poner(o, false); return; }
-            if (o.top == null) { o.top = parseFloat(getComputedStyle(o.st).top) || 104; }
+            o.top = parseFloat(getComputedStyle(o.st).top) || 8;      // (2026-11-16) se lee cada vez: si se guardaba antes de que cargara paginas.css quedaba 104 y la barra no se escondía
             var t = o.st.getBoundingClientRect().top;
             poner(o, Math.abs(t - o.top) < 1.5);
             if (t <= 112 && t >= o.top - 30) { arriba = true; }      // llegando a la barra o pegado (y no despegándose hacia arriba)
