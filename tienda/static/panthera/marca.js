@@ -2473,7 +2473,7 @@ document.addEventListener('click', function (e) {
         if (!MUESTRA || document.querySelector('.pnt-res')) { return null; }
         // (2026-11-17, pedido: "si no tiene reseña, en el detalle del producto que no tenga reseñas") misma regla que las tarjetas
         // (mvResenas): los ids con resto 0 de 11 o que terminan en 0/5 no tienen; los demás, tantas como dice su tarjeta.
-        var idp = parseInt(((ficha && ficha.getAttribute('data-store')) || '').replace(/\D+/g, ''), 10) || 0;
+        var idp = parseInt(((document.querySelector('[data-store^="product-info-"]') || {}).getAttribute ? document.querySelector('[data-store^="product-info-"]').getAttribute('data-store') : '').replace(/\D+/g, ''), 10) || 0;
         var cuantas = idp % 11;
         if (!idp || !cuantas || idp % 5 === 0) { return null; }
         var ini = semilla % TEXTOS.length, items = '';
