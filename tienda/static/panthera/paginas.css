@@ -1019,3 +1019,11 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
         box-shadow: 0 10px 26px -14px rgba(0, 0, 0, 0.28) !important;
     }
 }
+/* x) "El efecto vidrioso debe ser más transparente": isla de celular con menos blanco (0,34 → 0,16) y desenfoque más leve. */
+@media (max-width: 767px) {
+    html.pnt-nav-abajo .js-head-main.head-main,
+    html.pnt-nav body:not(.template-home) .js-head-main.head-main {
+        background: rgba(255, 255, 255, 0.16) !important;
+        -webkit-backdrop-filter: blur(10px) saturate(160%) !important; backdrop-filter: blur(10px) saturate(160%) !important;
+    }
+}
