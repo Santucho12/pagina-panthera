@@ -496,6 +496,7 @@
         var b = linkModelo.cloneNode(true);
         b.className = linkModelo.className.replace(/\bselected\b/, '');
         b.setAttribute('href', '#');
+        b.setAttribute('data-pnt-crealo', '1');      // (2026-11-16) así marca.js no le vuelve a poner su clic que lleva al armador de pulseras
         b.firstChild.nodeValue = a.textContent.trim();
         [].forEach.call(b.childNodes, function (n) { if (n.nodeType === 3 && n !== b.firstChild) { n.nodeValue = ''; } });
         a.parentNode.replaceChild(b, a);
