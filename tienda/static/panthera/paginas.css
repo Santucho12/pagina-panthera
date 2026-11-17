@@ -1011,3 +1011,11 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
 }
 /* v) "Apenas más rápido el carrusel de Mundo Disney en mobile": 16 s por vuelta (era 20). */
 @media (max-width: 767px) { .pnt-di-pista { animation-duration: 16s !important; } }
+/* w) "No quiero bordes blancos" en la isla de celular: sin borde ni brillo blanco arriba; queda el vidrio y la sombra suave. */
+@media (max-width: 767px) {
+    html.pnt-nav-abajo .js-head-main.head-main,
+    html.pnt-nav body:not(.template-home) .js-head-main.head-main {
+        border-color: transparent !important;
+        box-shadow: 0 10px 26px -14px rgba(0, 0, 0, 0.28) !important;
+    }
+}
