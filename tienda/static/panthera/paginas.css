@@ -938,3 +938,8 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
     html.pnt-hero-video body.template-home .section-slider-home { position: relative !important; top: auto !important; }
     html.pnt-hero-video body.template-home .section-banners-home { border-radius: 0 !important; box-shadow: none !important; }
 }
+/* k) "Más arriba el cartel de aniversario en el hero" (celular): 40 px más arriba (236 px sobre el borde visible, era 196). */
+@media (max-width: 767px) {
+    .pnt-hero-cartel { bottom: 236px; bottom: calc(100lvh - 100svh + 236px); }
+    html.pnt-alto-fijo .pnt-hero-cartel { bottom: calc(var(--pnt-alto-l) - var(--pnt-alto-s) + 236px); }
+}
