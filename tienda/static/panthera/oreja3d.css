@@ -517,3 +517,5 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:
 @media (max-width:699px){.dock-n{display:grid}.dock-tm{display:inline}.dock-td{display:none}}
 /* (2026-11-16) Celular: más aire entre los pasos 1, 2 y 3 */
 @media (max-width:699px){.panel>.paso,.dock{margin-top:18px !important;padding-top:44px !important}}
+/* (2026-11-16, a mano) "Apenas más alta, extendela hacia abajo": 3D de aritos en celular 52 % → 58 % del alto (tope 520 px). */
+@media (max-width:699px){.stage{height:clamp(320px,calc(var(--pnt-vh,1vh)*58),520px)}}
