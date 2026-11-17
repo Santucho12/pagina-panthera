@@ -432,3 +432,54 @@
         var t = setInterval(function () { if (armar() || ++n > 24) { clearInterval(t); } }, 250);
     }
 })();
+
+/* 17. "Crealo vos misma" en el menú de la hamburguesa (pedido 2026-11-16): arriba de Collares y con dos opciones adentro, "Combiná tus charms/dijes"
+   (→ Armá tu pulsera del inicio) y "Combiná tus aritos" (→ Armá tu oreja del inicio). El ítem abre y cierra las dos opciones. En el inicio cierra
+   el menú y baja suave; desde otra página va al inicio y baja al llegar (#armar-pulsera / #armar-oreja). */
+(function () {
+    'use strict';
+    var OPCIONES = [['Combiná tus charms/dijes', 'armar-pulsera'], ['Combiná tus aritos', 'armar-oreja']];
+    function bajar(id, suave) {
+        var s = document.getElementById(id); if (!s) { return false; }
+        var y = s.getBoundingClientRect().top + (window.pageYOffset || 0) - 90;
+        if (window.lenis) { window.lenis.scrollTo(y, suave ? { duration: 1.4 } : { immediate: true, force: true }); } else { window.scrollTo({ top: y, behavior: suave ? 'smooth' : 'auto' }); }
+        return true;
+    }
+    function armar() {
+        var nav = document.getElementById('nav-hamburger'); if (!nav) { return false; }
+        var a = [].filter.call(nav.querySelectorAll('a.nav-list-link'), function (x) { return /^\s*cre[aá]lo vos misma\s*$/i.test(x.textContent); })[0];
+        if (!a) { return false; }
+        var li = a.closest('li'); if (!li || li.getAttribute('data-pnt-crealo2')) { return true; }
+        li.setAttribute('data-pnt-crealo2', '1');
+        // arriba de Collares
+        var col = [].filter.call(nav.querySelectorAll('a.nav-list-link'), function (x) { return /^\s*collares\s*$/i.test(x.textContent); })[0];
+        var liCol = col && col.closest('li');
+        if (liCol && liCol.parentNode === li.parentNode) { li.parentNode.insertBefore(li, liCol); }
+        // el link pasa a ser un botón que despliega (una copia sin los clics de marca.js)
+        var b = a.cloneNode(true);
+        b.removeAttribute('href'); b.setAttribute('role', 'button'); b.setAttribute('aria-expanded', 'false'); b.classList.add('pnt-cv-btn');
+        b.insertAdjacentHTML('beforeend', '<span class="pnt-cv-flecha" aria-hidden="true"></span>');
+        a.parentNode.replaceChild(b, a);
+        var sub = document.createElement('div'); sub.className = 'pnt-cv-sub'; sub.hidden = true;
+        OPCIONES.forEach(function (o) {
+            var l = document.createElement('a'); l.className = 'pnt-cv-op'; l.href = '/#' + o[1]; l.textContent = o[0];
+            l.addEventListener('click', function (e) {
+                if (!document.getElementById(o[1])) { return; }
+                e.preventDefault();
+                var cerrar = document.querySelector('#nav-hamburger .js-modal-close'); if (cerrar) { cerrar.click(); }
+                setTimeout(function () { bajar(o[1], true); }, 350);
+                if (history.replaceState) { history.replaceState(null, '', '#' + o[1]); }
+            });
+            sub.appendChild(l);
+        });
+        li.appendChild(sub);
+        b.addEventListener('click', function (e) {
+            e.preventDefault(); e.stopPropagation();
+            var abre = sub.hidden; sub.hidden = !abre; b.setAttribute('aria-expanded', String(abre));
+        }, true);
+        return true;
+    }
+    if (!armar()) { var n = 0, t = setInterval(function () { if (armar() || ++n > 24) { clearInterval(t); } }, 250); }
+    // al llegar desde otra página con #armar-oreja (el de la pulsera ya lo atiende marca.js)
+    if (location.hash === '#armar-oreja') { [300, 1200, 2600].forEach(function (ms) { setTimeout(function () { bajar('armar-oreja', false); }, ms); }); }
+})();

@@ -954,3 +954,10 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
 .js-product-table .js-item-product:has(input.nostock), .category-body .js-item-product:has(input.nostock) { display: none !important; }
 /* n) "Ocultá Cuidados" del menú de la hamburguesa (el link a /cuidados/ sigue existiendo en el sitio). */
 .nav-list-item:has(> .nav-list-link[href*="/cuidados"]), li:has(> a.nav-list-link[href*="/cuidados"]) { display: none !important; }
+/* o) "Crealo vos misma" con sus dos opciones (paginas.js 17) */
+.pnt-cv-btn { display: flex !important; align-items: center; justify-content: space-between; cursor: pointer; }
+.pnt-cv-flecha { width: 9px; height: 9px; margin-right: 6px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; rotate: 45deg; translate: 0 -3px; transition: rotate 0.3s var(--pnt-suave), translate 0.3s var(--pnt-suave); }
+.pnt-cv-btn[aria-expanded="true"] .pnt-cv-flecha { rotate: 225deg; translate: 0 3px; }
+.pnt-cv-sub { display: grid; gap: 4px; padding: 2px 0 12px 18px; }
+.pnt-cv-sub[hidden] { display: none; }
+.pnt-cv-op { display: block; padding: 8px 0 8px 14px; border-left: 2px solid var(--pnt-rosa); color: var(--pnt-texto) !important; font-family: var(--pnt-letra); font-size: 0.9em; font-weight: 500; text-decoration: none !important; }
