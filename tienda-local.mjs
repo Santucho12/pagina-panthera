@@ -74,6 +74,7 @@ function pntRecargar() {
     (function esperar() { if (Date.now() - pntUso < 1500) { setTimeout(esperar, 300); return; } location.reload(); })();
 }
 function pntPreguntar() {
+    if (/\.cloudshell\.dev$/.test(location.hostname)) { return; }   /* (2026-11-16) en Cloud Shell (celular) no recarga sola: con cada git pull la página se recargaba mientras se navegaba */
     if (document.hidden || pntPend) { return; }
     fetch('/__version', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (v) {
         if (pntArr === null) { pntArr = v.a; pntVer = v.v; pntCod = v.c; return; }
