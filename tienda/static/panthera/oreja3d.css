@@ -506,3 +506,5 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:
   .total-ranura{padding-top:30px;padding-bottom:26px}
 }
 @media (max-width:699px){.lista{gap:13px}.huecos-n{margin-top:15px}}
+/* (2026-11-16, "quitá la línea debajo de 1, 2 y 3 aritos") Celular: sin las líneas que separaban los pasos de la lista de charms/aritos */
+@media (max-width:699px){.dock{border-top:0}.panel>.paso{border-top:0}#paso1{border-top:0}}
