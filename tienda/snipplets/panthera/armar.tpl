@@ -157,7 +157,7 @@
 
   <section class="dock" aria-labelledby="dock-t">
     <div class="dock-cab">
-      <div><h2 id="dock-t"><i class="dock-n" aria-hidden="true">3</i>Elegí tus charms</h2><p id="dock-s"></p></div>
+      <div><h2 id="dock-t"><i class="dock-n" aria-hidden="true">3</i><span class="dock-tm">Elegí tus charms</span><span class="dock-td">Sumá tus charms</span></h2><p id="dock-s"></p></div>
       <div class="filtro" id="filtro">
         <button type="button" class="filtro-b" id="filtro-b" aria-haspopup="true" aria-expanded="false" aria-controls="chips"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M6 10h8M8.5 15h3"/></svg><span id="filtro-t">Filtrar</span></button>
         <div class="chips" id="chips" role="group" aria-label="Filtrar por tema" hidden></div>

@@ -475,3 +475,6 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:
    número 3 con el mismo círculo rosa de los pasos 1 y 2. ("Tu combinación", el paso 3 viejo, no se muestra.) */
 .dock-cab h2{display:flex;align-items:center;gap:10px}
 .dock-n{display:grid;place-items:center;flex:none;width:26px;height:26px;border-radius:50%;background:var(--rosa-precio);color:#fff;font:600 12px/1 var(--texto);letter-spacing:0;font-style:normal}
+/* (2026-11-16, corrección: el "3 Elegí tus charms" va SOLO en celular; compu y tablet siguen con "Sumá tus charms" sin número) */
+.dock-n,.dock-tm{display:none}
+@media (max-width:699px){.dock-n{display:grid}.dock-tm{display:inline}.dock-td{display:none}}
