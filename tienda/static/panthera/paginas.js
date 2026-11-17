@@ -475,7 +475,7 @@
             n.className = 'nav-list-link position-relative';
             n.href = (ver && ver.getAttribute('href')) || '/productos/';
             if (!/sort_by=/.test(n.getAttribute('href'))) { n.href = n.getAttribute('href') + (n.getAttribute('href').indexOf('?') < 0 ? '?' : '&') + 'sort_by=created-descending'; }
-            n.textContent = t.textContent.trim();
+            n.textContent = 'Ver todos los productos';      // (2026-11-16) pedido: "debería decir Ver todos los productos"
             t.parentNode.replaceChild(n, t);
             if (p) { p.remove(); }
             n.parentNode.classList.remove('item-with-subitems');
