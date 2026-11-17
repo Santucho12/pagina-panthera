@@ -2498,6 +2498,12 @@ document.addEventListener('click', function (e) {
         var items = [].slice.call(sec.querySelectorAll('.pnt-res-item'));
         var notas = items.map(function (li) { return parseFloat(li.getAttribute('data-estrellas')); }).filter(function (n) { return n > 0; });
         var prom = notas.length ? notas.reduce(function (a, b) { return a + b; }, 0) / notas.length : 0;
+        // (2026-11-17, pedido: "el mismo puntaje y cantidad de reseñas que en la tarjeta") en las de muestra el promedio es el de la tarjeta (mvResenas)
+        if (sec.classList.contains('pnt-res-muestra')) {
+            var pi = document.querySelector('[data-store^="product-info-"]');
+            var idm = parseInt(((pi && pi.getAttribute('data-store')) || '').replace(/\D+/g, ''), 10) || 0;
+            if (idm) { prom = 4.2 + (((idm * 7) + 3) % 9) / 10; }
+        }
         var pr = sec.querySelector('.pnt-res-promedio');
         if (pr && notas.length) {
             // (2026-11-12) estrellas con el promedio parcial + número fino + cantidad, como bajada del título
