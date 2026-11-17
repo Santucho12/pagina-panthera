@@ -1056,3 +1056,8 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
     footer.js-footer a[href^="tel"], footer.js-footer a[href^="mailto"], footer.js-footer a[href*="wa.me"] { justify-content: center !important; margin-left: auto; margin-right: auto; }
     footer.js-footer .newsletter, footer.js-footer .newsletter .h4, footer.js-footer :has(> .newsletter) > .h4 { text-align: center !important; }
 }
+/* f) (2026-11-17) "Intercambiá Enterate de las novedades con Contacto en mobile": el newsletter primero y Contacto después. */
+@media (max-width: 767px) {
+    footer.js-footer > .container > .row:first-child > :has(.newsletter) { order: 1 !important; margin-top: 0 !important; }
+    footer.js-footer > .container > .row:first-child > :has(a[href^="mailto"], a[href^="tel"]):not(:has(.newsletter)) { order: 2 !important; margin-top: 28px !important; }
+}
