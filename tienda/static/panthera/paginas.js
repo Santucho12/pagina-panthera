@@ -455,6 +455,10 @@
         var col = [].filter.call(nav.querySelectorAll('a.nav-list-link'), function (x) { return /^\s*collares\s*$/i.test(x.textContent); })[0];
         var liCol = col && col.closest('li');
         if (liCol && liCol.parentNode === li.parentNode) { li.parentNode.insertBefore(li, liCol); }
+        // (2026-11-16) "Aros debería ir abajo de Pulseras y arriba de Crealo vos misma"
+        var aros = [].filter.call(nav.querySelectorAll('a.nav-list-link'), function (x) { return /^\s*aros\s*$/i.test(x.textContent); })[0];
+        var liAros = aros && aros.closest('li');
+        if (liAros && liAros.parentNode === li.parentNode) { li.parentNode.insertBefore(liAros, li); }
         // el link pasa a ser un botón que despliega (una copia sin los clics de marca.js)
         var b = a.cloneNode(true);
         b.removeAttribute('href'); b.setAttribute('role', 'button'); b.setAttribute('aria-expanded', 'false'); b.classList.add('pnt-cv-btn');
