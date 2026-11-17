@@ -4975,3 +4975,15 @@ footer.js-footer .footer-payments-shipping-logos img { height: 30px; margin: 4px
 .pnt-es-oferta .pnt-mv-lista s::after { background: var(--pnt-rojo); }
 .pnt-es-oferta .pnt-mv-off .pnt-mv-letra { color: var(--pnt-blanco); }
 .pnt-es-oferta .pnt-mv-transf, .pnt-es-oferta .pnt-mv-transf b, .pnt-es-oferta .pnt-mv-transf span { color: var(--pnt-rojo); }
+/* (2026-11-16, pedido: "donde se ven productos comunes y en oferta, arriba a la izquierda de la tarjeta un badge que diga Oferta, para que se diferencie")
+   Píldora roja "Oferta" arriba a la izquierda de la foto en las tarjetas de productos de la categoría Ofertas. No en el carrusel ni en la página de
+   Ofertas (ahí son todas ofertas). Si la tarjeta tuviera el sello "Más elegido", el sello baja a la segunda fila. */
+.pnt-es-oferta .product-item-image-container::before {
+    content: "Oferta"; position: absolute; top: 9px; left: 8px; z-index: 11; padding: 5px 11px; border-radius: 999px;
+    background: var(--pnt-rojo, #E60000); color: var(--pnt-blanco); font-family: var(--pnt-letra); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.08em; line-height: 1.2; text-transform: uppercase; pointer-events: none; box-shadow: 0 2px 10px rgba(230, 0, 0, 0.25);
+}
+.pnt-es-oferta .pnt-mv-sello { top: 40px; }
+[data-store="home-products-sale"] .pnt-es-oferta .product-item-image-container::before,
+.pnt-ofertas-grilla .pnt-es-oferta .product-item-image-container::before { content: none; }
+@media (max-width: 767px) { .pnt-es-oferta .product-item-image-container::before { font-size: 9.5px; padding: 4px 9px; } .pnt-es-oferta .pnt-mv-sello { top: 34px; } }
