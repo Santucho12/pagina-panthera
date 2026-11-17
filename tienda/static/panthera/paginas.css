@@ -943,3 +943,9 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
     .pnt-hero-cartel { bottom: 236px; bottom: calc(100lvh - 100svh + 236px); }
     html.pnt-alto-fijo .pnt-hero-cartel { bottom: calc(var(--pnt-alto-l) - var(--pnt-alto-s) + 236px); }
 }
+/* l) "Mejor volverlo a la misma altura del botón de WhatsApp" (celular): el cartel apoyado a 28 px del borde visible, igual que el botón
+      (el hero mide la pantalla + 160 px: 160 + 28 = 188). Reemplaza a la k). */
+@media (max-width: 767px) {
+    .pnt-hero-cartel { bottom: 188px; bottom: calc(100lvh - 100svh + 188px); }
+    html.pnt-alto-fijo .pnt-hero-cartel { bottom: calc(var(--pnt-alto-l) - var(--pnt-alto-s) + 188px); }
+}
