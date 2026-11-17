@@ -525,3 +525,5 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:
 .dock-n{display:grid !important}.dock-tm{display:inline !important}.dock-td{display:none !important}
 /* (2026-11-16) "Apenas más alta, hacia abajo", solo celular: 55 % → 57 %. */
 @media (max-width:699px){.stage{height:clamp(316px,calc(var(--pnt-vh,1vh)*57),510px)}}
+/* (2026-11-16) "Disminuí la altura": celular 57 % → 50 %. */
+@media (max-width:699px){.stage{height:clamp(290px,calc(var(--pnt-vh,1vh)*50),450px)}}
