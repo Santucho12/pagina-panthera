@@ -4967,3 +4967,11 @@ footer.js-footer .footer-payments-shipping-logos img { height: 30px; margin: 4px
 .js-shipping-calculator-response .radio-button-label, .js-shipping-calculator-response .radio-button-text { height: auto !important; min-height: 0 !important; max-height: none !important; overflow: visible !important; }
 /* (la causa real) Lima hace flotar el contenido de cada opción (float: left): la fila no lo envolvía y su raya quedaba arriba del texto */
 .js-shipping-calculator-response .radio-button-content, .js-shipping-calculator-response .radio-button-label { float: none !important; margin-bottom: 0 !important; }
+/* (2026-11-16) Ofertas en TODAS las tarjetas: un producto de la categoría Ofertas se ve rojo con "Ahorrás" en cualquier listado (marca.js: .pnt-es-oferta).
+   En las tarjetas normales la fila "Ahorrás" queda armada pero escondida. */
+.pnt-mv-con-ahorro:not(.pnt-es-oferta) .pnt-mv-ahorro { display: none; }
+.pnt-es-oferta { --pnt-rojo: #E60000; }
+.pnt-es-oferta .pnt-mv-off { background: var(--pnt-rojo); }
+.pnt-es-oferta .pnt-mv-lista s::after { background: var(--pnt-rojo); }
+.pnt-es-oferta .pnt-mv-off .pnt-mv-letra { color: var(--pnt-blanco); }
+.pnt-es-oferta .pnt-mv-transf, .pnt-es-oferta .pnt-mv-transf b, .pnt-es-oferta .pnt-mv-transf span { color: var(--pnt-rojo); }

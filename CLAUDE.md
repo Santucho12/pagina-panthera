@@ -573,3 +573,7 @@ reales (`Input.dispatchTouchEvent`; `synthesizeScrollGesture` NO mueve la págin
   Charms: `me: 'oro'` en armar.tpl (sin `me` = plateado); sacado de las fotos: Flor rose cristal (rose gold), Travel lover, Árbol gold y Mickey gold.
   Aritos: el metal de la argolla de `arg` (oro/plata) y `me` a mano en los ear cuffs (Moño Minnie oro, Shine silver plata). oreja.tpl/oreja3d.* a mano:
   repetirlo si se regenera con construye_tienda.py. Charms nuevos (sincroniza_charms.mjs): si son dorados, agregarles `me: 'oro'`.
+- **Ofertas por encima de la estética normal** (pedido 2026-11-16): en cualquier listado/carrusel, la tarjeta de un producto de la categoría Ofertas va
+  roja con "Ahorrás" (`.pnt-es-oferta`; ids de `/ofertas/` en `window.PNT_OF_IDS`, caché 30 min `pnt-of-ids-v1`, final de marca.js). La fila "Ahorrás"
+  se arma en todas las tarjetas con precio anterior y se esconde si no es oferta (`.pnt-mv-con-ahorro`). **Sin stock no se muestra** (paginas.css 21 m,
+  y mvCarrusel saca esas tarjetas).

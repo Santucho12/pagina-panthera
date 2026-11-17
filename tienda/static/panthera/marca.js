@@ -1022,7 +1022,12 @@ var PNT_OFERTAS = window.PNT_OFERTAS = {
         var grande = transf || precio;
         // En "Ofertas" (como BS23): arriba "Ahorrás $X" (el precio anterior menos lo que se paga) y debajo el anterior tachado
         var ahorro = '';
-        if (esOferta && antes && grande) { var dif = mvNum(antes) - mvNum(grande); if (dif > 0) { ahorro = mvPlata(dif); } }
+        // (2026-11-16, pedido: "la estética de ofertas va por encima de la normal: en Todos los productos, un producto que está en Ofertas tiene que
+        // verse rojo con el ahorro") La fila "Ahorrás" se arma SIEMPRE que haya precio anterior; el CSS la muestra solo en la sección de ofertas
+        // o si la tarjeta es de un producto de la categoría Ofertas (.pnt-es-oferta, ver ofertasEnTodas al final).
+        if (antes && grande) { var dif = mvNum(antes) - mvNum(grande); if (dif > 0) { ahorro = mvPlata(dif); } }
+        if (window.PNT_OF_IDS && window.PNT_OF_IDS[item.getAttribute('data-product-id')]) { item.classList.add('pnt-es-oferta'); }
+        if (!esOferta && ahorro) { item.classList.add('pnt-mv-con-ahorro'); }
         if (ahorro) {
             var filaAhorro = mvNodo('span', 'pnt-mv-ahorro');
             filaAhorro.appendChild(mvNodo('small', '', 'Ahorrás'));
@@ -3512,4 +3517,29 @@ function siguienteDe(fila) {
         if (d[0] === 'icon') { l.type = 'image/png'; }
         document.head.appendChild(l);
     });
+})();
+
+/* (2026-11-16) Ofertas en TODAS las tarjetas: los ids de los productos de la categoría Ofertas (PNT_OF_IDS) se guardan 30 min en este navegador y
+   se vuelven a leer de /ofertas/. Cada tarjeta de un producto en Ofertas lleva .pnt-es-oferta (estética roja + "Ahorrás", marca.css al final). */
+(function () {
+    var CLAVE = 'pnt-of-ids-v1', ids = {}, viejo = true;
+    try { var c = JSON.parse(localStorage.getItem(CLAVE) || 'null'); if (c && c.ids) { c.ids.forEach(function (i) { ids[i] = 1; }); viejo = Date.now() - c.t > 30 * 60 * 1000; } } catch (e) {}
+    window.PNT_OF_IDS = ids;
+    function marca() {
+        [].forEach.call(document.querySelectorAll('.js-item-product[data-product-id]'), function (it) {
+            it.classList.toggle('pnt-es-oferta', !!window.PNT_OF_IDS[it.getAttribute('data-product-id')]);
+        });
+    }
+    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', marca); } else { marca(); }
+    setInterval(marca, 1500);      // tarjetas que llegan después ("Ver más", carruseles)
+    if (!viejo || !window.fetch || !window.PNT_OFERTAS) { return; }
+    fetch(PNT_OFERTAS.url, { credentials: 'same-origin' }).then(function (r) { return r.text(); }).then(function (html) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        if (!doc.body || !doc.body.classList.contains('template-category')) { return; }
+        var nuevos = {}, lista = [];
+        [].forEach.call(doc.querySelectorAll('.js-product-table .js-item-product[data-product-id]'), function (it) { var i = it.getAttribute('data-product-id'); if (!nuevos[i]) { nuevos[i] = 1; lista.push(i); } });
+        window.PNT_OF_IDS = nuevos;
+        try { localStorage.setItem(CLAVE, JSON.stringify({ t: Date.now(), ids: lista })); } catch (e) {}
+        marca();
+    }).catch(function () {});
 })();
