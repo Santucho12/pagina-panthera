@@ -130,7 +130,7 @@
   </section>
   <section class="dock" aria-labelledby="dock-t">
     <div class="dock-cab">
-      <div><h2 id="dock-t">Sumá tus aros</h2><p id="dock-s"></p></div>
+      <div><h2 id="dock-t"><i class="dock-n" aria-hidden="true">2</i><span class="dock-tm">Sumá tus aritos</span><span class="dock-td">Sumá tus aros</span></h2><p id="dock-s"></p></div>
       <div class="filtro" id="filtro">
         <button type="button" class="filtro-b" id="filtro-b" aria-haspopup="true" aria-expanded="false" aria-controls="chips"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M6 10h8M8.5 15h3"/></svg><span id="filtro-t">Filtrar</span></button>
         <div class="chips" id="chips" role="group" aria-label="Filtrar por tema" hidden></div>
@@ -144,7 +144,7 @@
   </section>
   <aside class="panel" aria-label="Tu oreja">
     <section class="paso hecho"><h3><i>1</i>¿Cuántos aritos tenés?</h3><div class="talles" id="huecos"></div></section>
-    <section class="paso" id="paso2"><h3><i>2</i>Tu combinación</h3><ol class="lista" id="lista"></ol></section>
+    <section class="paso" id="paso2"><h3><i><span class="dock-td">2</span><span class="dock-tm">3</span></i>Tu combinación</h3><ol class="lista" id="lista"></ol></section>
     <div class="total-ranura" id="total-ranura"></div>
   </aside>
 </div>

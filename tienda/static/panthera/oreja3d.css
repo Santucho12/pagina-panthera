@@ -510,3 +510,8 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:
 @media (max-width:699px){.dock{border-top:0}.panel>.paso{border-top:0}#paso1{border-top:0}}
 /* (2026-11-16, captura: "se ve mal esto") Celular: en el cartel de cerca, "Sacar de la pulsera" se encimaba con el precio y las cuotas: va debajo, a lo ancho. */
 @media (max-width:699px){.lupa-sacar{position:static;justify-self:start;margin-top:8px}}
+/* (2026-11-16, a mano) En celular: 1 ¿Cuántos aritos tenés? → 2 Sumá tus aritos → 3 Tu combinación. Compu y tablet sin cambios. */
+.dock-cab h2{display:flex;align-items:center;gap:10px}
+.dock-n{place-items:center;flex:none;width:26px;height:26px;border-radius:50%;background:var(--rosa-precio);color:#fff;font:600 12px/1 var(--texto);font-style:normal}
+.dock-n,.dock-tm{display:none}
+@media (max-width:699px){.dock-n{display:grid}.dock-tm{display:inline}.dock-td{display:none}}
