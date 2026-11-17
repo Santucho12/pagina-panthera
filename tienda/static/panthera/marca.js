@@ -176,7 +176,7 @@ var PNT_OFERTAS = window.PNT_OFERTAS = {
             var y = window.pageYOffset || root.scrollTop || 0;
             if (corteGuardado === null) {
                 var slider = document.body.classList.contains('template-home') && document.querySelector('.js-home-slider, [data-store="home-slider"], .section-slider');
-                corteGuardado = window.innerWidth <= 767 ? 15 : (slider ? slider.offsetHeight * 0.4 : 50);
+                corteGuardado = slider ? slider.offsetHeight * 0.4 : (window.innerWidth <= 767 ? 15 : 50);      // (2026-11-16) en el inicio de celular, igual que en compu: isla al pasar el 40 % del hero
             }
             var corte = corteGuardado;
             var abajo = !QUIETA && y > corte;
