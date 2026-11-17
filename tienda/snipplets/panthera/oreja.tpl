@@ -135,6 +135,7 @@
         <button type="button" class="filtro-b" id="filtro-b" aria-haspopup="true" aria-expanded="false" aria-controls="chips"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M6 10h8M8.5 15h3"/></svg><span id="filtro-t">Filtrar</span></button>
         <div class="chips" id="chips" role="group" aria-label="Filtrar por tema" hidden></div>
       </div>
+      <span class="desliza" id="desliza-ch" aria-hidden="true" hidden><span class="desliza-t">Deslizá<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="desliza-p"></span></span>{# (2026-11-16) celular: "Deslizá" como en los charms #}
     </div>
     <div class="tira-caja">
       <button type="button" class="flecha izq" id="t-izq" aria-label="Aros anteriores"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>

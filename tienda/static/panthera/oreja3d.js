@@ -281,7 +281,25 @@ $('tira').addEventListener('click', function (e) {
   var k = b.dataset.k;
   if (donde(k)) quitar(k); else colocar(k, null, b.querySelector('.card-f'));
 });
-function flechas() { var t = $('tira'); $('t-izq').disabled = t.scrollLeft < 8; $('t-der').disabled = t.scrollLeft + t.clientWidth > t.scrollWidth - 8; }
+function flechas() { var t = $('tira'); $('t-izq').disabled = t.scrollLeft < 8; $('t-der').disabled = t.scrollLeft + t.clientWidth > t.scrollWidth - 8; if (typeof deslizaCh === 'function') deslizaCh(); }
+// (2026-11-16, a mano) Celular: "Deslizá → ••••" como en los charms (copia de desliza() de armar3d.js).
+function desliza(caja, tira) {
+  if (!caja || !tira) return null;
+  var p = caja.querySelector('.desliza-p'), N = 4, pend = false;
+  for (var i = 0; i < N; i++) p.appendChild(document.createElement('span'));
+  function marca() {
+    pend = false;
+    var max = tira.scrollWidth - tira.clientWidth;
+    caja.hidden = max < 8;
+    var k = max > 0 ? Math.round(Math.min(1, tira.scrollLeft / max) * (N - 1)) : 0;
+    for (var j = 0; j < N; j++) p.children[j].classList.toggle('on', j === k);
+  }
+  tira.addEventListener('scroll', function () { if (!pend) { pend = true; requestAnimationFrame(marca); } }, { passive: true });
+  if (window.ResizeObserver) new ResizeObserver(marca).observe(tira); else window.addEventListener('resize', marca);
+  marca();
+  return marca;
+}
+var deslizaCh = desliza($('desliza-ch'), $('tira'));
 $('tira').addEventListener('scroll', flechas, { passive: true });
 $('t-izq').addEventListener('click', function () { $('tira').scrollBy({ left: -$('tira').clientWidth * 0.8, behavior: 'smooth' }); });
 $('t-der').addEventListener('click', function () { $('tira').scrollBy({ left: $('tira').clientWidth * 0.8, behavior: 'smooth' }); });
