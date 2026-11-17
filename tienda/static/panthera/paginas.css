@@ -1009,3 +1009,5 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
                     box-shadow 0.5s ease, backdrop-filter 0.5s ease, translate 0.45s var(--pnt-suave), opacity 0.3s ease !important;
     }
 }
+/* v) "Apenas más rápido el carrusel de Mundo Disney en mobile": 16 s por vuelta (era 20). */
+@media (max-width: 767px) { .pnt-di-pista { animation-duration: 16s !important; } }
