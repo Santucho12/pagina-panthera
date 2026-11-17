@@ -466,14 +466,26 @@
         var aros = [].filter.call(nav.querySelectorAll('a.nav-list-link'), function (x) { return /^\s*aros\s*$/i.test(x.textContent); })[0];
         var liAros = aros && aros.closest('li');
         if (liAros && liAros.parentNode === li.parentNode) { li.parentNode.insertBefore(liAros, li); }
-        // el link pasa a ser un botón que despliega (una copia sin los clics de marca.js)
-        var b = a.cloneNode(true);
-        b.removeAttribute('href'); b.setAttribute('role', 'button'); b.setAttribute('aria-expanded', 'false'); b.classList.add('pnt-cv-btn');
-        b.insertAdjacentHTML('beforeend', '<span class="pnt-cv-flecha" aria-hidden="true"></span>');
+        // (2026-11-16, "quiero que funcione igual que las otras categorías y subcategorías") Mismo armado que los ítems de Lima con subcategorías:
+        // el ítem con la flecha rosa abre un panel que entra desde la derecha, con "‹ Crealo vos misma" arriba para volver y las dos opciones.
+        // Se copia el panel de otro ítem con subcategorías (su cabecera y estilos) y se le ponen los clics a mano (Lima los engancha al cargar).
+        var modelo = [].filter.call(nav.querySelectorAll('li.item-with-subitems'), function (x) { return x !== li && x.querySelector(':scope > .js-menu-panel'); })[0];
+        if (!modelo) { return true; }
+        var linkModelo = modelo.querySelector(':scope > a.js-toggle-menu-panel');
+        var b = linkModelo.cloneNode(true);
+        b.className = linkModelo.className.replace(/\bselected\b/, '');
+        b.setAttribute('href', '#');
+        b.firstChild.nodeValue = a.textContent.trim();
+        [].forEach.call(b.childNodes, function (n) { if (n.nodeType === 3 && n !== b.firstChild) { n.nodeValue = ''; } });
         a.parentNode.replaceChild(b, a);
-        var sub = document.createElement('div'); sub.className = 'pnt-cv-sub'; sub.hidden = true;
+        li.classList.add('item-with-subitems');
+        var panel = modelo.querySelector(':scope > .js-menu-panel').cloneNode(true);
+        panel.style.display = 'none'; panel.classList.remove('nav-list-panel-show');
+        [].slice.call(panel.children).forEach(function (n) { if (!n.classList.contains('modal-header')) { n.remove(); } });
+        var tit = panel.querySelector('.js-toggle-menu-back .col.pl-2'); if (tit) { tit.textContent = b.firstChild.nodeValue; }
         OPCIONES.forEach(function (o) {
-            var l = document.createElement('a'); l.className = 'pnt-cv-op'; l.href = '/#' + o[1]; l.textContent = o[0];
+            var it = document.createElement('li'); it.className = 'nav-item';
+            var l = document.createElement('a'); l.className = 'nav-list-link position-relative'; l.href = '/#' + o[1]; l.textContent = o[0];
             l.addEventListener('click', function (e) {
                 if (!document.getElementById(o[1])) { return; }
                 e.preventDefault();
@@ -481,13 +493,17 @@
                 setTimeout(function () { bajar(o[1], true); }, 350);
                 if (history.replaceState) { history.replaceState(null, '', '#' + o[1]); }
             });
-            sub.appendChild(l);
+            it.appendChild(l); panel.appendChild(it);
         });
-        li.appendChild(sub);
+        li.appendChild(panel);
         b.addEventListener('click', function (e) {
             e.preventDefault(); e.stopPropagation();
-            var abre = sub.hidden; sub.hidden = !abre; b.setAttribute('aria-expanded', String(abre));
+            panel.style.display = ''; requestAnimationFrame(function () { panel.classList.add('nav-list-panel-show'); });
         }, true);
+        var volver = panel.querySelector('.js-toggle-menu-back');
+        if (volver) { volver.addEventListener('click', function (e) { e.preventDefault(); panel.classList.remove('nav-list-panel-show'); setTimeout(function () { panel.style.display = 'none'; }, 600); }); }
+        var x = panel.querySelector('.js-toggle-menu-close');
+        if (x) { x.addEventListener('click', function () { var c = [].filter.call(document.querySelectorAll('#nav-hamburger .js-modal-close'), function (k) { return !panel.contains(k); })[0]; if (c) { c.click(); } panel.classList.remove('nav-list-panel-show'); setTimeout(function () { panel.style.display = 'none'; }, 600); }); }
         return true;
     }
     if (!armar()) { var n = 0, t = setInterval(function () { if (armar() || ++n > 24) { clearInterval(t); } }, 250); }
