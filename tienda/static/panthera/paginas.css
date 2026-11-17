@@ -984,3 +984,14 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
 }
 /* s) Panel "Crealo vos misma": las dos opciones con la misma letra (Lima pone en negrita la primera fila de cada panel, que es su "Ver todo en…") */
 .js-menu-panel .nav-item > a.nav-list-link[href="/#armar-pulsera"], .js-menu-panel .nav-item > a.nav-list-link[href="/#armar-oreja"] { font-weight: 400 !important; }
+/* t) "La navbar en mobile debe ser efecto vidriado": la isla de celular es vidrio esmerilado (blanco translúcido + desenfoque de lo de atrás,
+      borde claro y sombra suave), como los botones de cristal de la tienda. Arriba del inicio sigue transparente a todo el ancho. */
+@media (max-width: 767px) {
+    html.pnt-nav-abajo .js-head-main.head-main,
+    html.pnt-nav body:not(.template-home) .js-head-main.head-main {
+        background: rgba(255, 255, 255, 0.34) !important;
+        -webkit-backdrop-filter: blur(16px) saturate(170%) !important; backdrop-filter: blur(16px) saturate(170%) !important;
+        border-color: rgba(255, 255, 255, 0.6) !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 10px 26px -14px rgba(0, 0, 0, 0.28) !important;
+    }
+}
