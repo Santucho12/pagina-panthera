@@ -982,3 +982,5 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
 @media (max-width: 767px) {
     html.pnt-nav-abajo .js-head-main.head-main { width: calc((100% - 14px) * 0.85) !important; }
 }
+/* s) Panel "Crealo vos misma": las dos opciones con la misma letra (Lima pone en negrita la primera fila de cada panel, que es su "Ver todo en…") */
+.js-menu-panel .nav-item > a.nav-list-link[href="/#armar-pulsera"], .js-menu-panel .nav-item > a.nav-list-link[href="/#armar-oreja"] { font-weight: 400 !important; }

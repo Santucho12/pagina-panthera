@@ -439,10 +439,17 @@
 (function () {
     'use strict';
     var OPCIONES = [['Combiná tus charms/dijes', 'armar-pulsera'], ['Combiná tus aritos', 'armar-oreja']];
+    // (2026-11-16, "me lleva mal, tarda, hay saltos") Se baja recién cuando el menú terminó de cerrarse (mientras está abierto la página está
+    // trabada y Lenis ignora el pedido), con force, más corto (0,9 s) y una corrección final sin animación si el alto de la página cambió.
+    function destino(id) {
+        var s = document.getElementById(id); if (!s) { return null; }
+        var arriba = window.innerWidth <= 767 ? 12 : 90;       // en celular la barra se esconde al llegar al 3D
+        return s.getBoundingClientRect().top + (window.pageYOffset || 0) - arriba;
+    }
     function bajar(id, suave) {
-        var s = document.getElementById(id); if (!s) { return false; }
-        var y = s.getBoundingClientRect().top + (window.pageYOffset || 0) - 90;
-        if (window.lenis) { window.lenis.scrollTo(y, suave ? { duration: 1.4 } : { immediate: true, force: true }); } else { window.scrollTo({ top: y, behavior: suave ? 'smooth' : 'auto' }); }
+        var y = destino(id); if (y === null) { return false; }
+        if (window.lenis) { window.lenis.scrollTo(y, suave ? { duration: 0.9, force: true, onComplete: function () { var y2 = destino(id); if (y2 !== null && Math.abs(y2 - y) > 30) { window.lenis.scrollTo(y2, { immediate: true, force: true }); } } } : { immediate: true, force: true }); }
+        else { window.scrollTo({ top: y, behavior: suave ? 'smooth' : 'auto' }); }
         return true;
     }
     function armar() {
@@ -504,7 +511,7 @@
                 if (!document.getElementById(o[1])) { return; }
                 e.preventDefault();
                 var cerrar = document.querySelector('#nav-hamburger .js-modal-close'); if (cerrar) { cerrar.click(); }
-                setTimeout(function () { bajar(o[1], true); }, 350);
+                (function espera(n) { if (document.querySelector('#nav-hamburger.modal-show') && n < 20) { setTimeout(function () { espera(n + 1); }, 60); return; } setTimeout(function () { bajar(o[1], true); }, 120); })(0);
                 if (history.replaceState) { history.replaceState(null, '', '#' + o[1]); }
             });
             it.appendChild(l); panel.appendChild(it);
