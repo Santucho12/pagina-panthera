@@ -4990,3 +4990,5 @@ footer.js-footer .footer-payments-shipping-logos img { height: 30px; margin: 4px
 /* (2026-11-16) Precio anterior tachado: letra apenas más gruesa (400 → 500) y la raya por DETRÁS de los números (pseudo-elemento debajo del texto). */
 .pnt-mv-tachado { font-weight: 500 !important; text-decoration: none !important; position: relative; z-index: 0; display: inline-block; }
 .pnt-mv-tachado::after { content: ""; position: absolute; left: -1px; right: -1px; top: 52%; height: 0.08em; min-height: 1px; background: var(--pnt-rojo, #E60000); border-radius: 1px; z-index: -1; pointer-events: none; }
+/* (2026-11-16) "Más grueso el tachado": raya 0,08em → 0,13em (mín. 2 px). */
+.pnt-mv-tachado::after { height: 0.13em; min-height: 2px; top: calc(52% - 0.025em); }
