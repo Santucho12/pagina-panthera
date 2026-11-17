@@ -443,7 +443,7 @@
     // trabada y Lenis ignora el pedido), con force, más corto (0,9 s) y una corrección final sin animación si el alto de la página cambió.
     function destino(id) {
         var s = document.getElementById(id); if (!s) { return null; }
-        var arriba = window.innerWidth <= 767 ? 12 : 90;       // en celular la barra se esconde al llegar al 3D
+        var arriba = window.innerWidth <= 767 ? 70 : 130;       // en celular la barra se esconde al llegar al 3D
         return s.getBoundingClientRect().top + (window.pageYOffset || 0) - arriba;
     }
     function bajar(id, suave) {
