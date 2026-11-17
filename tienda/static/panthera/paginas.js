@@ -551,3 +551,16 @@
         });
     }, true);
 })();
+
+/* 19) (2026-11-17, "en los detalles del producto a veces veo Cómo cuidar tu plata 2 veces") Si la sección quedó dos veces (la plantilla y la
+   vista previa la pueden poner las dos), se deja solo la primera. */
+(function () {
+    function una() {
+        var s = document.querySelectorAll('section[data-pnt-cuidar]:not(.pnt-cu-pagina), #cuidar-tu-plata');
+        for (var i = 1; i < s.length; i++) { if (s[i] !== s[0] && s[i].parentNode) { s[i].parentNode.removeChild(s[i]); } }
+    }
+    una();
+    document.addEventListener('DOMContentLoaded', una);
+    window.addEventListener('load', una);
+    setTimeout(una, 2500);
+})();
