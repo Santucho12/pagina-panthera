@@ -949,3 +949,6 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
     .pnt-hero-cartel { bottom: 188px; bottom: calc(100lvh - 100svh + 188px); }
     html.pnt-alto-fijo .pnt-hero-cartel { bottom: calc(var(--pnt-alto-l) - var(--pnt-alto-s) + 188px); }
 }
+/* m) "No debería mostrarse lo que no hay stock": en listados, búsqueda y Ofertas las tarjetas sin stock (Lima les pone el botón .nostock) no se
+      muestran. En los carruseles del inicio las saca marca.js antes de armarlos. (:has anclado en la tarjeta, no en body.) */
+.js-product-table .js-item-product:has(input.nostock), .category-body .js-item-product:has(input.nostock) { display: none !important; }

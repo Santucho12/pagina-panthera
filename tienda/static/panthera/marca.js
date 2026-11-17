@@ -1191,6 +1191,8 @@ var PNT_OFERTAS = window.PNT_OFERTAS = {
         grilla.setAttribute('data-pnt-carrusel', '1');
         if (previo && !previo.pntNuestro) { previo.destroy(true, true); }
         mvPortada(seccion, cfg);
+        // (2026-11-16, pedido: "no debería mostrarse lo que no hay stock") Las tarjetas sin stock salen del carrusel antes de armarlo
+        [].slice.call(grilla.children).forEach(function (s) { if (s.querySelector('input.nostock')) { s.remove(); } });
         var originales = [].filter.call(grilla.children, function (s) {
             return s.classList.contains('swiper-slide') && !s.classList.contains('swiper-slide-duplicate');
         });
