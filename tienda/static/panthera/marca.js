@@ -2556,7 +2556,7 @@ document.addEventListener('click', function (e) {
         if (!h1 || !r || !r.total || document.querySelector('.pnt-ficha-estrellas')) { return; }
         var a = nodo('a', 'pnt-ficha-estrellas');
         a.href = '#resenas';
-        a.innerHTML = '<span class="pnt-res-estrellas">' + estrellas(Math.round(r.prom)) + '</span><span><b>' + r.prom.toFixed(1).replace('.', ',') + '</b> (' + r.total + ')</span>';
+        a.innerHTML = '<span class="pnt-res-prom-est" aria-hidden="true">★★★★★<span style="width:' + Math.max(0, Math.min(100, r.prom / 5 * 100)).toFixed(1) + '%">★★★★★</span></span><span><b>' + r.prom.toFixed(1).replace('.', ',') + '</b> (' + r.total + ')</span>';
         a.addEventListener('click', function (e) { var d = document.getElementById('resenas'); if (!d) { return; } e.preventDefault(); var y = d.getBoundingClientRect().top + (window.pageYOffset || 0) - 100; if (window.lenis) { window.lenis.scrollTo(y, { duration: 1.4 }); } else { window.scrollTo({ top: y, behavior: 'smooth' }); } });
         h1.parentNode.insertBefore(a, h1.nextSibling);
     }
