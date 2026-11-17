@@ -28,8 +28,8 @@
                 </span>
             </a>
             <div class="pnt-co-info">
-                <span class="pnt-co-ojo pnt-rv" style="--pnt-rv-demora: 80ms">Visitanos</span>
-                <h2 class="pnt-co-titulo pnt-rv" id="pnt-co-t" style="--pnt-rv-demora: 140ms">Conocenos</h2>
+                {# (2026-11-17) el título pasó a "Visitanos": se saca el rótulo de arriba para no repetirlo #}
+                <h2 class="pnt-co-titulo pnt-rv" id="pnt-co-t" style="--pnt-rv-demora: 140ms">Visitanos</h2>
                 <p class="pnt-co-texto pnt-rv" style="--pnt-rv-demora: 200ms">Estamos dentro del shopping. Mirá el video y vení a conocer Panthera en persona.</p>
                 <div class="pnt-co-botones pnt-rv" style="--pnt-rv-demora: 260ms">
                     <a class="pnt-s-btn pnt-co-btn" href="{{ pnt_co_mapa_bb }}" target="_blank" rel="noopener">

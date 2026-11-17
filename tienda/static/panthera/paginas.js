@@ -532,3 +532,22 @@
     // al llegar desde otra página con #armar-oreja (el de la pulsera ya lo atiende marca.js)
     if (location.hash === '#armar-oreja') { [300, 1200, 2600].forEach(function (ms) { setTimeout(function () { bajar('armar-oreja', false); }, ms); }); }
 })();
+
+/* 18) (2026-11-17, "no se abren los desplegables de Cómo cuidar tu plata" en celular) El acordeón se maneja desde acá con un solo escuchador
+   en captura: así no importa si el botón quedó con dos escuchadores (se abrían y cerraban en el mismo toque) o si otro script corta el clic. */
+(function () {
+    document.addEventListener('click', function (e) {
+        var b = e.target && e.target.closest && e.target.closest('.pnt-cu-btn');
+        if (!b) { return; }
+        var li = b.closest('.pnt-cu-item'), raiz = b.closest('.pnt-cu');
+        if (!li || !raiz) { return; }
+        e.preventDefault(); e.stopImmediatePropagation(); e.stopPropagation();
+        raiz.classList.add('is-js');
+        var abrir = !li.classList.contains('is-open');
+        Array.prototype.forEach.call(raiz.querySelectorAll('.pnt-cu-item'), function (o) {
+            var a = abrir && o === li;
+            o.classList.toggle('is-open', a);
+            var ob = o.querySelector('.pnt-cu-btn'); if (ob) { ob.setAttribute('aria-expanded', a ? 'true' : 'false'); }
+        });
+    }, true);
+})();

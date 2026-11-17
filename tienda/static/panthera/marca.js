@@ -817,7 +817,7 @@ var PNT_OFERTAS = window.PNT_OFERTAS = {
        producto; con 0 no hay renglón de estrellas. Cada producto tiene siempre la misma cantidad (sale de su número).
        ⚠️ SOLO en el preview local (localhost): en la tienda real no aparecen, porque serían opiniones que no existen.
        Si Panthera instala una app de reseñas, acá se conectan las reales. */
-    var MV_MUESTRA = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+    var MV_MUESTRA = /^(localhost|127\.0\.0\.1)$|\.cloudshell\.dev$/.test(location.hostname);
     function mvResenas(item) {
         if (!MV_MUESTRA) { return null; }
         var idp = parseInt(item.getAttribute('data-product-id'), 10) || 0;
@@ -2426,7 +2426,7 @@ document.addEventListener('click', function (e) {
     'use strict';
     if (!document.body.classList.contains('template-product') || (window.self !== window.top)) { return; }
 
-    var MUESTRA = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+    var MUESTRA = /^(localhost|127\.0\.0\.1)$|\.cloudshell\.dev$/.test(location.hostname);
     // Reseñas DE MUESTRA (solo en localhost, ver MUESTRA): escritas como las escribe la gente acá, en rioplatense, con largos y tonos
     // distintos (pedido 2026-11-12: "más reales, en español rioplatense"). En la tienda real se muestran las reseñas de verdad.
     var TEXTOS = [

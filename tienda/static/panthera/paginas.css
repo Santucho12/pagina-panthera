@@ -1027,3 +1027,25 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
         -webkit-backdrop-filter: blur(10px) saturate(160%) !important; backdrop-filter: blur(10px) saturate(160%) !important;
     }
 }
+/* 22) Pedidos del 2026-11-17
+   a) "Cómo cuidar tu plata": el botón de cada cuidado siempre arriba de todo lo de alrededor y sin demora de toque. */
+.pnt-cu-btn { position: relative; z-index: 2; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+/* b) Historias de "Seguinos en redes": círculos de verdad (se veían óvalos en el iPhone): alto y ancho fijos e iguales. */
+.pnt-rh-aro { box-sizing: border-box; width: 78px; height: 78px; aspect-ratio: auto; flex: none; }
+.pnt-rh-aro img { box-sizing: border-box; width: 100%; height: 100%; }
+@media (max-width: 767px) { .pnt-rh-aro { width: 62px; height: 62px; } }
+/* c) Pie de celular: el "+ / −" de los desplegables (Categorías…) pasa a una flecha hacia abajo que gira al abrir. */
+@media (max-width: 767px) {
+    .js-accordion-toggle-mobile .js-accordion-toggle-inactive svg { display: none !important; }
+    .js-accordion-toggle-mobile .js-accordion-toggle-inactive::before {
+        content: ""; display: block; width: 10px; height: 10px; margin-right: 4px;
+        border-right: 1.8px solid currentColor; border-bottom: 1.8px solid currentColor;
+        transform: translateY(-3px) rotate(45deg); transition: transform 0.35s ease;
+    }
+    .js-accordion-toggle-mobile .js-accordion-toggle-inactive + .js-accordion-toggle-inactive::before { transform: translateY(3px) rotate(-135deg); }
+    /* d) Contacto y "Enterate de las novedades" centrados */
+    .contact-info { padding-left: 0; text-align: center; }
+    .contact-info li, .contact-info .footer-menu-item { display: flex; justify-content: center; }
+    .contact-info a { justify-content: center; }
+    .newsletter, .newsletter .h4 { text-align: center; }
+}
