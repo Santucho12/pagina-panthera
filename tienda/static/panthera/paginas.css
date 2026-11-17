@@ -1049,3 +1049,10 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
     .contact-info a { justify-content: center; }
     .newsletter, .newsletter .h4 { text-align: center; }
 }
+/* e) (2026-11-17) Pie de celular, otra vez: contacto y "Enterate de las novedades" centrados de verdad (la regla de d) no alcanzaba). */
+@media (max-width: 767px) {
+    footer.js-footer ul:has(a[href^="tel"]), footer.js-footer ul:has(a[href^="mailto"]) { padding-left: 0 !important; margin-left: auto !important; margin-right: auto !important; text-align: center !important; }
+    footer.js-footer li:has(> a[href^="tel"]), footer.js-footer li:has(> a[href^="mailto"]), footer.js-footer li:has(> a[href*="wa.me"]) { display: flex !important; justify-content: center !important; text-align: center !important; }
+    footer.js-footer a[href^="tel"], footer.js-footer a[href^="mailto"], footer.js-footer a[href*="wa.me"] { justify-content: center !important; margin-left: auto; margin-right: auto; }
+    footer.js-footer .newsletter, footer.js-footer .newsletter .h4, footer.js-footer :has(> .newsletter) > .h4 { text-align: center !important; }
+}

@@ -3053,6 +3053,7 @@ function siguienteDe(fila) {
     var cl = document.body.classList;
     if (!(cl.contains('template-category') || cl.contains('template-search'))) { return; }
     function arrancar() {
+        if (document.querySelector('.pnt-ver-mas')) { return; }   // (2026-11-17) se armaba dos veces: "no se tienen que ver 2 botones"
         var tabla = document.querySelector('.js-product-table');
         var fila = filaPaginacion();
         if (!tabla || !fila) { return; }      // (2026-11-16) también en Ofertas: es una categoría de verdad, con sus páginas
