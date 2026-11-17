@@ -978,3 +978,7 @@ html .template-product .js-addtocart-placeholder.btn-primary { color: var(--pnt-
         transition: width 0.6s var(--pnt-curva), border-radius 0.6s var(--pnt-curva), background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease, translate 0.45s var(--pnt-suave), opacity 0.3s ease !important;
     }
 }
+/* r) "Tiene que disminuir más su ancho cuando se hace isla, un 15 %" (celular): la isla mide el 85 % de lo que medía (antes la pantalla menos 14 px). */
+@media (max-width: 767px) {
+    html.pnt-nav-abajo .js-head-main.head-main { width: calc((100% - 14px) * 0.85) !important; }
+}
