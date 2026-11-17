@@ -455,7 +455,14 @@
         var col = [].filter.call(nav.querySelectorAll('a.nav-list-link'), function (x) { return /^\s*collares\s*$/i.test(x.textContent); })[0];
         var liCol = col && col.closest('li');
         if (liCol && liCol.parentNode === li.parentNode) { li.parentNode.insertBefore(li, liCol); }
-        // (2026-11-16) "Aros debería ir abajo de Pulseras y arriba de Crealo vos misma"
+        // (2026-11-16) Orden pedido: Ofertas, Pulseras, Charms/Dijes, Aros, Crealo vos misma, Anillos, Collares, Disney y el resto como venía
+        var ORDEN = [/^ofertas$/, /^pulseras$/, /^charms/, /^aros$/, /^cre[aá]lo vos misma$/, /^anillos$/, /^collares$/, /^disney$/];
+        var lis = [].slice.call(li.parentNode.children), primero = lis[0];
+        ORDEN.slice().reverse().forEach(function (re) {
+            var it = lis.filter(function (x) { var l = x.querySelector(':scope > a.nav-list-link, :scope > .nav-list-link, a.nav-list-link'); return l && re.test(l.textContent.trim().toLowerCase()); })[0];
+            if (it) { li.parentNode.insertBefore(it, li.parentNode.firstChild); }
+        });
+        // (2026-11-16) "Aros debería ir abajo de Pulseras y arriba de Crealo vos misma" (ya lo hace ORDEN; queda por si el nombre cambia)
         var aros = [].filter.call(nav.querySelectorAll('a.nav-list-link'), function (x) { return /^\s*aros\s*$/i.test(x.textContent); })[0];
         var liAros = aros && aros.closest('li');
         if (liAros && liAros.parentNode === li.parentNode) { li.parentNode.insertBefore(liAros, li); }
