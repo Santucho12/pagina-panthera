@@ -480,3 +480,5 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:
 @media (max-width:699px){.dock-n{display:grid}.dock-tm{display:inline}.dock-td{display:none}}
 /* (2026-11-16) Celular: más aire entre los pasos 1, 2 y 3 */
 @media (max-width:699px){.panel>.paso,.dock{margin-top:18px !important;padding-top:44px !important}}
+/* (2026-11-16) "Sumá tus charms debe ser y decir 3": número 3 en todos los tamaños, con el texto "Sumá tus charms". */
+.dock-n{display:grid !important}.dock-td{display:inline !important}.dock-tm{display:none !important}
